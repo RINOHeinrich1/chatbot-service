@@ -3,6 +3,7 @@ import numpy as np
 
 API_URL = "https://madachat-embedder.hf.space/embed"
 
+#Embedding via l'api
 def get_embedding(texts):
     payload = {
         "texts": texts,
@@ -11,7 +12,7 @@ def get_embedding(texts):
 
     try:
         response = requests.post(API_URL, json=payload)
-        response.raise_for_status()  # lève une exception si erreur HTTP
+        response.raise_for_status()  
         embeddings = response.json()["embeddings"]
         return np.array(embeddings)
     except Exception as e:
