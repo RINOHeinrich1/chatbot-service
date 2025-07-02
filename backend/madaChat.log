@@ -1,0 +1,111 @@
+📦 Utilisation du modèle : sentence-transformers/all-MiniLM-L6-v2
+nohup: ignoring input
+/home/rino/deploy/lib64/python3.9/site-packages/networkx/utils/backends.py:135: RuntimeWarning: networkx backend defined more than once: nx-loopback
+  backends.update(_get_backends("networkx.backends"))
+Device set to use cpu
+INFO:     Will watch for changes in these directories: ['/home/rino/deploy/backend']
+INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+INFO:     Started reloader process [4109] using StatReload
+📦 Utilisation du modèle : sentence-transformers/all-MiniLM-L6-v2
+/home/rino/deploy/lib64/python3.9/site-packages/networkx/utils/backends.py:135: RuntimeWarning: networkx backend defined more than once: nx-loopback
+  backends.update(_get_backends("networkx.backends"))
+Device set to use cpu
+INFO:     Started server process [4134]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+📦 Utilisation du modèle : sentence-transformers/all-MiniLM-L6-v2
+🧠 Chargement SentenceTransformer depuis : sentence-transformers/all-MiniLM-L6-v2
+['🎯 Objectifs 2025\nDoubler le chiffre d’affaires annuel\nÉtendre notre présence en Afrique de l’Est\nRenforcer notre équipe R&D IA/ML\nMettre en place un programme de formation interne certifiant']
+INFO:     102.17.117.169:0 - "POST /ask HTTP/1.0" 200 OK
+INFO:     205.169.39.6:0 - "GET / HTTP/1.0" 404 Not Found
+INFO:     102.17.117.169:0 - "OPTIONS /ask HTTP/1.0" 200 OK
+🧠 Chargement SentenceTransformer depuis : sentence-transformers/all-MiniLM-L6-v2
+['🎯 Objectifs 2025\nDoubler le chiffre d’affaires annuel\nÉtendre notre présence en Afrique de l’Est\nRenforcer notre équipe R&D IA/ML\nMettre en place un programme de formation interne certifiant']
+INFO:     102.17.117.169:0 - "POST /ask HTTP/1.0" 200 OK
+🧠 Chargement SentenceTransformer depuis : sentence-transformers/all-MiniLM-L6-v2
+['🎯 Objectifs 2025\nDoubler le chiffre d’affaires annuel\nÉtendre notre présence en Afrique de l’Est\nRenforcer notre équipe R&D IA/ML\nMettre en place un programme de formation interne certifiant']
+INFO:     102.17.117.169:0 - "POST /ask HTTP/1.0" 200 OK
+INFO:     127.0.0.1:57658 - "GET /reload-model?version=esti-rag-ft-v1&url=http%3A%2F%2Flocalhost%3A8001%2Fdownload-model%3Fversion%3Desti-rag-ft-v1 HTTP/1.1" 200 OK
+INFO:     102.17.117.169:0 - "OPTIONS /ask HTTP/1.0" 200 OK
+🧠 Chargement SentenceTransformer depuis : ./models/esti-rag-ft-v1
+["🌐 Présentation de l’entreprise\nNom : OnirTech Solutions\nSecteur : Technologies de l'information\nCréation : 2017\nSiège social : 42 Avenue des Technologies, Antananarivo, Madagascar"]
+INFO:     102.17.117.169:0 - "POST /ask HTTP/1.0" 200 OK
+🧠 Chargement SentenceTransformer depuis : ./models/esti-rag-ft-v1
+["🌐 Présentation de l’entreprise\nNom : OnirTech Solutions\nSecteur : Technologies de l'information\nCréation : 2017\nSiège social : 42 Avenue des Technologies, Antananarivo, Madagascar"]
+INFO:     102.17.117.169:0 - "POST /ask HTTP/1.0" 200 OK
+INFO:     103.4.251.175:0 - "GET / HTTP/1.0" 404 Not Found
+INFO:     154.28.229.148:0 - "GET / HTTP/1.0" 404 Not Found
+INFO:     104.252.191.59:0 - "GET / HTTP/1.0" 404 Not Found
+INFO:     102.17.117.169:0 - "OPTIONS /ask HTTP/1.0" 200 OK
+🧠 Chargement SentenceTransformer depuis : ./models/esti-rag-ft-v1
+["🌐 Présentation de l’entreprise\nNom : OnirTech Solutions\nSecteur : Technologies de l'information\nCréation : 2017\nSiège social : 42 Avenue des Technologies, Antananarivo, Madagascar"]
+INFO:     102.17.117.169:0 - "POST /ask HTTP/1.0" 200 OK
+INFO:     102.17.117.169:0 - "OPTIONS /ask HTTP/1.0" 200 OK
+🧠 Chargement SentenceTransformer depuis : ./models/esti-rag-ft-v1
+["🌐 Présentation de l’entreprise\nNom : OnirTech Solutions\nSecteur : Technologies de l'information\nCréation : 2017\nSiège social : 42 Avenue des Technologies, Antananarivo, Madagascar"]
+INFO:     102.17.117.169:0 - "POST /ask HTTP/1.0" 200 OK
+INFO:     149.57.180.174:0 - "GET / HTTP/1.0" 404 Not Found
+INFO:     35.89.95.73:0 - "GET / HTTP/1.0" 404 Not Found
+INFO:     35.89.95.73:0 - "GET / HTTP/1.0" 404 Not Found
+INFO:     35.89.95.73:0 - "GET / HTTP/1.0" 404 Not Found
+INFO:     35.89.95.73:0 - "GET / HTTP/1.0" 404 Not Found
+INFO:     35.89.95.73:0 - "GET / HTTP/1.0" 404 Not Found
+INFO:     35.89.95.73:0 - "GET / HTTP/1.0" 404 Not Found
+INFO:     35.89.95.73:0 - "GET / HTTP/1.0" 404 Not Found
+INFO:     35.89.95.73:0 - "GET / HTTP/1.0" 404 Not Found
+INFO:     35.89.95.73:0 - "GET / HTTP/1.0" 404 Not Found
+INFO:     35.89.95.73:0 - "GET / HTTP/1.0" 404 Not Found
+INFO:     35.89.95.73:0 - "GET / HTTP/1.0" 404 Not Found
+INFO:     35.89.95.73:0 - "GET / HTTP/1.0" 404 Not Found
+INFO:     35.89.95.73:0 - "GET / HTTP/1.0" 404 Not Found
+INFO:     35.89.95.73:0 - "GET / HTTP/1.0" 404 Not Found
+INFO:     35.89.95.73:0 - "GET / HTTP/1.0" 404 Not Found
+INFO:     35.89.95.73:0 - "GET / HTTP/1.0" 404 Not Found
+INFO:     35.89.95.73:0 - "GET / HTTP/1.0" 404 Not Found
+INFO:     35.89.95.73:0 - "GET / HTTP/1.0" 404 Not Found
+INFO:     35.89.95.73:0 - "GET / HTTP/1.0" 404 Not Found
+INFO:     35.89.95.73:0 - "GET / HTTP/1.0" 404 Not Found
+INFO:     91.84.87.137:0 - "GET / HTTP/1.0" 404 Not Found
+INFO:     91.84.87.137:0 - "GET /js/twint_ch.js HTTP/1.0" 404 Not Found
+INFO:     91.84.87.137:0 - "GET /js/lkk_ch.js HTTP/1.0" 404 Not Found
+INFO:     34.248.137.227:0 - "GET / HTTP/1.0" 404 Not Found
+INFO:     34.248.137.227:0 - "GET / HTTP/1.0" 404 Not Found
+INFO:     102.17.117.169:0 - "OPTIONS /ask HTTP/1.0" 200 OK
+🧠 Chargement SentenceTransformer depuis : ./models/esti-rag-ft-v1
+["🌐 Présentation de l’entreprise\nNom : OnirTech Solutions\nSecteur : Technologies de l'information\nCréation : 2017\nSiège social : 42 Avenue des Technologies, Antananarivo, Madagascar"]
+INFO:     102.17.117.169:0 - "POST /ask HTTP/1.0" 200 OK
+INFO:     34.63.207.189:0 - "GET / HTTP/1.0" 404 Not Found
+INFO:     91.84.87.137:0 - "GET / HTTP/1.0" 404 Not Found
+INFO:     91.84.87.137:0 - "GET /js/twint_ch.js HTTP/1.0" 404 Not Found
+INFO:     91.84.87.137:0 - "GET /js/lkk_ch.js HTTP/1.0" 404 Not Found
+INFO:     165.22.49.156:0 - "GET / HTTP/1.0" 404 Not Found
+INFO:     165.22.49.156:0 - "GET /wordpress/ HTTP/1.0" 404 Not Found
+INFO:     102.17.118.57:0 - "OPTIONS /ask HTTP/1.0" 200 OK
+🧠 Chargement SentenceTransformer depuis : ./models/esti-rag-ft-v1
+["🌐 Présentation de l’entreprise\nNom : OnirTech Solutions\nSecteur : Technologies de l'information\nCréation : 2017\nSiège social : 42 Avenue des Technologies, Antananarivo, Madagascar"]
+INFO:     102.17.118.57:0 - "POST /ask HTTP/1.0" 200 OK
+INFO:     102.17.118.57:0 - "GET /docs HTTP/1.0" 200 OK
+INFO:     102.17.118.57:0 - "GET /openapi.json HTTP/1.0" 200 OK
+INFO:     102.17.118.57:0 - "OPTIONS /ask HTTP/1.0" 200 OK
+🧠 Chargement SentenceTransformer depuis : ./models/esti-rag-ft-v1
+["🌐 Présentation de l’entreprise\nNom : OnirTech Solutions\nSecteur : Technologies de l'information\nCréation : 2017\nSiège social : 42 Avenue des Technologies, Antananarivo, Madagascar"]
+INFO:     102.17.118.57:0 - "POST /ask HTTP/1.0" 200 OK
+INFO:     102.17.118.57:0 - "OPTIONS /ask HTTP/1.0" 200 OK
+🧠 Chargement SentenceTransformer depuis : ./models/esti-rag-ft-v1
+["🌐 Présentation de l’entreprise\nNom : OnirTech Solutions\nSecteur : Technologies de l'information\nCréation : 2017\nSiège social : 42 Avenue des Technologies, Antananarivo, Madagascar"]
+INFO:     102.17.118.57:0 - "POST /ask HTTP/1.0" 200 OK
+INFO:     103.196.9.129:0 - "GET / HTTP/1.0" 404 Not Found
+INFO:     107.172.195.156:0 - "GET / HTTP/1.0" 404 Not Found
+INFO:     104.252.191.76:0 - "GET / HTTP/1.0" 404 Not Found
+INFO:     91.84.87.137:0 - "GET / HTTP/1.0" 404 Not Found
+INFO:     91.84.87.137:0 - "GET /js/twint_ch.js HTTP/1.0" 404 Not Found
+INFO:     91.84.87.137:0 - "GET /js/lkk_ch.js HTTP/1.0" 404 Not Found
+INFO:     3.90.215.120:0 - "GET / HTTP/1.0" 404 Not Found
+INFO:     133.242.174.119:0 - "GET /robots.txt HTTP/1.0" 404 Not Found
+INFO:     133.242.174.119:0 - "GET / HTTP/1.0" 404 Not Found
+INFO:     91.84.87.137:0 - "GET / HTTP/1.0" 404 Not Found
+INFO:     91.84.87.137:0 - "GET /js/lkk_ch.js HTTP/1.0" 404 Not Found
+INFO:     91.84.87.137:0 - "GET /js/twint_ch.js HTTP/1.0" 404 Not Found
+INFO:     104.252.191.69:0 - "GET / HTTP/1.0" 404 Not Found
+INFO:     51.81.46.212:0 - "GET / HTTP/1.0" 404 Not Found
+INFO:     77.90.153.66:0 - "GET / HTTP/1.0" 404 Not Found

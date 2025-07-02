@@ -1,0 +1,12 @@
+fastapi
+uvicorn
+transformers
+datasets
+pandas
+faiss-cpu
+--index-url https://download.pytorch.org/whl/cpu
+torch
+torchvision
+torchaudio
+qdrant-client
+python-docx

@@ -1,0 +1,42 @@
+/home/rino/deploy/lib64/python3.9/site-packages/networkx/utils/backends.py:135: RuntimeWarning: networkx backend defined more than once: nx-loopback
+  backends.update(_get_backends("networkx.backends"))
+Device set to use cpu
+INFO:     Will watch for changes in these directories: ['/home/rino/deploy/backend']
+INFO:     Uvicorn running on http://0.0.0.0:8010 (Press CTRL+C to quit)
+INFO:     Started reloader process [14534] using StatReload
+/home/rino/deploy/lib64/python3.9/site-packages/networkx/utils/backends.py:135: RuntimeWarning: networkx backend defined more than once: nx-loopback
+  backends.update(_get_backends("networkx.backends"))
+Device set to use cpu
+INFO:     Started server process [14608]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     102.17.106.92:0 - "OPTIONS /ask HTTP/1.0" 200 OK
+DOCUMENT FILTER: []
+FILTER CONDITION:None
+INFO:     102.17.106.92:0 - "POST /ask HTTP/1.0" 200 OK
+DOCUMENT FILTER: []
+FILTER CONDITION:None
+INFO:     102.17.106.92:0 - "POST /ask HTTP/1.0" 200 OK
+DOCUMENT FILTER: ['Presentation_ONIRTECH.docx']
+FILTER CONDITION:should=None min_should=None must=[FieldCondition(key='source', match=MatchAny(any=['Presentation_ONIRTECH.docx']), range=None, geo_bounding_box=None, geo_radius=None, geo_polygon=None, values_count=None, is_empty=None, is_null=None)] must_not=None
+INFO:     102.17.106.92:0 - "POST /ask HTTP/1.0" 200 OK
+DOCUMENT FILTER: ['Presentation_ONIRTECH.docx']
+FILTER CONDITION:should=None min_should=None must=[FieldCondition(key='source', match=MatchAny(any=['Presentation_ONIRTECH.docx']), range=None, geo_bounding_box=None, geo_radius=None, geo_polygon=None, values_count=None, is_empty=None, is_null=None)] must_not=None
+INFO:     102.17.106.92:0 - "POST /ask HTTP/1.0" 200 OK
+INFO:     102.17.106.92:0 - "OPTIONS /ask HTTP/1.0" 200 OK
+DOCUMENT FILTER: ['Presentation_ONIRTECH.docx']
+FILTER CONDITION:should=None min_should=None must=[FieldCondition(key='source', match=MatchAny(any=['Presentation_ONIRTECH.docx']), range=None, geo_bounding_box=None, geo_radius=None, geo_polygon=None, values_count=None, is_empty=None, is_null=None)] must_not=None
+INFO:     102.17.106.92:0 - "POST /ask HTTP/1.0" 200 OK
+INFO:     102.17.117.82:0 - "OPTIONS /ask HTTP/1.0" 200 OK
+DOCUMENT FILTER: []
+FILTER CONDITION:None
+INFO:     102.17.117.82:0 - "POST /ask HTTP/1.0" 200 OK
+INFO:     102.17.117.208:0 - "OPTIONS /ask HTTP/1.0" 200 OK
+DOCUMENT FILTER: []
+FILTER CONDITION:None
+INFO:     102.17.117.208:0 - "POST /ask HTTP/1.0" 200 OK
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [14608]
+INFO:     Stopping reloader process [14534]
