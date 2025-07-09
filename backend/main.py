@@ -51,7 +51,6 @@ client = QdrantClient(
 def ask_question(req: QuestionRequest):
     question = req.question
     document_filter = req.document_filter or []
-    print(f"DOCUMENT FILTER: {document_filter}")
     docs = retrieve_documents(
         client=client,
         collection_name=collection_name,
@@ -60,7 +59,7 @@ def ask_question(req: QuestionRequest):
         threshold=0,
         document_filter=document_filter  # <-- passe les documents à filtrer
     )
-    answer = generate_answer(question, docs)
+    answer = generate_answer(question, docs,req.chatbot_id)
     return AnswerResponse(documents=docs, answer=answer)
 
 # --- Mode CLI (facultatif) ---

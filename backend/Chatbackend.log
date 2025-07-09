@@ -3,40 +3,97 @@
 Device set to use cpu
 INFO:     Will watch for changes in these directories: ['/home/rino/deploy/backend']
 INFO:     Uvicorn running on http://0.0.0.0:8010 (Press CTRL+C to quit)
-INFO:     Started reloader process [14534] using StatReload
+INFO:     Started reloader process [490660] using StatReload
 /home/rino/deploy/lib64/python3.9/site-packages/networkx/utils/backends.py:135: RuntimeWarning: networkx backend defined more than once: nx-loopback
   backends.update(_get_backends("networkx.backends"))
 Device set to use cpu
-INFO:     Started server process [14608]
+INFO:     Started server process [490764]
 INFO:     Waiting for application startup.
 INFO:     Application startup complete.
-INFO:     102.17.106.92:0 - "OPTIONS /ask HTTP/1.0" 200 OK
-DOCUMENT FILTER: []
-FILTER CONDITION:None
-INFO:     102.17.106.92:0 - "POST /ask HTTP/1.0" 200 OK
-DOCUMENT FILTER: []
-FILTER CONDITION:None
-INFO:     102.17.106.92:0 - "POST /ask HTTP/1.0" 200 OK
-DOCUMENT FILTER: ['Presentation_ONIRTECH.docx']
-FILTER CONDITION:should=None min_should=None must=[FieldCondition(key='source', match=MatchAny(any=['Presentation_ONIRTECH.docx']), range=None, geo_bounding_box=None, geo_radius=None, geo_polygon=None, values_count=None, is_empty=None, is_null=None)] must_not=None
-INFO:     102.17.106.92:0 - "POST /ask HTTP/1.0" 200 OK
-DOCUMENT FILTER: ['Presentation_ONIRTECH.docx']
-FILTER CONDITION:should=None min_should=None must=[FieldCondition(key='source', match=MatchAny(any=['Presentation_ONIRTECH.docx']), range=None, geo_bounding_box=None, geo_radius=None, geo_polygon=None, values_count=None, is_empty=None, is_null=None)] must_not=None
-INFO:     102.17.106.92:0 - "POST /ask HTTP/1.0" 200 OK
-INFO:     102.17.106.92:0 - "OPTIONS /ask HTTP/1.0" 200 OK
-DOCUMENT FILTER: ['Presentation_ONIRTECH.docx']
-FILTER CONDITION:should=None min_should=None must=[FieldCondition(key='source', match=MatchAny(any=['Presentation_ONIRTECH.docx']), range=None, geo_bounding_box=None, geo_radius=None, geo_polygon=None, values_count=None, is_empty=None, is_null=None)] must_not=None
-INFO:     102.17.106.92:0 - "POST /ask HTTP/1.0" 200 OK
-INFO:     102.17.117.82:0 - "OPTIONS /ask HTTP/1.0" 200 OK
-DOCUMENT FILTER: []
-FILTER CONDITION:None
-INFO:     102.17.117.82:0 - "POST /ask HTTP/1.0" 200 OK
-INFO:     102.17.117.208:0 - "OPTIONS /ask HTTP/1.0" 200 OK
-DOCUMENT FILTER: []
-FILTER CONDITION:None
-INFO:     102.17.117.208:0 - "POST /ask HTTP/1.0" 200 OK
+Description:  assitant client de onirtech
+CONTEXT: Création : 2017
+Siège social : 42 Avenue des Technologies, Antananarivo, Madagascar 🧩 Activités principales Développement de logiciels sur mesure Intégration de systèmes d'information Maintenance et infogérance Conseil en transformation digitale Déploiement de solutions Cloud 👥 Équipe OnirTech compte aujourd’hui plus de 40 collaborateurs, dont :
+---
+Email : contact@onirtech.mg
+Téléphone : +261 34 12 345 67 Site web : www.onirtech.mg
+---
+1 DSI et 1 PDG
+📈 Références clients Banque Malagasy Ministère de l’Éducation Nationale Espace Numérique Universel Pharmacies de Madagascar
+---
+Mango Logistics
+🎯 Objectifs 2025 Doubler le chiffre d’affaires annuel Étendre notre présence en Afrique de l’Est Renforcer notre équipe R&D IA/ML Mettre en place un programme de formation interne certifiant 📞 Contact
+INFO:     102.17.106.175:0 - "POST /ask HTTP/1.0" 200 OK
+INFO:     102.17.106.175:0 - "OPTIONS /ask HTTP/1.0" 200 OK
+Description:  assitant client de onirtech
+CONTEXT: Création : 2017
+Siège social : 42 Avenue des Technologies, Antananarivo, Madagascar 🧩 Activités principales Développement de logiciels sur mesure Intégration de systèmes d'information Maintenance et infogérance Conseil en transformation digitale Déploiement de solutions Cloud 👥 Équipe OnirTech compte aujourd’hui plus de 40 collaborateurs, dont :
+---
+Mango Logistics
+🎯 Objectifs 2025 Doubler le chiffre d’affaires annuel Étendre notre présence en Afrique de l’Est Renforcer notre équipe R&D IA/ML Mettre en place un programme de formation interne certifiant 📞 Contact
+---
+1 DSI et 1 PDG
+📈 Références clients Banque Malagasy Ministère de l’Éducation Nationale Espace Numérique Universel Pharmacies de Madagascar
+---
+Email : contact@onirtech.mg
+Téléphone : +261 34 12 345 67 Site web : www.onirtech.mg
+INFO:     102.17.106.175:0 - "POST /ask HTTP/1.0" 200 OK
+INFO:     102.17.105.89:0 - "OPTIONS /ask HTTP/1.0" 200 OK
+Description:  assitant client de onirtech
+CONTEXT: Création : 2017
+Siège social : 42 Avenue des Technologies, Antananarivo, Madagascar 🧩 Activités principales Développement de logiciels sur mesure Intégration de systèmes d'information Maintenance et infogérance Conseil en transformation digitale Déploiement de solutions Cloud 👥 Équipe OnirTech compte aujourd’hui plus de 40 collaborateurs, dont :
+---
+Mango Logistics
+🎯 Objectifs 2025 Doubler le chiffre d’affaires annuel Étendre notre présence en Afrique de l’Est Renforcer notre équipe R&D IA/ML Mettre en place un programme de formation interne certifiant 📞 Contact
+---
+1 DSI et 1 PDG
+📈 Références clients Banque Malagasy Ministère de l’Éducation Nationale Espace Numérique Universel Pharmacies de Madagascar
+---
+Email : contact@onirtech.mg
+Téléphone : +261 34 12 345 67 Site web : www.onirtech.mg
+INFO:     102.17.105.89:0 - "POST /ask HTTP/1.0" 200 OK
+INFO:     102.17.105.89:0 - "OPTIONS /ask HTTP/1.0" 200 OK
+Description:  un mignon petit chien qui fait wouf ! à chaque réponse
+CONTEXT: Nos valeurs
+- Innovation continue - Transparence et éthique professionnelle - Satisfaction client - Esprit d’équipe Quelques chiffres clés - 85 collaborateurs - 350 projets livrés - Présence dans 3 pays : France, Belgique, Canada - Taux de satisfaction client : 96 %
+---
+Contact
+📍 14 rue des Technologies, 69007 Lyon 📧 contact@technova-solutions.com 🌐 www.technova-solutions.com
+---
+TechNova Solutions – Présentation de l’entreprise
+À propos de TechNova Solutions TechNova Solutions est une entreprise innovante spécialisée dans le développement de solutions logicielles sur mesure pour les petites et moyennes entreprises (PME). Fondée en 2012 et basée à Lyon, en France, TechNova accompagne ses clients dans leur transformation numérique. Nos domaines d’expertise - Développement de logiciels métier : ERP, CRM, gestion des stocks, facturation. - Applications mobiles : iOS, Android, multiplateforme avec Flutter et React Native. - Cloud Computing : déploiement sur AWS, Azure, GCP. - Intelligence artificielle : détection de fraudes, recommandation, traitement automatique du langage naturel. Notre mission Offrir des solutions technologiques efficaces, robustes et évolutives qui répondent précisément aux besoins des entreprises modernes.
+INFO:     102.17.105.89:0 - "POST /ask HTTP/1.0" 200 OK
+Description:  un mignon petit chien qui fait wouf ! à chaque réponse
+CONTEXT: Contact
+📍 14 rue des Technologies, 69007 Lyon 📧 contact@technova-solutions.com 🌐 www.technova-solutions.com
+---
+TechNova Solutions – Présentation de l’entreprise
+À propos de TechNova Solutions TechNova Solutions est une entreprise innovante spécialisée dans le développement de solutions logicielles sur mesure pour les petites et moyennes entreprises (PME). Fondée en 2012 et basée à Lyon, en France, TechNova accompagne ses clients dans leur transformation numérique. Nos domaines d’expertise - Développement de logiciels métier : ERP, CRM, gestion des stocks, facturation. - Applications mobiles : iOS, Android, multiplateforme avec Flutter et React Native. - Cloud Computing : déploiement sur AWS, Azure, GCP. - Intelligence artificielle : détection de fraudes, recommandation, traitement automatique du langage naturel. Notre mission Offrir des solutions technologiques efficaces, robustes et évolutives qui répondent précisément aux besoins des entreprises modernes.
+---
+Nos valeurs
+- Innovation continue - Transparence et éthique professionnelle - Satisfaction client - Esprit d’équipe Quelques chiffres clés - 85 collaborateurs - 350 projets livrés - Présence dans 3 pays : France, Belgique, Canada - Taux de satisfaction client : 96 %
+INFO:     102.17.105.89:0 - "POST /ask HTTP/1.0" 200 OK
+Description:  un mignon petit chien qui fait wouf ! à chaque réponse
+CONTEXT: Contact
+📍 14 rue des Technologies, 69007 Lyon 📧 contact@technova-solutions.com 🌐 www.technova-solutions.com
+---
+Nos valeurs
+- Innovation continue - Transparence et éthique professionnelle - Satisfaction client - Esprit d’équipe Quelques chiffres clés - 85 collaborateurs - 350 projets livrés - Présence dans 3 pays : France, Belgique, Canada - Taux de satisfaction client : 96 %
+---
+TechNova Solutions – Présentation de l’entreprise
+À propos de TechNova Solutions TechNova Solutions est une entreprise innovante spécialisée dans le développement de solutions logicielles sur mesure pour les petites et moyennes entreprises (PME). Fondée en 2012 et basée à Lyon, en France, TechNova accompagne ses clients dans leur transformation numérique. Nos domaines d’expertise - Développement de logiciels métier : ERP, CRM, gestion des stocks, facturation. - Applications mobiles : iOS, Android, multiplateforme avec Flutter et React Native. - Cloud Computing : déploiement sur AWS, Azure, GCP. - Intelligence artificielle : détection de fraudes, recommandation, traitement automatique du langage naturel. Notre mission Offrir des solutions technologiques efficaces, robustes et évolutives qui répondent précisément aux besoins des entreprises modernes.
+INFO:     102.17.105.89:0 - "POST /ask HTTP/1.0" 200 OK
+INFO:     178.62.248.74:0 - "GET / HTTP/1.0" 404 Not Found
+INFO:     178.62.248.74:0 - "GET /favicon.ico HTTP/1.0" 404 Not Found
+INFO:     18.202.178.160:0 - "GET / HTTP/1.0" 404 Not Found
+INFO:     206.168.34.63:0 - "GET / HTTP/1.0" 404 Not Found
+INFO:     206.168.34.63:0 - "GET /favicon.ico HTTP/1.0" 404 Not Found
+INFO:     206.168.34.63:0 - "GET /.well-known/security.txt HTTP/1.0" 404 Not Found
+INFO:     93.123.109.7:0 - "GET /.git/config HTTP/1.0" 404 Not Found
+INFO:     91.134.35.95:0 - "GET / HTTP/1.0" 404 Not Found
+INFO:     91.134.35.95:0 - "GET / HTTP/1.0" 404 Not Found
+INFO:     198.235.24.217:0 - "GET / HTTP/1.0" 404 Not Found
 INFO:     Shutting down
 INFO:     Waiting for application shutdown.
 INFO:     Application shutdown complete.
-INFO:     Finished server process [14608]
-INFO:     Stopping reloader process [14534]
+INFO:     Finished server process [490764]
+INFO:     Stopping reloader process [490660]
