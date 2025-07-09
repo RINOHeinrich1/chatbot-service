@@ -60,7 +60,7 @@ def generate_answer(query, docs, chatbot_id):
 
     # 2. Prompt system combiné
     system_prompt = (
-        f"Tu dois toujours répondre  à partir des **contextes fournis** en  suivant la description suivante :{description if description else 'sois poli et clair.'}
+        f"Tu dois toujours répondre  à partir des **contextes fournis** en  suivant la description suivante :{description if description else 'sois poli et clair.'}"
         "Si le contexte est vide, contente-toi de répondre aux salutations de l'utilisateur."
     )
     print("Description: ",description)
@@ -70,6 +70,7 @@ def generate_answer(query, docs, chatbot_id):
         {"role": "system", "content": system_prompt},
         {"role": "user", "content": f"Voici le contexte :\n{contexte}\n\nVoici la question :\n{query}"}
     ]
+    print(f"CONTEXT: {contexte}")
 
     headers = {
         "Authorization": f"Bearer {TOKEN}",
