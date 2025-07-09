@@ -37,7 +37,6 @@ app.add_middleware(
 class QuestionRequest(BaseModel):
     question: str
     chatbot_id: Optional[str] = None  # si tu veux garder ce champ
-    document_filter: Optional[List[str]]   # <-- nouveau champ
 
 class AnswerResponse(BaseModel):
     documents: List[str]
@@ -60,22 +59,61 @@ def get_document_names_from_chatbot(chatbot_id: str) -> List[str]:
 
     return [item["document_name"] for item in response.data]
 
+def get_pgsql_sources_from_chatbot(chatbot_id: str) -> List[str]:
+    response = supabase.table("chatbot_pgsql_connexions") \
+        .select("connexion_name") \
+        .eq("chatbot_id", chatbot_id) \
+        .execute()
+
+    if not response.data:
+        return []
+
+    return [f"{item['connexion_name']}" for item in response.data]
+
+
 @app.post("/ask", response_model=AnswerResponse)
 def ask_question(req: QuestionRequest):
     question = req.question
-    document_filter = get_document_names_from_chatbot(req.chatbot_id) or []
-    docs = retrieve_documents(
-        client=client,
-        collection_name=collection_name,
-        query=question,
-        k=5,
-        threshold=0,
-        document_filter=document_filter  # <-- passe les documents à filtrer
-    )
-    answer = generate_answer(question, docs,req.chatbot_id)
-    return AnswerResponse(documents=docs, answer=answer)
+    combined_docs = []
 
-# --- Mode CLI (facultatif) ---
-if __name__ == "__main__":
-    import uvicorn
-    uvicorn.run("main:app", host="0.0.0.0", port=8010, reload=True)
+    if req.chatbot_id:
+        # --- Documents classiques ---
+        document_names = get_document_names_from_chatbot(req.chatbot_id)
+        if document_names:
+            docs_classic = retrieve_documents(
+                client=client,
+                collection_name=os.getenv("COLLECTION_NAME"),
+                query=question,
+                k=5,
+                threshold=0,
+                document_filter=document_names
+            )
+            combined_docs.extend(docs_classic)
+
+        # --- Documents PostgreSQL ---
+        pgsql_sources = get_pgsql_sources_from_chatbot(req.chatbot_id)
+        if pgsql_sources:
+            docs_pgsql = retrieve_documents(
+                client=client,
+                collection_name=os.getenv("POSTGRESS_COLLECTION_NAME"),
+                query=question,
+                k=5,
+                threshold=0,
+                document_filter=pgsql_sources
+            )
+            combined_docs.extend(docs_pgsql)
+
+    # fallback : aucun filtre si pas de chatbot_id
+    if not req.chatbot_id:
+        combined_docs = retrieve_documents(
+            client=client,
+            collection_name=os.getenv("COLLECTION_NAME"),
+            query=question,
+            k=5,
+            threshold=0,
+            document_filter=[]
+        )
+
+    answer = generate_answer(question, combined_docs, req.chatbot_id)
+    return AnswerResponse(documents=combined_docs, answer=answer)
+

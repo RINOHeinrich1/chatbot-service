@@ -1,5 +1,4 @@
 from rag.embedding import get_embedding
-from rag.generation import generate
 from rag.cache import get_cache, set_cache
 from qdrant_client import QdrantClient
 from qdrant_client.models import Filter, SearchParams,MatchAny,FieldCondition,Filter
@@ -15,6 +14,7 @@ URL = f"https://api.infomaniak.com/1/ai/{PRODUCT_ID}/openai/chat/completions"
 SUPABASE_URL = os.getenv("SUPABASE_URL")
 SUPABASE_SERVICE_ROLE_KEY = os.getenv("SUPABASE_SERVICE_ROLE_KEY")
 supabase = create_client(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY)
+
 
 def retrieve_documents(client, collection_name, query, k=5, threshold=0, document_filter=None):
     query_vector = get_embedding([query])[0]
@@ -44,6 +44,8 @@ def retrieve_documents(client, collection_name, query, k=5, threshold=0, documen
 
     return [hit.payload["text"] for hit in search_result if hit.score > threshold]
 
+
+
 def retrieve_from_all_collections(client, collection_names, query, k=5, threshold=0.5, document_filter=None):
     all_docs = []
     for collection_name in collection_names:
@@ -51,7 +53,7 @@ def retrieve_from_all_collections(client, collection_names, query, k=5, threshol
         all_docs.extend(docs)
     return all_docs[:k]  # limiter à k documents au total
 
-def generate_answer(query, docs):
+def generate_answer(query, docs, chatbot_id):
     cached = get_cache(query, docs)
     if cached:
         return cached
