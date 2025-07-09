@@ -14,10 +14,14 @@ from rag.embedding import get_embedding  # <-- modèle SentenceTransformer à jo
 from rag.rag_engine import retrieve_documents, generate_answer
 from qdrant_client import QdrantClient
 from typing import Optional
+from supabase import create_client
 from qdrant_client.models import Filter, FieldCondition, MatchValue
 from dotenv import load_dotenv
 load_dotenv()
-
+SUPABASE_URL = os.getenv("SUPABASE_URL")
+SUPABASE_SERVICE_ROLE_KEY = os.getenv("SUPABASE_SERVICE_ROLE_KEY")
+supabase = create_client(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY)
+collection_name = os.getenv("COLLECTION_NAME")
 # --- Initialisation de l'application ---
 app = FastAPI(title="RAG API")
 
@@ -29,7 +33,6 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-collection_name=os.getenv("COLLECTION_NAME")
 # --- Schémas Pydantic ---
 class QuestionRequest(BaseModel):
     question: str
@@ -46,11 +49,21 @@ client = QdrantClient(
 )
 
 # --- Route principale ---
+def get_document_names_from_chatbot(chatbot_id: str) -> List[str]:
+    response = supabase.table("chatbot_document_association") \
+        .select("document_name") \
+        .eq("chatbot_id", chatbot_id) \
+        .execute()
+
+    if not response.data:
+        return []
+
+    return [item["document_name"] for item in response.data]
 
 @app.post("/ask", response_model=AnswerResponse)
 def ask_question(req: QuestionRequest):
     question = req.question
-    document_filter = req.document_filter or []
+    document_filter = get_document_names_from_chatbot(req.chatbot_id) or []
     docs = retrieve_documents(
         client=client,
         collection_name=collection_name,
