@@ -1,99 +1,90 @@
-/home/rino/deploy/lib64/python3.9/site-packages/networkx/utils/backends.py:135: RuntimeWarning: networkx backend defined more than once: nx-loopback
-  backends.update(_get_backends("networkx.backends"))
-Device set to use cpu
 INFO:     Will watch for changes in these directories: ['/home/rino/deploy/backend']
 INFO:     Uvicorn running on http://0.0.0.0:8010 (Press CTRL+C to quit)
-INFO:     Started reloader process [490660] using StatReload
-/home/rino/deploy/lib64/python3.9/site-packages/networkx/utils/backends.py:135: RuntimeWarning: networkx backend defined more than once: nx-loopback
-  backends.update(_get_backends("networkx.backends"))
-Device set to use cpu
-INFO:     Started server process [490764]
+INFO:     Started reloader process [721090] using StatReload
+INFO:     Started server process [721101]
 INFO:     Waiting for application startup.
 INFO:     Application startup complete.
-Description:  assitant client de onirtech
-CONTEXT: Création : 2017
-Siège social : 42 Avenue des Technologies, Antananarivo, Madagascar 🧩 Activités principales Développement de logiciels sur mesure Intégration de systèmes d'information Maintenance et infogérance Conseil en transformation digitale Déploiement de solutions Cloud 👥 Équipe OnirTech compte aujourd’hui plus de 40 collaborateurs, dont :
+Description:  Assistant commerciale polie et courtois de Onirtech
+CONTEXT: Notre Vision
+Nous croyons en un avenir où l'intelligence artificielle est utilisée de manière éthique et responsable pour améliorer la vie professionnelle et personnelle. ONIRTECH se positionne comme un acteur clé dans la démocratisation de l'IA et l'accessibilité des technologies avancées.
 ---
-Email : contact@onirtech.mg
-Téléphone : +261 34 12 345 67 Site web : www.onirtech.mg
+Produits et Services
+ONIRTECH propose une gamme variée de produits et services, notamment : - Chatbots intelligents et agents conversationnels personnalisés. - Solutions de fine-tuning de modèles IA pour domaines spécifiques. - Interfaces web modernes et adaptatives. - Intégration de solutions de recherche sémantique. - Déploiement cloud et gestion d'infrastructure multitenant.
 ---
-1 DSI et 1 PDG
-📈 Références clients Banque Malagasy Ministère de l’Éducation Nationale Espace Numérique Universel Pharmacies de Madagascar
+Nos Missions
+- Accompagner les entreprises dans leur transformation numérique. - Fournir des services sur mesure en intelligence artificielle et automatisation. - Proposer des plateformes SaaS efficaces et scalables. - Offrir une expertise technique de haut niveau via des prestations de service et des formations.
 ---
-Mango Logistics
-🎯 Objectifs 2025 Doubler le chiffre d’affaires annuel Étendre notre présence en Afrique de l’Est Renforcer notre équipe R&D IA/ML Mettre en place un programme de formation interne certifiant 📞 Contact
-INFO:     102.17.106.175:0 - "POST /ask HTTP/1.0" 200 OK
-INFO:     102.17.106.175:0 - "OPTIONS /ask HTTP/1.0" 200 OK
-Description:  assitant client de onirtech
-CONTEXT: Création : 2017
-Siège social : 42 Avenue des Technologies, Antananarivo, Madagascar 🧩 Activités principales Développement de logiciels sur mesure Intégration de systèmes d'information Maintenance et infogérance Conseil en transformation digitale Déploiement de solutions Cloud 👥 Équipe OnirTech compte aujourd’hui plus de 40 collaborateurs, dont :
----
-Mango Logistics
-🎯 Objectifs 2025 Doubler le chiffre d’affaires annuel Étendre notre présence en Afrique de l’Est Renforcer notre équipe R&D IA/ML Mettre en place un programme de formation interne certifiant 📞 Contact
----
-1 DSI et 1 PDG
-📈 Références clients Banque Malagasy Ministère de l’Éducation Nationale Espace Numérique Universel Pharmacies de Madagascar
----
-Email : contact@onirtech.mg
-Téléphone : +261 34 12 345 67 Site web : www.onirtech.mg
-INFO:     102.17.106.175:0 - "POST /ask HTTP/1.0" 200 OK
-INFO:     102.17.105.89:0 - "OPTIONS /ask HTTP/1.0" 200 OK
-Description:  assitant client de onirtech
-CONTEXT: Création : 2017
-Siège social : 42 Avenue des Technologies, Antananarivo, Madagascar 🧩 Activités principales Développement de logiciels sur mesure Intégration de systèmes d'information Maintenance et infogérance Conseil en transformation digitale Déploiement de solutions Cloud 👥 Équipe OnirTech compte aujourd’hui plus de 40 collaborateurs, dont :
----
-Mango Logistics
-🎯 Objectifs 2025 Doubler le chiffre d’affaires annuel Étendre notre présence en Afrique de l’Est Renforcer notre équipe R&D IA/ML Mettre en place un programme de formation interne certifiant 📞 Contact
----
-1 DSI et 1 PDG
-📈 Références clients Banque Malagasy Ministère de l’Éducation Nationale Espace Numérique Universel Pharmacies de Madagascar
----
-Email : contact@onirtech.mg
-Téléphone : +261 34 12 345 67 Site web : www.onirtech.mg
-INFO:     102.17.105.89:0 - "POST /ask HTTP/1.0" 200 OK
-INFO:     102.17.105.89:0 - "OPTIONS /ask HTTP/1.0" 200 OK
-Description:  un mignon petit chien qui fait wouf ! à chaque réponse
-CONTEXT: Nos valeurs
-- Innovation continue - Transparence et éthique professionnelle - Satisfaction client - Esprit d’équipe Quelques chiffres clés - 85 collaborateurs - 350 projets livrés - Présence dans 3 pays : France, Belgique, Canada - Taux de satisfaction client : 96 %
+Présentation de l'Entreprise ONIRTECH
+Qui sommes-nous ? ONIRTECH est une entreprise innovante spécialisée dans le développement de solutions intelligentes à base d'intelligence artificielle, d'outils cloud et de technologies web avancées. Notre objectif est de transformer la manière dont les entreprises exploitent leurs données et interagissent avec leurs clients.
 ---
 Contact
-📍 14 rue des Technologies, 69007 Lyon 📧 contact@technova-solutions.com 🌐 www.technova-solutions.com
----
-TechNova Solutions – Présentation de l’entreprise
-À propos de TechNova Solutions TechNova Solutions est une entreprise innovante spécialisée dans le développement de solutions logicielles sur mesure pour les petites et moyennes entreprises (PME). Fondée en 2012 et basée à Lyon, en France, TechNova accompagne ses clients dans leur transformation numérique. Nos domaines d’expertise - Développement de logiciels métier : ERP, CRM, gestion des stocks, facturation. - Applications mobiles : iOS, Android, multiplateforme avec Flutter et React Native. - Cloud Computing : déploiement sur AWS, Azure, GCP. - Intelligence artificielle : détection de fraudes, recommandation, traitement automatique du langage naturel. Notre mission Offrir des solutions technologiques efficaces, robustes et évolutives qui répondent précisément aux besoins des entreprises modernes.
+Adresse : 50m en face de l'église catholique Ambatonilita Isoraka, Antananarivo Téléphones : 033 082 8086, 034 022 0452, 032 042 0452 Site Web : https://onirtech.com
 INFO:     102.17.105.89:0 - "POST /ask HTTP/1.0" 200 OK
-Description:  un mignon petit chien qui fait wouf ! à chaque réponse
-CONTEXT: Contact
-📍 14 rue des Technologies, 69007 Lyon 📧 contact@technova-solutions.com 🌐 www.technova-solutions.com
----
-TechNova Solutions – Présentation de l’entreprise
-À propos de TechNova Solutions TechNova Solutions est une entreprise innovante spécialisée dans le développement de solutions logicielles sur mesure pour les petites et moyennes entreprises (PME). Fondée en 2012 et basée à Lyon, en France, TechNova accompagne ses clients dans leur transformation numérique. Nos domaines d’expertise - Développement de logiciels métier : ERP, CRM, gestion des stocks, facturation. - Applications mobiles : iOS, Android, multiplateforme avec Flutter et React Native. - Cloud Computing : déploiement sur AWS, Azure, GCP. - Intelligence artificielle : détection de fraudes, recommandation, traitement automatique du langage naturel. Notre mission Offrir des solutions technologiques efficaces, robustes et évolutives qui répondent précisément aux besoins des entreprises modernes.
----
-Nos valeurs
-- Innovation continue - Transparence et éthique professionnelle - Satisfaction client - Esprit d’équipe Quelques chiffres clés - 85 collaborateurs - 350 projets livrés - Présence dans 3 pays : France, Belgique, Canada - Taux de satisfaction client : 96 %
 INFO:     102.17.105.89:0 - "POST /ask HTTP/1.0" 200 OK
-Description:  un mignon petit chien qui fait wouf ! à chaque réponse
-CONTEXT: Contact
-📍 14 rue des Technologies, 69007 Lyon 📧 contact@technova-solutions.com 🌐 www.technova-solutions.com
+Description:  Assistant commerciale polie et courtois de Onirtech
+CONTEXT: Notre Vision
+Nous croyons en un avenir où l'intelligence artificielle est utilisée de manière éthique et responsable pour améliorer la vie professionnelle et personnelle. ONIRTECH se positionne comme un acteur clé dans la démocratisation de l'IA et l'accessibilité des technologies avancées.
 ---
-Nos valeurs
-- Innovation continue - Transparence et éthique professionnelle - Satisfaction client - Esprit d’équipe Quelques chiffres clés - 85 collaborateurs - 350 projets livrés - Présence dans 3 pays : France, Belgique, Canada - Taux de satisfaction client : 96 %
+Produits et Services
+ONIRTECH propose une gamme variée de produits et services, notamment : - Chatbots intelligents et agents conversationnels personnalisés. - Solutions de fine-tuning de modèles IA pour domaines spécifiques. - Interfaces web modernes et adaptatives. - Intégration de solutions de recherche sémantique. - Déploiement cloud et gestion d'infrastructure multitenant.
 ---
-TechNova Solutions – Présentation de l’entreprise
-À propos de TechNova Solutions TechNova Solutions est une entreprise innovante spécialisée dans le développement de solutions logicielles sur mesure pour les petites et moyennes entreprises (PME). Fondée en 2012 et basée à Lyon, en France, TechNova accompagne ses clients dans leur transformation numérique. Nos domaines d’expertise - Développement de logiciels métier : ERP, CRM, gestion des stocks, facturation. - Applications mobiles : iOS, Android, multiplateforme avec Flutter et React Native. - Cloud Computing : déploiement sur AWS, Azure, GCP. - Intelligence artificielle : détection de fraudes, recommandation, traitement automatique du langage naturel. Notre mission Offrir des solutions technologiques efficaces, robustes et évolutives qui répondent précisément aux besoins des entreprises modernes.
+Nos Missions
+- Accompagner les entreprises dans leur transformation numérique. - Fournir des services sur mesure en intelligence artificielle et automatisation. - Proposer des plateformes SaaS efficaces et scalables. - Offrir une expertise technique de haut niveau via des prestations de service et des formations.
+---
+Présentation de l'Entreprise ONIRTECH
+Qui sommes-nous ? ONIRTECH est une entreprise innovante spécialisée dans le développement de solutions intelligentes à base d'intelligence artificielle, d'outils cloud et de technologies web avancées. Notre objectif est de transformer la manière dont les entreprises exploitent leurs données et interagissent avec leurs clients.
+---
+Contact
+Adresse : 50m en face de l'église catholique Ambatonilita Isoraka, Antananarivo Téléphones : 033 082 8086, 034 022 0452, 032 042 0452 Site Web : https://onirtech.com
+---
+Nous avons des  models.Table coûtant 149.50 et décrit comme suit: models.Table en palissandre
+---
+Nous avons des  Chaise coûtant 49.99 et décrit comme suit: Chaise en bois confortable
+---
+Nous avons des  Lampe coûtant 25.00 et décrit comme suit: Lampe LED écoénergétique
 INFO:     102.17.105.89:0 - "POST /ask HTTP/1.0" 200 OK
-INFO:     178.62.248.74:0 - "GET / HTTP/1.0" 404 Not Found
-INFO:     178.62.248.74:0 - "GET /favicon.ico HTTP/1.0" 404 Not Found
-INFO:     18.202.178.160:0 - "GET / HTTP/1.0" 404 Not Found
-INFO:     206.168.34.63:0 - "GET / HTTP/1.0" 404 Not Found
-INFO:     206.168.34.63:0 - "GET /favicon.ico HTTP/1.0" 404 Not Found
-INFO:     206.168.34.63:0 - "GET /.well-known/security.txt HTTP/1.0" 404 Not Found
-INFO:     93.123.109.7:0 - "GET /.git/config HTTP/1.0" 404 Not Found
-INFO:     91.134.35.95:0 - "GET / HTTP/1.0" 404 Not Found
-INFO:     91.134.35.95:0 - "GET / HTTP/1.0" 404 Not Found
-INFO:     198.235.24.217:0 - "GET / HTTP/1.0" 404 Not Found
-INFO:     Shutting down
-INFO:     Waiting for application shutdown.
-INFO:     Application shutdown complete.
-INFO:     Finished server process [490764]
-INFO:     Stopping reloader process [490660]
+Description:  Assistant commerciale polie et courtois de Onirtech
+CONTEXT: Notre Vision
+Nous croyons en un avenir où l'intelligence artificielle est utilisée de manière éthique et responsable pour améliorer la vie professionnelle et personnelle. ONIRTECH se positionne comme un acteur clé dans la démocratisation de l'IA et l'accessibilité des technologies avancées.
+---
+Présentation de l'Entreprise ONIRTECH
+Qui sommes-nous ? ONIRTECH est une entreprise innovante spécialisée dans le développement de solutions intelligentes à base d'intelligence artificielle, d'outils cloud et de technologies web avancées. Notre objectif est de transformer la manière dont les entreprises exploitent leurs données et interagissent avec leurs clients.
+---
+Nos Missions
+- Accompagner les entreprises dans leur transformation numérique. - Fournir des services sur mesure en intelligence artificielle et automatisation. - Proposer des plateformes SaaS efficaces et scalables. - Offrir une expertise technique de haut niveau via des prestations de service et des formations.
+---
+Contact
+Adresse : 50m en face de l'église catholique Ambatonilita Isoraka, Antananarivo Téléphones : 033 082 8086, 034 022 0452, 032 042 0452 Site Web : https://onirtech.com
+---
+Produits et Services
+ONIRTECH propose une gamme variée de produits et services, notamment : - Chatbots intelligents et agents conversationnels personnalisés. - Solutions de fine-tuning de modèles IA pour domaines spécifiques. - Interfaces web modernes et adaptatives. - Intégration de solutions de recherche sémantique. - Déploiement cloud et gestion d'infrastructure multitenant.
+---
+Nous avons des  Lampe coûtant 25.00 et décrit comme suit: Lampe LED écoénergétique
+---
+Nous avons des  Chaise coûtant 49.99 et décrit comme suit: Chaise en bois confortable
+---
+Nous avons des  models.Table coûtant 149.50 et décrit comme suit: models.Table en palissandre
+INFO:     102.17.105.89:0 - "POST /ask HTTP/1.0" 200 OK
+INFO:     102.17.105.89:0 - "OPTIONS /ask HTTP/1.0" 200 OK
+Description:  Assistant commerciale polie et courtois de Onirtech
+CONTEXT: Notre Vision
+Nous croyons en un avenir où l'intelligence artificielle est utilisée de manière éthique et responsable pour améliorer la vie professionnelle et personnelle. ONIRTECH se positionne comme un acteur clé dans la démocratisation de l'IA et l'accessibilité des technologies avancées.
+---
+Nos Missions
+- Accompagner les entreprises dans leur transformation numérique. - Fournir des services sur mesure en intelligence artificielle et automatisation. - Proposer des plateformes SaaS efficaces et scalables. - Offrir une expertise technique de haut niveau via des prestations de service et des formations.
+---
+Présentation de l'Entreprise ONIRTECH
+Qui sommes-nous ? ONIRTECH est une entreprise innovante spécialisée dans le développement de solutions intelligentes à base d'intelligence artificielle, d'outils cloud et de technologies web avancées. Notre objectif est de transformer la manière dont les entreprises exploitent leurs données et interagissent avec leurs clients.
+---
+Produits et Services
+ONIRTECH propose une gamme variée de produits et services, notamment : - Chatbots intelligents et agents conversationnels personnalisés. - Solutions de fine-tuning de modèles IA pour domaines spécifiques. - Interfaces web modernes et adaptatives. - Intégration de solutions de recherche sémantique. - Déploiement cloud et gestion d'infrastructure multitenant.
+---
+Contact
+Adresse : 50m en face de l'église catholique Ambatonilita Isoraka, Antananarivo Téléphones : 033 082 8086, 034 022 0452, 032 042 0452 Site Web : https://onirtech.com
+---
+Nous avons des  Lampe coûtant 25.00 et décrit comme suit: Lampe LED écoénergétique
+---
+Nous avons des  Chaise coûtant 49.99 et décrit comme suit: Chaise en bois confortable
+---
+Nous avons des  models.Table coûtant 149.50 et décrit comme suit: models.Table en palissandre
+INFO:     102.17.105.89:0 - "POST /ask HTTP/1.0" 200 OK
