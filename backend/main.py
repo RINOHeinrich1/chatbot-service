@@ -117,3 +117,7 @@ def ask_question(req: QuestionRequest):
     answer = generate_answer(question, combined_docs, req.chatbot_id)
     return AnswerResponse(documents=combined_docs, answer=answer)
 
+# --- Mode CLI (facultatif) ---
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run("main:app", host="0.0.0.0", port=8010, reload=True)
