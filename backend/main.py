@@ -9,10 +9,8 @@ import shutil
 import tempfile
 import requests
 import numpy as np
-import faiss
 import zipfile
 from rag.embedding import get_embedding  # <-- modèle SentenceTransformer à jour
-from rag.index import build_or_load_index,get_embedding,EMB_FILE,INDEX_FILE
 from rag.rag_engine import retrieve_documents, generate_answer
 from qdrant_client import QdrantClient
 from typing import Optional

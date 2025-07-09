@@ -6,6 +6,7 @@ models/
 backend/embeddings/
 backend/.env
 *.pyc
+share/
 *.npy
 *.index
 *.env
