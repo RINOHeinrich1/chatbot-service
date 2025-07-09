@@ -3,6 +3,7 @@ from rag.generation import generate
 from rag.cache import get_cache, set_cache
 from qdrant_client import QdrantClient
 from qdrant_client.models import Filter, SearchParams,MatchAny,FieldCondition,Filter
+
 def retrieve_documents(client, collection_name, query, k=5, threshold=0, document_filter=None):
     query_vector = get_embedding([query])[0]
     # Appliquer le filtre "in" si document_filter est fourni
@@ -17,7 +18,6 @@ def retrieve_documents(client, collection_name, query, k=5, threshold=0, documen
         )
     else:
         filter_condition = None
-    print(f"FILTER CONDITION:{filter_condition}")
     search_result = client.search(
         collection_name=collection_name,
         query_vector=query_vector,
@@ -27,6 +27,13 @@ def retrieve_documents(client, collection_name, query, k=5, threshold=0, documen
     )
 
     return [hit.payload["text"] for hit in search_result if hit.score > threshold]
+
+def retrieve_from_all_collections(client, collection_names, query, k=5, threshold=0.5, document_filter=None):
+    all_docs = []
+    for collection_name in collection_names:
+        docs = retrieve_documents(client, collection_name, query, k, threshold, document_filter)
+        all_docs.extend(docs)
+    return all_docs[:k]  # limiter à k documents au total
 
 def generate_answer(query, docs):
     cached = get_cache(query, docs)
