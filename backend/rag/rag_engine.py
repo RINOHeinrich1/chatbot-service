@@ -78,7 +78,6 @@ def generate_answer(query, docs, chatbot_id):
         {"role": "system", "content": system_prompt},
         {"role": "user", "content": f"Voici le contexte :\n{contexte}\n\nVoici la question :\n{query}"}
     ]
-    print(f"CONTEXT: {contexte}")
 
     headers = {
         "Authorization": f"Bearer {TOKEN}",

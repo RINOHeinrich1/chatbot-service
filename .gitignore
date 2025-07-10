@@ -11,3 +11,5 @@ share/
 *.index
 *.env
 frontend/node_modules/__pycache__/
+*.log
+backend/Chatbackend.log
