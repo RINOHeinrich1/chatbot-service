@@ -1,99 +1,292 @@
 INFO:     Will watch for changes in these directories: ['/home/rino/deploy/backend']
 INFO:     Uvicorn running on http://0.0.0.0:8010 (Press CTRL+C to quit)
-INFO:     Started reloader process [923814] using StatReload
-INFO:     Started server process [923823]
+INFO:     Started reloader process [948275] using StatReload
+INFO:     Started server process [948285]
 INFO:     Waiting for application startup.
 INFO:     Application startup complete.
-INFO:     102.17.105.89:0 - "OPTIONS /ask HTTP/1.0" 200 OK
-raw result: La requête SQL pour obtenir les informations du directeur technique serait :
-```sql
-SELECT * FROM "Employee" WHERE Title = 'IT Staff';
-```
-extracted sql: SELECT * FROM "Employee" WHERE Title = 'IT Staff';
-[Erreur exécution SQL via API] : 500 Server Error: Internal Server Error for url: https://postgresvectorizer.onirtech.com/execute
-INFO:     102.17.105.89:0 - "POST /ask HTTP/1.0" 200 OK
-raw result: SELECT "Email" FROM "Employee" WHERE "Title" = 'Sales Manager';
-extracted sql: SELECT "Email" FROM "Employee" WHERE "Title" = 'Sales Manager';
-INFO:     102.17.105.89:0 - "POST /ask HTTP/1.0" 200 OK
-raw result: SELECT "FirstName", "LastName", "Phone" FROM "Employee" WHERE "ReportsTo" = (SELECT "EmployeeId" FROM "Employee" WHERE "LastName" = 'King');
-extracted sql: SELECT "FirstName", "LastName", "Phone" FROM "Employee" WHERE "ReportsTo" = (SELECT "EmployeeId" FROM "Employee" WHERE "LastName" = 'King');
-INFO:     102.17.105.89:0 - "POST /ask HTTP/1.0" 200 OK
-raw result: SELECT "FirstName", "LastName" FROM "Employee" WHERE "Title" = 'Sales Support Agent';
-extracted sql: SELECT "FirstName", "LastName" FROM "Employee" WHERE "Title" = 'Sales Support Agent';
-INFO:     102.17.105.89:0 - "POST /ask HTTP/1.0" 200 OK
-INFO:     185.177.72.210:0 - "GET /.env HTTP/1.0" 404 Not Found
-INFO:     185.177.72.210:0 - "GET /phpinfo HTTP/1.0" 404 Not Found
-INFO:     185.177.72.210:0 - "GET /_profiler/phpinfo HTTP/1.0" 404 Not Found
-INFO:     185.177.72.210:0 - "GET /info.php HTTP/1.0" 404 Not Found
-INFO:     185.177.72.210:0 - "GET /index.html HTTP/1.0" 404 Not Found
-INFO:     185.177.72.210:0 - "GET /backend/.env HTTP/1.0" 404 Not Found
-INFO:     185.177.72.210:0 - "GET /api/.env HTTP/1.0" 404 Not Found
-INFO:     185.177.72.210:0 - "GET /env.backup HTTP/1.0" 404 Not Found
-INFO:     185.177.72.210:0 - "GET /phpinfo.php HTTP/1.0" 404 Not Found
-INFO:     185.177.72.210:0 - "GET /main/.env HTTP/1.0" 404 Not Found
-INFO:     185.177.72.210:0 - "GET /.env.old HTTP/1.0" 404 Not Found
-INFO:     185.177.72.210:0 - "GET /api/config.env HTTP/1.0" 404 Not Found
-INFO:     185.177.72.210:0 - "GET /.aws/credentials HTTP/1.0" 404 Not Found
-INFO:     185.177.72.210:0 - "GET /lara/phpinfo.php HTTP/1.0" 404 Not Found
-INFO:     185.177.72.210:0 - "GET /core/.env HTTP/1.0" 404 Not Found
-INFO:     185.177.72.210:0 - "GET /application.properties HTTP/1.0" 404 Not Found
-INFO:     185.177.72.210:0 - "GET /prod/.env HTTP/1.0" 404 Not Found
-INFO:     185.177.72.210:0 - "GET /kyc/.env HTTP/1.0" 404 Not Found
-INFO:     185.177.72.210:0 - "GET /aws/credentials HTTP/1.0" 404 Not Found
-INFO:     185.177.72.210:0 - "GET /laravael/core/.env HTTP/1.0" 404 Not Found
-INFO:     185.177.72.210:0 - "GET /server-info.php HTTP/1.0" 404 Not Found
-INFO:     185.177.72.210:0 - "GET /.aws/config HTTP/1.0" 404 Not Found
-INFO:     185.177.72.210:0 - "GET /docker/app/.env HTTP/1.0" 404 Not Found
-INFO:     185.177.72.210:0 - "GET /lara/info.php HTTP/1.0" 404 Not Found
-INFO:     185.177.72.210:0 - "GET /.env.prod HTTP/1.0" 404 Not Found
-INFO:     185.177.72.210:0 - "GET /config/local.yml HTTP/1.0" 404 Not Found
-INFO:     185.177.72.210:0 - "GET /secrets/aws_ses.env HTTP/1.0" 404 Not Found
-INFO:     185.177.72.210:0 - "GET /awsstats/.env HTTP/1.0" 404 Not Found
-INFO:     185.177.72.210:0 - "GET /wp-config.php.bak HTTP/1.0" 404 Not Found
-INFO:     185.177.72.210:0 - "GET /admin/.env HTTP/1.0" 404 Not Found
-INFO:     185.177.72.210:0 - "GET /config/storage.yml HTTP/1.0" 404 Not Found
-INFO:     185.177.72.210:0 - "GET /settings.py HTTP/1.0" 404 Not Found
-INFO:     185.177.72.210:0 - "GET /apps/.env HTTP/1.0" 404 Not Found
-INFO:     185.177.72.210:0 - "GET /opt/aws/ses.env HTTP/1.0" 404 Not Found
-INFO:     185.177.72.210:0 - "GET /logs/aws/ses.log HTTP/1.0" 404 Not Found
-INFO:     185.177.72.210:0 - "GET /private/.env HTTP/1.0" 404 Not Found
-INFO:     185.177.72.210:0 - "GET /docker-compose.yml HTTP/1.0" 404 Not Found
-INFO:     185.177.72.210:0 - "GET /.git/config HTTP/1.0" 404 Not Found
+INFO:     102.17.105.208:0 - "OPTIONS /ask HTTP/1.0" 200 OK
+INFO:     102.17.105.208:0 - "POST /ask HTTP/1.0" 500 Internal Server Error
+ERROR:    Exception in ASGI application
+Traceback (most recent call last):
+  File "/home/rino/deploy/lib64/python3.9/site-packages/uvicorn/protocols/http/h11_impl.py", line 403, in run_asgi
+    result = await app(  # type: ignore[func-returns-value]
+  File "/home/rino/deploy/lib64/python3.9/site-packages/uvicorn/middleware/proxy_headers.py", line 60, in __call__
+    return await self.app(scope, receive, send)
+  File "/home/rino/deploy/lib64/python3.9/site-packages/fastapi/applications.py", line 1054, in __call__
+    await super().__call__(scope, receive, send)
+  File "/home/rino/deploy/lib64/python3.9/site-packages/starlette/applications.py", line 112, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/home/rino/deploy/lib64/python3.9/site-packages/starlette/middleware/errors.py", line 187, in __call__
+    raise exc
+  File "/home/rino/deploy/lib64/python3.9/site-packages/starlette/middleware/errors.py", line 165, in __call__
+    await self.app(scope, receive, _send)
+  File "/home/rino/deploy/lib64/python3.9/site-packages/starlette/middleware/cors.py", line 93, in __call__
+    await self.simple_response(scope, receive, send, request_headers=headers)
+  File "/home/rino/deploy/lib64/python3.9/site-packages/starlette/middleware/cors.py", line 144, in simple_response
+    await self.app(scope, receive, send)
+  File "/home/rino/deploy/lib64/python3.9/site-packages/starlette/middleware/exceptions.py", line 62, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "/home/rino/deploy/lib64/python3.9/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/home/rino/deploy/lib64/python3.9/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/home/rino/deploy/lib64/python3.9/site-packages/starlette/routing.py", line 714, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/home/rino/deploy/lib64/python3.9/site-packages/starlette/routing.py", line 734, in app
+    await route.handle(scope, receive, send)
+  File "/home/rino/deploy/lib64/python3.9/site-packages/starlette/routing.py", line 288, in handle
+    await self.app(scope, receive, send)
+  File "/home/rino/deploy/lib64/python3.9/site-packages/starlette/routing.py", line 76, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "/home/rino/deploy/lib64/python3.9/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/home/rino/deploy/lib64/python3.9/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/home/rino/deploy/lib64/python3.9/site-packages/starlette/routing.py", line 73, in app
+    response = await f(request)
+  File "/home/rino/deploy/lib64/python3.9/site-packages/fastapi/routing.py", line 301, in app
+    raw_response = await run_endpoint_function(
+  File "/home/rino/deploy/lib64/python3.9/site-packages/fastapi/routing.py", line 214, in run_endpoint_function
+    return await run_in_threadpool(dependant.call, **values)
+  File "/home/rino/deploy/lib64/python3.9/site-packages/starlette/concurrency.py", line 37, in run_in_threadpool
+    return await anyio.to_thread.run_sync(func)
+  File "/home/rino/deploy/lib64/python3.9/site-packages/anyio/to_thread.py", line 56, in run_sync
+    return await get_async_backend().run_sync_in_worker_thread(
+  File "/home/rino/deploy/lib64/python3.9/site-packages/anyio/_backends/_asyncio.py", line 2470, in run_sync_in_worker_thread
+    return await future
+  File "/home/rino/deploy/lib64/python3.9/site-packages/anyio/_backends/_asyncio.py", line 967, in run
+    result = context.run(func, *args)
+  File "/home/rino/deploy/backend/main.py", line 135, in ask_question
+    max_ctx = get_memoire_contextuelle(req.chatbot_id)
+  File "/home/rino/deploy/backend/main.py", line 88, in get_memoire_contextuelle
+    return int(response.data.get("memoire_contextuelle", 0))
+TypeError: int() argument must be a string, a bytes-like object or a number, not 'NoneType'
+INFO:     102.17.105.208:0 - "POST /ask HTTP/1.0" 500 Internal Server Error
+ERROR:    Exception in ASGI application
+Traceback (most recent call last):
+  File "/home/rino/deploy/lib64/python3.9/site-packages/uvicorn/protocols/http/h11_impl.py", line 403, in run_asgi
+    result = await app(  # type: ignore[func-returns-value]
+  File "/home/rino/deploy/lib64/python3.9/site-packages/uvicorn/middleware/proxy_headers.py", line 60, in __call__
+    return await self.app(scope, receive, send)
+  File "/home/rino/deploy/lib64/python3.9/site-packages/fastapi/applications.py", line 1054, in __call__
+    await super().__call__(scope, receive, send)
+  File "/home/rino/deploy/lib64/python3.9/site-packages/starlette/applications.py", line 112, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/home/rino/deploy/lib64/python3.9/site-packages/starlette/middleware/errors.py", line 187, in __call__
+    raise exc
+  File "/home/rino/deploy/lib64/python3.9/site-packages/starlette/middleware/errors.py", line 165, in __call__
+    await self.app(scope, receive, _send)
+  File "/home/rino/deploy/lib64/python3.9/site-packages/starlette/middleware/cors.py", line 93, in __call__
+    await self.simple_response(scope, receive, send, request_headers=headers)
+  File "/home/rino/deploy/lib64/python3.9/site-packages/starlette/middleware/cors.py", line 144, in simple_response
+    await self.app(scope, receive, send)
+  File "/home/rino/deploy/lib64/python3.9/site-packages/starlette/middleware/exceptions.py", line 62, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "/home/rino/deploy/lib64/python3.9/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/home/rino/deploy/lib64/python3.9/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/home/rino/deploy/lib64/python3.9/site-packages/starlette/routing.py", line 714, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/home/rino/deploy/lib64/python3.9/site-packages/starlette/routing.py", line 734, in app
+    await route.handle(scope, receive, send)
+  File "/home/rino/deploy/lib64/python3.9/site-packages/starlette/routing.py", line 288, in handle
+    await self.app(scope, receive, send)
+  File "/home/rino/deploy/lib64/python3.9/site-packages/starlette/routing.py", line 76, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "/home/rino/deploy/lib64/python3.9/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/home/rino/deploy/lib64/python3.9/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/home/rino/deploy/lib64/python3.9/site-packages/starlette/routing.py", line 73, in app
+    response = await f(request)
+  File "/home/rino/deploy/lib64/python3.9/site-packages/fastapi/routing.py", line 301, in app
+    raw_response = await run_endpoint_function(
+  File "/home/rino/deploy/lib64/python3.9/site-packages/fastapi/routing.py", line 214, in run_endpoint_function
+    return await run_in_threadpool(dependant.call, **values)
+  File "/home/rino/deploy/lib64/python3.9/site-packages/starlette/concurrency.py", line 37, in run_in_threadpool
+    return await anyio.to_thread.run_sync(func)
+  File "/home/rino/deploy/lib64/python3.9/site-packages/anyio/to_thread.py", line 56, in run_sync
+    return await get_async_backend().run_sync_in_worker_thread(
+  File "/home/rino/deploy/lib64/python3.9/site-packages/anyio/_backends/_asyncio.py", line 2470, in run_sync_in_worker_thread
+    return await future
+  File "/home/rino/deploy/lib64/python3.9/site-packages/anyio/_backends/_asyncio.py", line 967, in run
+    result = context.run(func, *args)
+  File "/home/rino/deploy/backend/main.py", line 135, in ask_question
+    max_ctx = get_memoire_contextuelle(req.chatbot_id)
+  File "/home/rino/deploy/backend/main.py", line 88, in get_memoire_contextuelle
+    return int(response.data.get("memoire_contextuelle", 0))
+TypeError: int() argument must be a string, a bytes-like object or a number, not 'NoneType'
+INFO:     102.17.105.208:0 - "POST /ask HTTP/1.0" 500 Internal Server Error
+ERROR:    Exception in ASGI application
+Traceback (most recent call last):
+  File "/home/rino/deploy/lib64/python3.9/site-packages/uvicorn/protocols/http/h11_impl.py", line 403, in run_asgi
+    result = await app(  # type: ignore[func-returns-value]
+  File "/home/rino/deploy/lib64/python3.9/site-packages/uvicorn/middleware/proxy_headers.py", line 60, in __call__
+    return await self.app(scope, receive, send)
+  File "/home/rino/deploy/lib64/python3.9/site-packages/fastapi/applications.py", line 1054, in __call__
+    await super().__call__(scope, receive, send)
+  File "/home/rino/deploy/lib64/python3.9/site-packages/starlette/applications.py", line 112, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/home/rino/deploy/lib64/python3.9/site-packages/starlette/middleware/errors.py", line 187, in __call__
+    raise exc
+  File "/home/rino/deploy/lib64/python3.9/site-packages/starlette/middleware/errors.py", line 165, in __call__
+    await self.app(scope, receive, _send)
+  File "/home/rino/deploy/lib64/python3.9/site-packages/starlette/middleware/cors.py", line 93, in __call__
+    await self.simple_response(scope, receive, send, request_headers=headers)
+  File "/home/rino/deploy/lib64/python3.9/site-packages/starlette/middleware/cors.py", line 144, in simple_response
+    await self.app(scope, receive, send)
+  File "/home/rino/deploy/lib64/python3.9/site-packages/starlette/middleware/exceptions.py", line 62, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "/home/rino/deploy/lib64/python3.9/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/home/rino/deploy/lib64/python3.9/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/home/rino/deploy/lib64/python3.9/site-packages/starlette/routing.py", line 714, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/home/rino/deploy/lib64/python3.9/site-packages/starlette/routing.py", line 734, in app
+    await route.handle(scope, receive, send)
+  File "/home/rino/deploy/lib64/python3.9/site-packages/starlette/routing.py", line 288, in handle
+    await self.app(scope, receive, send)
+  File "/home/rino/deploy/lib64/python3.9/site-packages/starlette/routing.py", line 76, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "/home/rino/deploy/lib64/python3.9/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/home/rino/deploy/lib64/python3.9/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/home/rino/deploy/lib64/python3.9/site-packages/starlette/routing.py", line 73, in app
+    response = await f(request)
+  File "/home/rino/deploy/lib64/python3.9/site-packages/fastapi/routing.py", line 301, in app
+    raw_response = await run_endpoint_function(
+  File "/home/rino/deploy/lib64/python3.9/site-packages/fastapi/routing.py", line 214, in run_endpoint_function
+    return await run_in_threadpool(dependant.call, **values)
+  File "/home/rino/deploy/lib64/python3.9/site-packages/starlette/concurrency.py", line 37, in run_in_threadpool
+    return await anyio.to_thread.run_sync(func)
+  File "/home/rino/deploy/lib64/python3.9/site-packages/anyio/to_thread.py", line 56, in run_sync
+    return await get_async_backend().run_sync_in_worker_thread(
+  File "/home/rino/deploy/lib64/python3.9/site-packages/anyio/_backends/_asyncio.py", line 2470, in run_sync_in_worker_thread
+    return await future
+  File "/home/rino/deploy/lib64/python3.9/site-packages/anyio/_backends/_asyncio.py", line 967, in run
+    result = context.run(func, *args)
+  File "/home/rino/deploy/backend/main.py", line 135, in ask_question
+    max_ctx = get_memoire_contextuelle(req.chatbot_id)
+  File "/home/rino/deploy/backend/main.py", line 88, in get_memoire_contextuelle
+    return int(response.data.get("memoire_contextuelle", 0))
+TypeError: int() argument must be a string, a bytes-like object or a number, not 'NoneType'
+WARNING:  StatReload detected changes in 'main.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [948285]
+INFO:     Started server process [948616]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     102.17.105.208:0 - "POST /ask HTTP/1.0" 500 Internal Server Error
+ERROR:    Exception in ASGI application
+Traceback (most recent call last):
+  File "/home/rino/deploy/lib64/python3.9/site-packages/uvicorn/protocols/http/h11_impl.py", line 403, in run_asgi
+    result = await app(  # type: ignore[func-returns-value]
+  File "/home/rino/deploy/lib64/python3.9/site-packages/uvicorn/middleware/proxy_headers.py", line 60, in __call__
+    return await self.app(scope, receive, send)
+  File "/home/rino/deploy/lib64/python3.9/site-packages/fastapi/applications.py", line 1054, in __call__
+    await super().__call__(scope, receive, send)
+  File "/home/rino/deploy/lib64/python3.9/site-packages/starlette/applications.py", line 112, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/home/rino/deploy/lib64/python3.9/site-packages/starlette/middleware/errors.py", line 187, in __call__
+    raise exc
+  File "/home/rino/deploy/lib64/python3.9/site-packages/starlette/middleware/errors.py", line 165, in __call__
+    await self.app(scope, receive, _send)
+  File "/home/rino/deploy/lib64/python3.9/site-packages/starlette/middleware/cors.py", line 93, in __call__
+    await self.simple_response(scope, receive, send, request_headers=headers)
+  File "/home/rino/deploy/lib64/python3.9/site-packages/starlette/middleware/cors.py", line 144, in simple_response
+    await self.app(scope, receive, send)
+  File "/home/rino/deploy/lib64/python3.9/site-packages/starlette/middleware/exceptions.py", line 62, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "/home/rino/deploy/lib64/python3.9/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/home/rino/deploy/lib64/python3.9/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/home/rino/deploy/lib64/python3.9/site-packages/starlette/routing.py", line 714, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/home/rino/deploy/lib64/python3.9/site-packages/starlette/routing.py", line 734, in app
+    await route.handle(scope, receive, send)
+  File "/home/rino/deploy/lib64/python3.9/site-packages/starlette/routing.py", line 288, in handle
+    await self.app(scope, receive, send)
+  File "/home/rino/deploy/lib64/python3.9/site-packages/starlette/routing.py", line 76, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "/home/rino/deploy/lib64/python3.9/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/home/rino/deploy/lib64/python3.9/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/home/rino/deploy/lib64/python3.9/site-packages/starlette/routing.py", line 73, in app
+    response = await f(request)
+  File "/home/rino/deploy/lib64/python3.9/site-packages/fastapi/routing.py", line 301, in app
+    raw_response = await run_endpoint_function(
+  File "/home/rino/deploy/lib64/python3.9/site-packages/fastapi/routing.py", line 214, in run_endpoint_function
+    return await run_in_threadpool(dependant.call, **values)
+  File "/home/rino/deploy/lib64/python3.9/site-packages/starlette/concurrency.py", line 37, in run_in_threadpool
+    return await anyio.to_thread.run_sync(func)
+  File "/home/rino/deploy/lib64/python3.9/site-packages/anyio/to_thread.py", line 56, in run_sync
+    return await get_async_backend().run_sync_in_worker_thread(
+  File "/home/rino/deploy/lib64/python3.9/site-packages/anyio/_backends/_asyncio.py", line 2470, in run_sync_in_worker_thread
+    return await future
+  File "/home/rino/deploy/lib64/python3.9/site-packages/anyio/_backends/_asyncio.py", line 967, in run
+    result = context.run(func, *args)
+  File "/home/rino/deploy/backend/main.py", line 136, in ask_question
+    context_messages = req.history[-max_ctx:]  # garder les derniers messages uniquement
+TypeError: bad operand type for unary -: 'NoneType'
+WARNING:  StatReload detected changes in 'main.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [948616]
+INFO:     Started server process [948797]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+extracted sql: SELECT * FROM "Employee" WHERE "Title" = 'DSI';
+INFO:     102.17.105.208:0 - "POST /ask HTTP/1.0" 200 OK
+extracted sql: None
+INFO:     102.17.105.208:0 - "POST /ask HTTP/1.0" 200 OK
+extracted sql: None
+INFO:     102.17.105.208:0 - "POST /ask HTTP/1.0" 200 OK
+extracted sql: None
+INFO:     102.17.105.208:0 - "POST /ask HTTP/1.0" 200 OK
+extracted sql: None
+INFO:     102.17.105.208:0 - "POST /ask HTTP/1.0" 200 OK
+extracted sql: SELECT * FROM "Employee" WHERE "Title" = 'IT Staff';
+INFO:     102.17.105.208:0 - "POST /ask HTTP/1.0" 200 OK
+extracted sql: None
+INFO:     102.17.105.208:0 - "POST /ask HTTP/1.0" 200 OK
+extracted sql: None
+INFO:     102.17.105.208:0 - "POST /ask HTTP/1.0" 200 OK
 WARNING:  StatReload detected changes in 'rag/rag_engine.py'. Reloading...
 INFO:     Shutting down
 INFO:     Waiting for application shutdown.
 INFO:     Application shutdown complete.
-INFO:     Finished server process [923823]
-INFO:     Started server process [927240]
+INFO:     Finished server process [948797]
+INFO:     Started server process [949937]
 INFO:     Waiting for application startup.
 INFO:     Application startup complete.
+INFO:     102.17.105.208:0 - "OPTIONS /ask HTTP/1.0" 200 OK
+extracted sql: None
+INFO:     102.17.105.208:0 - "POST /ask HTTP/1.0" 200 OK
+extracted sql: SELECT "HireDate" 
+FROM "Employee" 
+WHERE "FirstName" = 'Nancy' AND "LastName" = 'Edwards';
+INFO:     102.17.105.208:0 - "POST /ask HTTP/1.0" 200 OK
+[Erreur chargement SQL reasoning ou schéma] : {'message': 'JSON object requested, multiple (or no) rows returned', 'code': 'PGRST116', 'hint': None, 'details': 'The result contains 2 rows'}
+INFO:     102.17.105.208:0 - "POST /ask HTTP/1.0" 200 OK
+[Erreur chargement SQL reasoning ou schéma] : {'message': 'JSON object requested, multiple (or no) rows returned', 'code': 'PGRST116', 'hint': None, 'details': 'The result contains 2 rows'}
+INFO:     102.17.105.208:0 - "POST /ask HTTP/1.0" 200 OK
+[Erreur chargement SQL reasoning ou schéma] : {'message': 'JSON object requested, multiple (or no) rows returned', 'code': 'PGRST116', 'hint': None, 'details': 'The result contains 2 rows'}
+INFO:     102.17.105.208:0 - "POST /ask HTTP/1.0" 200 OK
+[Erreur chargement SQL reasoning ou schéma] : {'message': 'JSON object requested, multiple (or no) rows returned', 'code': 'PGRST116', 'hint': None, 'details': 'The result contains 2 rows'}
+INFO:     102.17.105.208:0 - "POST /ask HTTP/1.0" 200 OK
 WARNING:  StatReload detected changes in 'rag/rag_engine.py'. Reloading...
 INFO:     Shutting down
 INFO:     Waiting for application shutdown.
 INFO:     Application shutdown complete.
-INFO:     Finished server process [927240]
-INFO:     Started server process [927514]
+INFO:     Finished server process [949937]
+INFO:     Started server process [951040]
 INFO:     Waiting for application startup.
 INFO:     Application startup complete.
-WARNING:  StatReload detected changes in 'rag/rag_engine.py'. Reloading...
-INFO:     Shutting down
-INFO:     Waiting for application shutdown.
-INFO:     Application shutdown complete.
-INFO:     Finished server process [927514]
-INFO:     Started server process [927556]
-INFO:     Waiting for application startup.
-INFO:     Application startup complete.
-INFO:     102.17.105.89:0 - "OPTIONS /ask HTTP/1.0" 200 OK
-extracted sql: SELECT "FirstName", "LastName" FROM "Employee" WHERE "ReportsTo" IS NULL AND "Title" = 'IT Staff';
-INFO:     102.17.105.89:0 - "POST /ask HTTP/1.0" 200 OK
-extracted sql: SELECT "FirstName", "LastName" FROM "Employee" WHERE "Title" = 'Sales Manager';
-INFO:     102.17.105.89:0 - "POST /ask HTTP/1.0" 200 OK
-extracted sql: SELECT "FirstName", "LastName" FROM "Employee" WHERE "Title" = 'IT Manager';
-INFO:     102.17.105.89:0 - "POST /ask HTTP/1.0" 200 OK
-extracted sql: SELECT "FirstName", "LastName" FROM "Employee" WHERE "Title" = 'IT Staff' AND "ReportsTo" IS NULL;
-INFO:     102.17.105.89:0 - "POST /ask HTTP/1.0" 200 OK
-INFO:     Shutting down
-INFO:     Waiting for application shutdown.
-INFO:     Application shutdown complete.
-INFO:     Finished server process [927556]
-INFO:     Stopping reloader process [923814]

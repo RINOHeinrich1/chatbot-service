@@ -200,7 +200,7 @@ def generate_answer(query, docs, chatbot_id=None, history=None):
             "1. Si tu trouves la réponse dans le contexte fourni, réponds directement et naturellement sans aucun SQL.\n"
             "2. Si la réponse n’est pas présente dans le contexte, retourne uniquement une requête SQL PostgreSQL valide (sans commentaire ni explication).\n"
             "3. Le SQL doit commencer directement par SELECT.\n"
-            "4. Ne confonds pas Staff et Manager.\n"
+            "4. Ne parle jamais de requête SQL donne juste le code si besoin\n"
             "5. PostgreSQL est sensible à la casse : les noms de table et colonnes doivent être entre guillemets.\n"
             "6. Exemple correct : SELECT * FROM \"Employee\" WHERE \"Title\" = 'IT Director';\n"
             "7. Ne retourne jamais du base64, convertis-les en chaînes lisibles.\n"
