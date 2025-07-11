@@ -70,14 +70,12 @@ def get_pgsql_sources_from_chatbot(chatbot_id: str) -> List[str]:
 
     return [f"{item['connexion_name']}" for item in response.data]
 
-
 @app.post("/ask", response_model=AnswerResponse)
 def ask_question(req: QuestionRequest):
     question = req.question
     combined_docs = []
 
     if req.chatbot_id:
-        # --- Documents classiques ---
         document_names = get_document_names_from_chatbot(req.chatbot_id)
         if document_names:
             docs_classic = retrieve_documents(
@@ -90,7 +88,6 @@ def ask_question(req: QuestionRequest):
             )
             combined_docs.extend(docs_classic)
 
-        # --- Documents PostgreSQL ---
         pgsql_sources = get_pgsql_sources_from_chatbot(req.chatbot_id)
         if pgsql_sources:
             docs_pgsql = retrieve_documents(
@@ -103,7 +100,6 @@ def ask_question(req: QuestionRequest):
             )
             combined_docs.extend(docs_pgsql)
 
-    # fallback : aucun filtre si pas de chatbot_id
     if not req.chatbot_id:
         combined_docs = retrieve_documents(
             client=client,
@@ -114,8 +110,10 @@ def ask_question(req: QuestionRequest):
             document_filter=[]
         )
 
+    docs_text_only = [doc["text"] for doc in combined_docs]
     answer = generate_answer(question, combined_docs, req.chatbot_id)
-    return AnswerResponse(documents=combined_docs, answer=answer)
+
+    return AnswerResponse(documents=docs_text_only, answer=answer)
 
 # --- Mode CLI (facultatif) ---
 if __name__ == "__main__":

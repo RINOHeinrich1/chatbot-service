@@ -18,6 +18,7 @@ supabase = create_client(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY)
 
 def retrieve_documents(client, collection_name, query, k=5, threshold=0, document_filter=None):
     query_vector = get_embedding([query])[0]
+
     # Appliquer le filtre "in" si document_filter est fourni
     if document_filter:
         filter_condition = Filter(
@@ -30,19 +31,25 @@ def retrieve_documents(client, collection_name, query, k=5, threshold=0, documen
         )
     else:
         filter_condition = None
+
     if filter_condition:
         search_result = client.search(
             collection_name=collection_name,
             query_vector=query_vector,
             limit=k,
             with_payload=True,
-            query_filter=filter_condition  # <-- ici on filtre
+            query_filter=filter_condition
         )
     else:
-        search_result=["Aucun contexte disponible"]
-        return search_result
+        return [{"text": "Aucun contexte disponible", "source": None}]
 
-    return [hit.payload["text"] for hit in search_result if hit.score > threshold]
+    return [
+        {
+            "text": hit.payload.get("text", ""),
+            "source": hit.payload.get("source", "")
+        }
+        for hit in search_result if hit.score > threshold
+    ]
 
 
 
@@ -68,12 +75,19 @@ def generate_answer(query, docs, chatbot_id):
 
     # 2. Prompt system combiné
     system_prompt = (
-        f"Tu dois toujours répondre  à partir des **contextes fournis** en  suivant la description suivante :{description if description else 'sois poli et clair.'}"
-        "Si le contexte est vide, contente-toi de répondre aux salutations de l'utilisateur."
+        f"Tu es un assistant intelligent qui répond uniquement à partir des **contextes fournis**. "
+        f"Tu suis la consigne suivante : {description if description else 'sois poli et clair.'} "
+        f"Si tu ne trouves pas la réponse dans les contextes fournis, propose une **requête SQL PostgreSQL exacte** "
+        f"qui pourrait être exécutée pour obtenir la réponse à la question. Si la question est une salutation, réponds poliment."
     )
-    print("Description: ",description)
-    # 3. Construire le message utilisateur avec contexte
-    contexte = "\n---\n".join(docs)
+
+
+    # 3. Contexte formaté
+    contexte = "\n---\n".join(
+        f"{doc['text']}\n(Source: {doc.get('source', 'inconnu')})" for doc in docs
+    )
+
+    # 4. Messages envoyés à Mixtral
     messages = [
         {"role": "system", "content": system_prompt},
         {"role": "user", "content": f"Voici le contexte :\n{contexte}\n\nVoici la question :\n{query}"}
@@ -87,7 +101,7 @@ def generate_answer(query, docs, chatbot_id):
     payload = {
         "model": "mixtral",
         "messages": messages,
-        "temperature": 0.7,
+        "temperature": 0.3,
         "max_tokens": 512,
     }
 
