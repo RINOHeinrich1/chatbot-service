@@ -109,7 +109,12 @@ def execute_sql_via_api(connexion_params, extracted_sql):
 
         response = requests.post(url, json=payload, headers=headers)
         response.raise_for_status()
-        return response.json()
+        result = response.json()
+
+        # Assure que le résultat est bien un tableau, même vide
+        if result is None:
+            return []
+        return result
 
     except Exception as e:
         print(f"[Erreur exécution SQL via API] : {e}")
@@ -180,15 +185,19 @@ def generate_answer(query, docs, chatbot_id):
         "Tu es un assistant intelligent, clair et naturel. "
         f"Tu suis la consigne suivante : {description or 'réponds poliment et avec clarté.'} "
     )
+    print(schema_text)
     if sql_reasoning_enabled and schema_text:
         system_prompt += (
             f"\n\nVoici le schéma de la base de données PostgreSQL à ta disposition :\n{schema_text}\n\n"
             "Règles de réponse :\n"
-            "1. Si tu trouves la réponse dans le contexte fourni, réponds directement et naturellement.\n"
+            "1. Si tu trouves la réponse dans le contexte fourni, réponds directement et naturellement sans aucun SQL.\n"
             "2. Si la réponse n’est pas présente dans le contexte, retourne uniquement une requête SQL PostgreSQL valide (sans commentaire ni explication).\n"
             "3. Le SQL doit commencer directement par SELECT.\n"
-            "4. N'oublies pas qu'avec POSTGRESQL, il faut que le nom des tables et des colonnes  soient mis entre guillemets sauf pour * .\n"
-            "5. N’utilise pas de balise Markdown ni d'explication, retourne juste la requête."
+            "4. Ne confond pas Staff et Manager.\n"
+            "5. N'oublies pas qu'avec POSTGRESQL, il faut que le nom des tables et des colonnes  soient mis entre guillemets même dans les comparaisons WHERE sauf pour *, postgreSQL est sensible à la casse donc fait attention.\n"
+            "6. Exemple: SELECT * FROM \"Employee\" WHERE Title = 'IT Director'; çà c'est incorecte, mais çà c'est correcte SELECT * FROM \"Employee\" WHERE \"Title\" = 'IT Director';"
+            "7. Ne retourne jamais du base64, tu les converties en chaine lisible.\n"
+            "8. N’utilise pas de balise Markdown ni d'explication, retourne juste la requête."
         )
     else:
         system_prompt += "\n\nSi tu ne trouves pas la réponse dans les contextes fournis, indique que l'information n'est pas disponible."
@@ -222,8 +231,6 @@ def generate_answer(query, docs, chatbot_id):
         raw_result = f"Erreur lors de la génération de la réponse : {str(e)}"
         set_cache(query, docs, raw_result)
         return raw_result
-
-    print(f"raw result: {raw_result}")
 
     # 6. Si SQL reasoning activé, extraire et exécuter SQL puis reformuler
     if sql_reasoning_enabled:
