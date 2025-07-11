@@ -114,79 +114,89 @@ def execute_sql_via_api(connexion_params, extracted_sql):
     except Exception as e:
         print(f"[Erreur exécution SQL via API] : {e}")
         return None
-    
+
+def reformulate_answer_via_llm(query, sql_result):
+    reformulation_prompt = (
+        "Tu es un assistant qui reformule une réponse claire, naturelle et concise pour un utilisateur.\n"
+        f"Voici la question posée :\n{query}\n\n"
+        f"Voici les résultats SQL obtenus :\n{json.dumps(sql_result, indent=2, ensure_ascii=False)}\n\n"
+        "Formule une réponse naturelle, sans mentionner SQL ni format brut."
+    )
+
+    messages = [
+        {"role": "system", "content": "Tu es un assistant intelligent, clair et naturel."},
+        {"role": "user", "content": reformulation_prompt}
+    ]
+
+    payload = {
+        "model": "mixtral",
+        "messages": messages,
+        "temperature": 0.3,
+        "max_tokens": 256,
+    }
+
+    headers = {
+        "Authorization": f"Bearer {TOKEN}",
+        "Content-Type": "application/json",
+    }
+
+    response = requests.post(URL, headers=headers, data=json.dumps(payload))
+    response.raise_for_status()
+    return response.json()["choices"][0]["message"]["content"].strip()
+
+
 def generate_answer(query, docs, chatbot_id):
     cached = get_cache(query, docs)
     if cached:
         return cached
 
-    # 1. Récupérer la description du chatbot
+    # 1. Récupérer description chatbot
     try:
         res = supabase.table("chatbots").select("description").eq("id", chatbot_id).single().execute()
         description = res.data.get("description", "").strip()
-    except Exception as e:
+    except Exception:
         description = ""
 
-    # 2. Initialisation SQL reasoning
+    # 2. Récupérer infos connexion SQL
     sql_reasoning_enabled = False
     schema_text = ""
     connexion_name = ""
     connexion_params = {}
 
     try:
-        # a. Récupérer les infos du lien chatbot-connexion
-        res = (
-            supabase.table("chatbot_pgsql_connexions")
-            .select("connexion_name, sql_reasoning")
-            .eq("chatbot_id", chatbot_id)
-            .single()
-            .execute()
-        )
+        res = supabase.table("chatbot_pgsql_connexions").select("connexion_name, sql_reasoning").eq("chatbot_id", chatbot_id).single().execute()
         connexion_name = res.data["connexion_name"]
         sql_reasoning_enabled = res.data.get("sql_reasoning", False)
 
         if sql_reasoning_enabled:
-            # b. Récupérer schéma + params de connexion
-            res_conn = (
-                supabase.table("postgresql_connexions")
-                .select("data_schema, host_name, port, user, password, database, ssl_mode")
-                .eq("connexion_name", connexion_name)
-                .single()
-                .execute()
-            )
+            res_conn = supabase.table("postgresql_connexions").select("data_schema, host_name, port, user, password, database, ssl_mode").eq("connexion_name", connexion_name).single().execute()
             schema_text = res_conn.data.get("data_schema", "").strip()
             connexion_params = res_conn.data
     except Exception as e:
         print(f"[Erreur chargement SQL reasoning ou schéma] : {e}")
 
-    # 3. Construire le system prompt
+    # 3. Construire prompt système
     system_prompt = (
         "Tu es un assistant intelligent, clair et naturel. "
         f"Tu suis la consigne suivante : {description or 'réponds poliment et avec clarté.'} "
     )
-
     if sql_reasoning_enabled and schema_text:
         system_prompt += (
-            f"\n\nVoici le schéma de la base de données PostgreSQL à ta disposition :\n"
-            f"{schema_text}\n\n"
+            f"\n\nVoici le schéma de la base de données PostgreSQL à ta disposition :\n{schema_text}\n\n"
             "Règles de réponse :\n"
             "1. Si tu trouves la réponse dans le contexte fourni, réponds directement et naturellement.\n"
             "2. Si la réponse n’est pas présente dans le contexte, retourne uniquement une requête SQL PostgreSQL valide (sans commentaire ni explication).\n"
             "3. Le SQL doit commencer directement par SELECT.\n"
-            "4. N'oublies pas qu'avec POSTGRESQL, il faut que le nom des tables soit mis entre guillemets.\n"
+            "4. N'oublies pas qu'avec POSTGRESQL, il faut que le nom des tables et des colonnes  soient mis entre guillemets sauf pour * .\n"
             "5. N’utilise pas de balise Markdown ni d'explication, retourne juste la requête."
         )
     else:
-        system_prompt += (
-            "\n\nSi tu ne trouves pas la réponse dans les contextes fournis, indique que l'information n'est pas disponible."
-        )
+        system_prompt += "\n\nSi tu ne trouves pas la réponse dans les contextes fournis, indique que l'information n'est pas disponible."
 
-    # 4. Formater le contexte
-    contexte = "\n---\n".join(
-        f"{doc['text']}\n(Source: {doc.get('source', 'inconnu')})" for doc in docs
-    )
+    # 4. Formater contexte
+    contexte = "\n---\n".join(f"{doc['text']}\n(Source: {doc.get('source', 'inconnu')})" for doc in docs)
 
-    # 5. Appel LLM
+    # 5. Appel LLM pour générer SQL ou réponse
     messages = [
         {"role": "system", "content": system_prompt},
         {"role": "user", "content": f"Voici le contexte :\n{contexte}\n\nVoici la question :\n{query}"}
@@ -212,8 +222,10 @@ def generate_answer(query, docs, chatbot_id):
         raw_result = f"Erreur lors de la génération de la réponse : {str(e)}"
         set_cache(query, docs, raw_result)
         return raw_result
-    print(f"raw result:{raw_result}")
-    # 6. Vérifier si le résultat est une requête SQL
+
+    print(f"raw result: {raw_result}")
+
+    # 6. Si SQL reasoning activé, extraire et exécuter SQL puis reformuler
     if sql_reasoning_enabled:
         extracted_sql = extract_sql_from_text(raw_result)
         print(f"extracted sql: {extracted_sql}")
@@ -223,22 +235,16 @@ def generate_answer(query, docs, chatbot_id):
             if sql_result:
                 if len(sql_result) == 0:
                     final_answer = "Aucune donnée trouvée dans la base."
-                elif len(sql_result) == 1:
-                    final_answer = ", ".join(
-                        f"{k}: {v}" for k, v in sql_result[0].items()
-                    )
                 else:
-                    final_answer = "\n".join(
-                        " • " + ", ".join(f"{k}: {v}" for k, v in row.items())
-                        for row in sql_result[:5]
-                    )
+                    # Reformuler proprement la réponse via 2e appel LLM
+                    final_answer = reformulate_answer_via_llm(query, sql_result)
             else:
-                final_answer = "La requête SQL a échoué. Impossible d'obtenir une réponse."
+                final_answer = "Erreur lors de l'obtention de la réponse"
         else:
             final_answer = raw_result
     else:
         final_answer = raw_result
 
-    # 7. Cache et retour
+    # 7. Mettre en cache et retourner
     set_cache(query, docs, final_answer)
     return final_answer
