@@ -149,8 +149,7 @@ def reformulate_answer_via_llm(query, sql_result):
     response.raise_for_status()
     return response.json()["choices"][0]["message"]["content"].strip()
 
-
-def generate_answer(query, docs, chatbot_id):
+def generate_answer(query, docs, chatbot_id=None, history=None):
     cached = get_cache(query, docs)
     if cached:
         return cached
@@ -169,12 +168,20 @@ def generate_answer(query, docs, chatbot_id):
     connexion_params = {}
 
     try:
-        res = supabase.table("chatbot_pgsql_connexions").select("connexion_name, sql_reasoning").eq("chatbot_id", chatbot_id).single().execute()
+        res = supabase.table("chatbot_pgsql_connexions") \
+            .select("connexion_name, sql_reasoning") \
+            .eq("chatbot_id", chatbot_id) \
+            .single() \
+            .execute()
         connexion_name = res.data["connexion_name"]
         sql_reasoning_enabled = res.data.get("sql_reasoning", False)
 
         if sql_reasoning_enabled:
-            res_conn = supabase.table("postgresql_connexions").select("data_schema, host_name, port, user, password, database, ssl_mode").eq("connexion_name", connexion_name).single().execute()
+            res_conn = supabase.table("postgresql_connexions") \
+                .select("data_schema, host_name, port, user, password, database, ssl_mode") \
+                .eq("connexion_name", connexion_name) \
+                .single() \
+                .execute()
             schema_text = res_conn.data.get("data_schema", "").strip()
             connexion_params = res_conn.data
     except Exception as e:
@@ -183,9 +190,9 @@ def generate_answer(query, docs, chatbot_id):
     # 3. Construire prompt système
     system_prompt = (
         "Tu es un assistant intelligent, clair et naturel. "
+        "Tu prends en compte la conversation précédente pour raisonner"
         f"Tu suis la consigne suivante : {description or 'réponds poliment et avec clarté.'} "
     )
-    print(schema_text)
     if sql_reasoning_enabled and schema_text:
         system_prompt += (
             f"\n\nVoici le schéma de la base de données PostgreSQL à ta disposition :\n{schema_text}\n\n"
@@ -193,24 +200,41 @@ def generate_answer(query, docs, chatbot_id):
             "1. Si tu trouves la réponse dans le contexte fourni, réponds directement et naturellement sans aucun SQL.\n"
             "2. Si la réponse n’est pas présente dans le contexte, retourne uniquement une requête SQL PostgreSQL valide (sans commentaire ni explication).\n"
             "3. Le SQL doit commencer directement par SELECT.\n"
-            "4. Ne confond pas Staff et Manager.\n"
-            "5. N'oublies pas qu'avec POSTGRESQL, il faut que le nom des tables et des colonnes  soient mis entre guillemets même dans les comparaisons WHERE sauf pour *, postgreSQL est sensible à la casse donc fait attention.\n"
-            "6. Exemple: SELECT * FROM \"Employee\" WHERE Title = 'IT Director'; çà c'est incorecte, mais çà c'est correcte SELECT * FROM \"Employee\" WHERE \"Title\" = 'IT Director';"
-            "7. Ne retourne jamais du base64, tu les converties en chaine lisible.\n"
-            "8. N’utilise pas de balise Markdown ni d'explication, retourne juste la requête."
+            "4. Ne confonds pas Staff et Manager.\n"
+            "5. PostgreSQL est sensible à la casse : les noms de table et colonnes doivent être entre guillemets.\n"
+            "6. Exemple correct : SELECT * FROM \"Employee\" WHERE \"Title\" = 'IT Director';\n"
+            "7. Ne retourne jamais du base64, convertis-les en chaînes lisibles.\n"
+            "8. N’utilise pas de balises Markdown ni d’explication, retourne juste la requête."
+            
         )
     else:
         system_prompt += "\n\nSi tu ne trouves pas la réponse dans les contextes fournis, indique que l'information n'est pas disponible."
 
-    # 4. Formater contexte
+    # 4. Formater les documents
     contexte = "\n---\n".join(f"{doc['text']}\n(Source: {doc.get('source', 'inconnu')})" for doc in docs)
 
-    # 5. Appel LLM pour générer SQL ou réponse
-    messages = [
-        {"role": "system", "content": system_prompt},
-        {"role": "user", "content": f"Voici le contexte :\n{contexte}\n\nVoici la question :\n{query}"}
-    ]
+    # 5. Construire les messages
+    messages = [{"role": "system", "content": system_prompt}]
 
+    # 5.1 Ajouter l'historique conversationnel
+    history_formatted = ""
+    if history:
+        for i, msg in enumerate(history):
+            role = "Utilisateur" if msg.role == "user" else "Assistant"
+            history_formatted += f"{role} : {msg.content.strip()}\n"
+
+
+    # 5.2 Ajouter la question avec le contexte
+    messages.append({
+        "role": "user",
+        "content": (
+            f"Voici la conversation précédente :\n{history_formatted.strip()}\n\n"
+            f"Voici le contexte :\n{contexte.strip()}\n\n"
+            f"Voici la question :\n{query.strip()}"
+        )
+    })
+    
+    # 6. Appel LLM
     headers = {
         "Authorization": f"Bearer {TOKEN}",
         "Content-Type": "application/json",
@@ -232,26 +256,25 @@ def generate_answer(query, docs, chatbot_id):
         set_cache(query, docs, raw_result)
         return raw_result
 
-    # 6. Si SQL reasoning activé, extraire et exécuter SQL puis reformuler
+    # 7. SQL Reasoning
     if sql_reasoning_enabled:
         extracted_sql = extract_sql_from_text(raw_result)
         print(f"extracted sql: {extracted_sql}")
 
         if extracted_sql:
             sql_result = execute_sql_via_api(connexion_params, extracted_sql)
-            if sql_result:
+            if sql_result is not None:
                 if len(sql_result) == 0:
                     final_answer = "Aucune donnée trouvée dans la base."
                 else:
-                    # Reformuler proprement la réponse via 2e appel LLM
                     final_answer = reformulate_answer_via_llm(query, sql_result)
             else:
-                final_answer = "Erreur lors de l'obtention de la réponse"
+                final_answer = "Aucune donnée trouvée dans la base."  # ✅ amélioré ici
         else:
             final_answer = raw_result
     else:
         final_answer = raw_result
 
-    # 7. Mettre en cache et retourner
+    # 8. Cache et retour
     set_cache(query, docs, final_answer)
     return final_answer

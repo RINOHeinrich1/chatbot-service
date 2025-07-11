@@ -33,15 +33,20 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-# --- Schémas Pydantic ---
-class QuestionRequest(BaseModel):
-    question: str
-    chatbot_id: Optional[str] = None  # si tu veux garder ce champ
 
 class AnswerResponse(BaseModel):
     documents: List[str]
     answer: str
-    
+
+class MessageHistory(BaseModel):
+    role: str  # "user" ou "assistant"
+    content: str
+
+class QuestionRequest(BaseModel):
+    question: str
+    chatbot_id: Optional[str] = None
+    history: Optional[List[MessageHistory]] = []  # 👈 nouveau champ
+
 client = QdrantClient(
     url=os.getenv("QDRANT_URL"),
     api_key=os.getenv("QDRANT_API_KEY"),
@@ -69,6 +74,18 @@ def get_pgsql_sources_from_chatbot(chatbot_id: str) -> List[str]:
         return []
 
     return [f"{item['connexion_name']}" for item in response.data]
+
+def get_memoire_contextuelle(chatbot_id: str) -> int:
+    response = supabase.table("chatbots") \
+        .select("memoire_contextuelle") \
+        .eq("id", chatbot_id) \
+        .single() \
+        .execute()
+
+    if not response.data:
+        return 0  # valeur par défaut si absent
+
+    return int(response.data.get("memoire_contextuelle", 0))
 
 @app.post("/ask", response_model=AnswerResponse)
 def ask_question(req: QuestionRequest):
@@ -111,7 +128,21 @@ def ask_question(req: QuestionRequest):
         )
 
     docs_text_only = [doc["text"] for doc in combined_docs]
-    answer = generate_answer(question, combined_docs, req.chatbot_id)
+
+    # === Appliquer memoire_contextuelle ===
+    context_messages = []
+    if req.chatbot_id and req.history:
+        max_ctx = get_memoire_contextuelle(req.chatbot_id)
+        context_messages = req.history[-max_ctx:]  # garder les derniers messages uniquement
+
+    # === Génération de la réponse ===
+    answer = generate_answer(
+        query=question,
+        docs=combined_docs,
+        chatbot_id=req.chatbot_id,
+        history=context_messages
+    )
+
 
     return AnswerResponse(documents=docs_text_only, answer=answer)
 
