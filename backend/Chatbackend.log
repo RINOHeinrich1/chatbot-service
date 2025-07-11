@@ -21,3 +21,334 @@ INFO:     101.198.0.189:0 - "GET /sitemap.xml HTTP/1.0" 404 Not Found
 INFO:     122.188.33.32:0 - "GET /favicon.ico HTTP/1.0" 404 Not Found
 INFO:     59.61.184.33:0 - "GET /favicon.ico?v=2.0 HTTP/1.0" 404 Not Found
 INFO:     113.120.56.79:0 - "GET / HTTP/1.0" 404 Not Found
+WARNING:  StatReload detected changes in 'rag/rag_engine.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [833157]
+INFO:     Started server process [907545]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     102.17.105.89:0 - "OPTIONS /ask HTTP/1.0" 200 OK
+INFO:     102.17.105.89:0 - "POST /ask HTTP/1.0" 200 OK
+INFO:     102.17.105.89:0 - "POST /ask HTTP/1.0" 200 OK
+INFO:     102.17.105.89:0 - "POST /ask HTTP/1.0" 500 Internal Server Error
+ERROR:    Exception in ASGI application
+Traceback (most recent call last):
+  File "/home/rino/deploy/lib64/python3.9/site-packages/httpx/_transports/default.py", line 101, in map_httpcore_exceptions
+    yield
+  File "/home/rino/deploy/lib64/python3.9/site-packages/httpx/_transports/default.py", line 250, in handle_request
+    resp = self._pool.handle_request(req)
+  File "/home/rino/deploy/lib64/python3.9/site-packages/httpcore/_sync/connection_pool.py", line 256, in handle_request
+    raise exc from None
+  File "/home/rino/deploy/lib64/python3.9/site-packages/httpcore/_sync/connection_pool.py", line 236, in handle_request
+    response = connection.handle_request(
+  File "/home/rino/deploy/lib64/python3.9/site-packages/httpcore/_sync/connection.py", line 101, in handle_request
+    raise exc
+  File "/home/rino/deploy/lib64/python3.9/site-packages/httpcore/_sync/connection.py", line 78, in handle_request
+    stream = self._connect(request)
+  File "/home/rino/deploy/lib64/python3.9/site-packages/httpcore/_sync/connection.py", line 156, in _connect
+    stream = stream.start_tls(**kwargs)
+  File "/home/rino/deploy/lib64/python3.9/site-packages/httpcore/_backends/sync.py", line 170, in start_tls
+    raise exc
+  File "/usr/lib64/python3.9/contextlib.py", line 137, in __exit__
+    self.gen.throw(typ, value, traceback)
+  File "/home/rino/deploy/lib64/python3.9/site-packages/httpcore/_exceptions.py", line 14, in map_exceptions
+    raise to_exc(exc) from exc
+httpcore.ConnectTimeout: _ssl.c:1130: The handshake operation timed out
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/rino/deploy/lib64/python3.9/site-packages/qdrant_client/http/api_client.py", line 134, in send_inner
+    response = self._client.send(request)
+  File "/home/rino/deploy/lib64/python3.9/site-packages/httpx/_client.py", line 914, in send
+    response = self._send_handling_auth(
+  File "/home/rino/deploy/lib64/python3.9/site-packages/httpx/_client.py", line 942, in _send_handling_auth
+    response = self._send_handling_redirects(
+  File "/home/rino/deploy/lib64/python3.9/site-packages/httpx/_client.py", line 979, in _send_handling_redirects
+    response = self._send_single_request(request)
+  File "/home/rino/deploy/lib64/python3.9/site-packages/httpx/_client.py", line 1014, in _send_single_request
+    response = transport.handle_request(request)
+  File "/home/rino/deploy/lib64/python3.9/site-packages/httpx/_transports/default.py", line 250, in handle_request
+    resp = self._pool.handle_request(req)
+  File "/usr/lib64/python3.9/contextlib.py", line 137, in __exit__
+    self.gen.throw(typ, value, traceback)
+  File "/home/rino/deploy/lib64/python3.9/site-packages/httpx/_transports/default.py", line 118, in map_httpcore_exceptions
+    raise mapped_exc(message) from exc
+httpx.ConnectTimeout: _ssl.c:1130: The handshake operation timed out
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/rino/deploy/lib64/python3.9/site-packages/uvicorn/protocols/http/h11_impl.py", line 403, in run_asgi
+    result = await app(  # type: ignore[func-returns-value]
+  File "/home/rino/deploy/lib64/python3.9/site-packages/uvicorn/middleware/proxy_headers.py", line 60, in __call__
+    return await self.app(scope, receive, send)
+  File "/home/rino/deploy/lib64/python3.9/site-packages/fastapi/applications.py", line 1054, in __call__
+    await super().__call__(scope, receive, send)
+  File "/home/rino/deploy/lib64/python3.9/site-packages/starlette/applications.py", line 112, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/home/rino/deploy/lib64/python3.9/site-packages/starlette/middleware/errors.py", line 187, in __call__
+    raise exc
+  File "/home/rino/deploy/lib64/python3.9/site-packages/starlette/middleware/errors.py", line 165, in __call__
+    await self.app(scope, receive, _send)
+  File "/home/rino/deploy/lib64/python3.9/site-packages/starlette/middleware/cors.py", line 93, in __call__
+    await self.simple_response(scope, receive, send, request_headers=headers)
+  File "/home/rino/deploy/lib64/python3.9/site-packages/starlette/middleware/cors.py", line 144, in simple_response
+    await self.app(scope, receive, send)
+  File "/home/rino/deploy/lib64/python3.9/site-packages/starlette/middleware/exceptions.py", line 62, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "/home/rino/deploy/lib64/python3.9/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/home/rino/deploy/lib64/python3.9/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/home/rino/deploy/lib64/python3.9/site-packages/starlette/routing.py", line 714, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/home/rino/deploy/lib64/python3.9/site-packages/starlette/routing.py", line 734, in app
+    await route.handle(scope, receive, send)
+  File "/home/rino/deploy/lib64/python3.9/site-packages/starlette/routing.py", line 288, in handle
+    await self.app(scope, receive, send)
+  File "/home/rino/deploy/lib64/python3.9/site-packages/starlette/routing.py", line 76, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "/home/rino/deploy/lib64/python3.9/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/home/rino/deploy/lib64/python3.9/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/home/rino/deploy/lib64/python3.9/site-packages/starlette/routing.py", line 73, in app
+    response = await f(request)
+  File "/home/rino/deploy/lib64/python3.9/site-packages/fastapi/routing.py", line 301, in app
+    raw_response = await run_endpoint_function(
+  File "/home/rino/deploy/lib64/python3.9/site-packages/fastapi/routing.py", line 214, in run_endpoint_function
+    return await run_in_threadpool(dependant.call, **values)
+  File "/home/rino/deploy/lib64/python3.9/site-packages/starlette/concurrency.py", line 37, in run_in_threadpool
+    return await anyio.to_thread.run_sync(func)
+  File "/home/rino/deploy/lib64/python3.9/site-packages/anyio/to_thread.py", line 56, in run_sync
+    return await get_async_backend().run_sync_in_worker_thread(
+  File "/home/rino/deploy/lib64/python3.9/site-packages/anyio/_backends/_asyncio.py", line 2470, in run_sync_in_worker_thread
+    return await future
+  File "/home/rino/deploy/lib64/python3.9/site-packages/anyio/_backends/_asyncio.py", line 967, in run
+    result = context.run(func, *args)
+  File "/home/rino/deploy/backend/main.py", line 81, in ask_question
+    docs_classic = retrieve_documents(
+  File "/home/rino/deploy/backend/rag/rag_engine.py", line 36, in retrieve_documents
+    search_result = client.search(
+  File "/home/rino/deploy/lib64/python3.9/site-packages/qdrant_client/qdrant_client.py", line 376, in search
+    return self._client.search(
+  File "/home/rino/deploy/lib64/python3.9/site-packages/qdrant_client/qdrant_remote.py", line 523, in search
+    search_result = self.http.search_api.search_points(
+  File "/home/rino/deploy/lib64/python3.9/site-packages/qdrant_client/http/api/search_api.py", line 936, in search_points
+    return self._build_for_search_points(
+  File "/home/rino/deploy/lib64/python3.9/site-packages/qdrant_client/http/api/search_api.py", line 487, in _build_for_search_points
+    return self.api_client.request(
+  File "/home/rino/deploy/lib64/python3.9/site-packages/qdrant_client/http/api_client.py", line 95, in request
+    return self.send(request, type_)
+  File "/home/rino/deploy/lib64/python3.9/site-packages/qdrant_client/http/api_client.py", line 112, in send
+    response = self.middleware(request, self.send_inner)
+  File "/home/rino/deploy/lib64/python3.9/site-packages/qdrant_client/http/api_client.py", line 250, in __call__
+    return call_next(request)
+  File "/home/rino/deploy/lib64/python3.9/site-packages/qdrant_client/http/api_client.py", line 136, in send_inner
+    raise ResponseHandlingException(e)
+qdrant_client.http.exceptions.ResponseHandlingException: _ssl.c:1130: The handshake operation timed out
+INFO:     102.17.105.89:0 - "POST /ask HTTP/1.0" 200 OK
+INFO:     102.17.105.89:0 - "POST /ask HTTP/1.0" 200 OK
+WARNING:  StatReload detected changes in 'rag/rag_engine.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [907545]
+Traceback (most recent call last):
+  File "<string>", line 1, in <module>
+  File "/usr/lib64/python3.9/multiprocessing/spawn.py", line 116, in spawn_main
+    exitcode = _main(fd, parent_sentinel)
+  File "/usr/lib64/python3.9/multiprocessing/spawn.py", line 125, in _main
+    prepare(preparation_data)
+  File "/usr/lib64/python3.9/multiprocessing/spawn.py", line 236, in prepare
+    _fixup_main_from_path(data['init_main_from_path'])
+  File "/usr/lib64/python3.9/multiprocessing/spawn.py", line 287, in _fixup_main_from_path
+    main_content = runpy.run_path(main_path,
+  File "/usr/lib64/python3.9/runpy.py", line 288, in run_path
+    return _run_module_code(code, init_globals, run_name,
+  File "/usr/lib64/python3.9/runpy.py", line 97, in _run_module_code
+    _run_code(code, mod_globals, init_globals,
+  File "/usr/lib64/python3.9/runpy.py", line 87, in _run_code
+    exec(code, run_globals)
+  File "/home/rino/deploy/backend/main.py", line 14, in <module>
+    from rag.rag_engine import retrieve_documents, generate_answer
+  File "/home/rino/deploy/backend/rag/rag_engine.py", line 112
+    system_prompt += (
+IndentationError: expected an indented block
+WARNING:  StatReload detected changes in 'rag/rag_engine.py'. Reloading...
+Traceback (most recent call last):
+  File "<string>", line 1, in <module>
+  File "/usr/lib64/python3.9/multiprocessing/spawn.py", line 116, in spawn_main
+    exitcode = _main(fd, parent_sentinel)
+  File "/usr/lib64/python3.9/multiprocessing/spawn.py", line 125, in _main
+    prepare(preparation_data)
+  File "/usr/lib64/python3.9/multiprocessing/spawn.py", line 236, in prepare
+    _fixup_main_from_path(data['init_main_from_path'])
+  File "/usr/lib64/python3.9/multiprocessing/spawn.py", line 287, in _fixup_main_from_path
+    main_content = runpy.run_path(main_path,
+  File "/usr/lib64/python3.9/runpy.py", line 288, in run_path
+    return _run_module_code(code, init_globals, run_name,
+  File "/usr/lib64/python3.9/runpy.py", line 97, in _run_module_code
+    _run_code(code, mod_globals, init_globals,
+  File "/usr/lib64/python3.9/runpy.py", line 87, in _run_code
+    exec(code, run_globals)
+  File "/home/rino/deploy/backend/main.py", line 14, in <module>
+    from rag.rag_engine import retrieve_documents, generate_answer
+  File "/home/rino/deploy/backend/rag/rag_engine.py", line 112
+    system_prompt += (
+    ^
+IndentationError: expected an indented block
+WARNING:  StatReload detected changes in 'rag/rag_engine.py'. Reloading...
+INFO:     Started server process [908475]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     102.17.105.89:0 - "POST /ask HTTP/1.0" 200 OK
+WARNING:  StatReload detected changes in 'rag/rag_engine.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [908475]
+INFO:     Started server process [908631]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     102.17.105.89:0 - "OPTIONS /ask HTTP/1.0" 200 OK
+INFO:     102.17.105.89:0 - "POST /ask HTTP/1.0" 200 OK
+INFO:     102.17.105.89:0 - "POST /ask HTTP/1.0" 200 OK
+INFO:     102.17.105.89:0 - "POST /ask HTTP/1.0" 200 OK
+INFO:     102.17.105.89:0 - "POST /ask HTTP/1.0" 200 OK
+INFO:     102.17.105.89:0 - "POST /ask HTTP/1.0" 200 OK
+WARNING:  StatReload detected changes in 'rag/rag_engine.py'. Reloading...
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [908631]
+INFO:     Started server process [912002]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     102.17.105.89:0 - "OPTIONS /ask HTTP/1.0" 200 OK
+[Erreur chargement SQL reasoning ou schéma] : {'message': 'column postgresql_connexions.user does not exist', 'code': '42703', 'hint': None, 'details': None}
+INFO:     102.17.105.89:0 - "POST /ask HTTP/1.0" 500 Internal Server Error
+ERROR:    Exception in ASGI application
+Traceback (most recent call last):
+  File "/home/rino/deploy/lib64/python3.9/site-packages/uvicorn/protocols/http/h11_impl.py", line 403, in run_asgi
+    result = await app(  # type: ignore[func-returns-value]
+  File "/home/rino/deploy/lib64/python3.9/site-packages/uvicorn/middleware/proxy_headers.py", line 60, in __call__
+    return await self.app(scope, receive, send)
+  File "/home/rino/deploy/lib64/python3.9/site-packages/fastapi/applications.py", line 1054, in __call__
+    await super().__call__(scope, receive, send)
+  File "/home/rino/deploy/lib64/python3.9/site-packages/starlette/applications.py", line 112, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/home/rino/deploy/lib64/python3.9/site-packages/starlette/middleware/errors.py", line 187, in __call__
+    raise exc
+  File "/home/rino/deploy/lib64/python3.9/site-packages/starlette/middleware/errors.py", line 165, in __call__
+    await self.app(scope, receive, _send)
+  File "/home/rino/deploy/lib64/python3.9/site-packages/starlette/middleware/cors.py", line 93, in __call__
+    await self.simple_response(scope, receive, send, request_headers=headers)
+  File "/home/rino/deploy/lib64/python3.9/site-packages/starlette/middleware/cors.py", line 144, in simple_response
+    await self.app(scope, receive, send)
+  File "/home/rino/deploy/lib64/python3.9/site-packages/starlette/middleware/exceptions.py", line 62, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "/home/rino/deploy/lib64/python3.9/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/home/rino/deploy/lib64/python3.9/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/home/rino/deploy/lib64/python3.9/site-packages/starlette/routing.py", line 714, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/home/rino/deploy/lib64/python3.9/site-packages/starlette/routing.py", line 734, in app
+    await route.handle(scope, receive, send)
+  File "/home/rino/deploy/lib64/python3.9/site-packages/starlette/routing.py", line 288, in handle
+    await self.app(scope, receive, send)
+  File "/home/rino/deploy/lib64/python3.9/site-packages/starlette/routing.py", line 76, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "/home/rino/deploy/lib64/python3.9/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/home/rino/deploy/lib64/python3.9/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/home/rino/deploy/lib64/python3.9/site-packages/starlette/routing.py", line 73, in app
+    response = await f(request)
+  File "/home/rino/deploy/lib64/python3.9/site-packages/fastapi/routing.py", line 301, in app
+    raw_response = await run_endpoint_function(
+  File "/home/rino/deploy/lib64/python3.9/site-packages/fastapi/routing.py", line 214, in run_endpoint_function
+    return await run_in_threadpool(dependant.call, **values)
+  File "/home/rino/deploy/lib64/python3.9/site-packages/starlette/concurrency.py", line 37, in run_in_threadpool
+    return await anyio.to_thread.run_sync(func)
+  File "/home/rino/deploy/lib64/python3.9/site-packages/anyio/to_thread.py", line 56, in run_sync
+    return await get_async_backend().run_sync_in_worker_thread(
+  File "/home/rino/deploy/lib64/python3.9/site-packages/anyio/_backends/_asyncio.py", line 2470, in run_sync_in_worker_thread
+    return await future
+  File "/home/rino/deploy/lib64/python3.9/site-packages/anyio/_backends/_asyncio.py", line 967, in run
+    result = context.run(func, *args)
+  File "/home/rino/deploy/backend/main.py", line 114, in ask_question
+    answer = generate_answer(question, combined_docs, req.chatbot_id)
+  File "/home/rino/deploy/backend/rag/rag_engine.py", line 198, in generate_answer
+    extracted_sql = extract_sql_from_text(raw_result)
+  File "/home/rino/deploy/backend/rag/rag_engine.py", line 67, in extract_sql_from_text
+    match = re.search(r"```sql\s+(.*?)```", text, re.DOTALL | re.IGNORECASE)
+NameError: name 're' is not defined
+[Erreur chargement SQL reasoning ou schéma] : {'message': 'column postgresql_connexions.user does not exist', 'code': '42703', 'hint': None, 'details': None}
+INFO:     102.17.105.89:0 - "POST /ask HTTP/1.0" 500 Internal Server Error
+ERROR:    Exception in ASGI application
+Traceback (most recent call last):
+  File "/home/rino/deploy/lib64/python3.9/site-packages/uvicorn/protocols/http/h11_impl.py", line 403, in run_asgi
+    result = await app(  # type: ignore[func-returns-value]
+  File "/home/rino/deploy/lib64/python3.9/site-packages/uvicorn/middleware/proxy_headers.py", line 60, in __call__
+    return await self.app(scope, receive, send)
+  File "/home/rino/deploy/lib64/python3.9/site-packages/fastapi/applications.py", line 1054, in __call__
+    await super().__call__(scope, receive, send)
+  File "/home/rino/deploy/lib64/python3.9/site-packages/starlette/applications.py", line 112, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/home/rino/deploy/lib64/python3.9/site-packages/starlette/middleware/errors.py", line 187, in __call__
+    raise exc
+  File "/home/rino/deploy/lib64/python3.9/site-packages/starlette/middleware/errors.py", line 165, in __call__
+    await self.app(scope, receive, _send)
+  File "/home/rino/deploy/lib64/python3.9/site-packages/starlette/middleware/cors.py", line 93, in __call__
+    await self.simple_response(scope, receive, send, request_headers=headers)
+  File "/home/rino/deploy/lib64/python3.9/site-packages/starlette/middleware/cors.py", line 144, in simple_response
+    await self.app(scope, receive, send)
+  File "/home/rino/deploy/lib64/python3.9/site-packages/starlette/middleware/exceptions.py", line 62, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "/home/rino/deploy/lib64/python3.9/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/home/rino/deploy/lib64/python3.9/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/home/rino/deploy/lib64/python3.9/site-packages/starlette/routing.py", line 714, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/home/rino/deploy/lib64/python3.9/site-packages/starlette/routing.py", line 734, in app
+    await route.handle(scope, receive, send)
+  File "/home/rino/deploy/lib64/python3.9/site-packages/starlette/routing.py", line 288, in handle
+    await self.app(scope, receive, send)
+  File "/home/rino/deploy/lib64/python3.9/site-packages/starlette/routing.py", line 76, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "/home/rino/deploy/lib64/python3.9/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/home/rino/deploy/lib64/python3.9/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/home/rino/deploy/lib64/python3.9/site-packages/starlette/routing.py", line 73, in app
+    response = await f(request)
+  File "/home/rino/deploy/lib64/python3.9/site-packages/fastapi/routing.py", line 301, in app
+    raw_response = await run_endpoint_function(
+  File "/home/rino/deploy/lib64/python3.9/site-packages/fastapi/routing.py", line 214, in run_endpoint_function
+    return await run_in_threadpool(dependant.call, **values)
+  File "/home/rino/deploy/lib64/python3.9/site-packages/starlette/concurrency.py", line 37, in run_in_threadpool
+    return await anyio.to_thread.run_sync(func)
+  File "/home/rino/deploy/lib64/python3.9/site-packages/anyio/to_thread.py", line 56, in run_sync
+    return await get_async_backend().run_sync_in_worker_thread(
+  File "/home/rino/deploy/lib64/python3.9/site-packages/anyio/_backends/_asyncio.py", line 2470, in run_sync_in_worker_thread
+    return await future
+  File "/home/rino/deploy/lib64/python3.9/site-packages/anyio/_backends/_asyncio.py", line 967, in run
+    result = context.run(func, *args)
+  File "/home/rino/deploy/backend/main.py", line 114, in ask_question
+    answer = generate_answer(question, combined_docs, req.chatbot_id)
+  File "/home/rino/deploy/backend/rag/rag_engine.py", line 198, in generate_answer
+    extracted_sql = extract_sql_from_text(raw_result)
+  File "/home/rino/deploy/backend/rag/rag_engine.py", line 67, in extract_sql_from_text
+    match = re.search(r"```sql\s+(.*?)```", text, re.DOTALL | re.IGNORECASE)
+NameError: name 're' is not defined
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [912002]
+INFO:     Stopping reloader process [833148]
