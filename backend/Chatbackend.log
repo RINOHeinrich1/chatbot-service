@@ -1,292 +1,87 @@
 INFO:     Will watch for changes in these directories: ['/home/rino/deploy/backend']
 INFO:     Uvicorn running on http://0.0.0.0:8010 (Press CTRL+C to quit)
-INFO:     Started reloader process [948275] using StatReload
-INFO:     Started server process [948285]
+INFO:     Started reloader process [1066947] using StatReload
+INFO:     Started server process [1066967]
 INFO:     Waiting for application startup.
 INFO:     Application startup complete.
-INFO:     102.17.105.208:0 - "OPTIONS /ask HTTP/1.0" 200 OK
-INFO:     102.17.105.208:0 - "POST /ask HTTP/1.0" 500 Internal Server Error
-ERROR:    Exception in ASGI application
-Traceback (most recent call last):
-  File "/home/rino/deploy/lib64/python3.9/site-packages/uvicorn/protocols/http/h11_impl.py", line 403, in run_asgi
-    result = await app(  # type: ignore[func-returns-value]
-  File "/home/rino/deploy/lib64/python3.9/site-packages/uvicorn/middleware/proxy_headers.py", line 60, in __call__
-    return await self.app(scope, receive, send)
-  File "/home/rino/deploy/lib64/python3.9/site-packages/fastapi/applications.py", line 1054, in __call__
-    await super().__call__(scope, receive, send)
-  File "/home/rino/deploy/lib64/python3.9/site-packages/starlette/applications.py", line 112, in __call__
-    await self.middleware_stack(scope, receive, send)
-  File "/home/rino/deploy/lib64/python3.9/site-packages/starlette/middleware/errors.py", line 187, in __call__
-    raise exc
-  File "/home/rino/deploy/lib64/python3.9/site-packages/starlette/middleware/errors.py", line 165, in __call__
-    await self.app(scope, receive, _send)
-  File "/home/rino/deploy/lib64/python3.9/site-packages/starlette/middleware/cors.py", line 93, in __call__
-    await self.simple_response(scope, receive, send, request_headers=headers)
-  File "/home/rino/deploy/lib64/python3.9/site-packages/starlette/middleware/cors.py", line 144, in simple_response
-    await self.app(scope, receive, send)
-  File "/home/rino/deploy/lib64/python3.9/site-packages/starlette/middleware/exceptions.py", line 62, in __call__
-    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
-  File "/home/rino/deploy/lib64/python3.9/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
-    raise exc
-  File "/home/rino/deploy/lib64/python3.9/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
-    await app(scope, receive, sender)
-  File "/home/rino/deploy/lib64/python3.9/site-packages/starlette/routing.py", line 714, in __call__
-    await self.middleware_stack(scope, receive, send)
-  File "/home/rino/deploy/lib64/python3.9/site-packages/starlette/routing.py", line 734, in app
-    await route.handle(scope, receive, send)
-  File "/home/rino/deploy/lib64/python3.9/site-packages/starlette/routing.py", line 288, in handle
-    await self.app(scope, receive, send)
-  File "/home/rino/deploy/lib64/python3.9/site-packages/starlette/routing.py", line 76, in app
-    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
-  File "/home/rino/deploy/lib64/python3.9/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
-    raise exc
-  File "/home/rino/deploy/lib64/python3.9/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
-    await app(scope, receive, sender)
-  File "/home/rino/deploy/lib64/python3.9/site-packages/starlette/routing.py", line 73, in app
-    response = await f(request)
-  File "/home/rino/deploy/lib64/python3.9/site-packages/fastapi/routing.py", line 301, in app
-    raw_response = await run_endpoint_function(
-  File "/home/rino/deploy/lib64/python3.9/site-packages/fastapi/routing.py", line 214, in run_endpoint_function
-    return await run_in_threadpool(dependant.call, **values)
-  File "/home/rino/deploy/lib64/python3.9/site-packages/starlette/concurrency.py", line 37, in run_in_threadpool
-    return await anyio.to_thread.run_sync(func)
-  File "/home/rino/deploy/lib64/python3.9/site-packages/anyio/to_thread.py", line 56, in run_sync
-    return await get_async_backend().run_sync_in_worker_thread(
-  File "/home/rino/deploy/lib64/python3.9/site-packages/anyio/_backends/_asyncio.py", line 2470, in run_sync_in_worker_thread
-    return await future
-  File "/home/rino/deploy/lib64/python3.9/site-packages/anyio/_backends/_asyncio.py", line 967, in run
-    result = context.run(func, *args)
-  File "/home/rino/deploy/backend/main.py", line 135, in ask_question
-    max_ctx = get_memoire_contextuelle(req.chatbot_id)
-  File "/home/rino/deploy/backend/main.py", line 88, in get_memoire_contextuelle
-    return int(response.data.get("memoire_contextuelle", 0))
-TypeError: int() argument must be a string, a bytes-like object or a number, not 'NoneType'
-INFO:     102.17.105.208:0 - "POST /ask HTTP/1.0" 500 Internal Server Error
-ERROR:    Exception in ASGI application
-Traceback (most recent call last):
-  File "/home/rino/deploy/lib64/python3.9/site-packages/uvicorn/protocols/http/h11_impl.py", line 403, in run_asgi
-    result = await app(  # type: ignore[func-returns-value]
-  File "/home/rino/deploy/lib64/python3.9/site-packages/uvicorn/middleware/proxy_headers.py", line 60, in __call__
-    return await self.app(scope, receive, send)
-  File "/home/rino/deploy/lib64/python3.9/site-packages/fastapi/applications.py", line 1054, in __call__
-    await super().__call__(scope, receive, send)
-  File "/home/rino/deploy/lib64/python3.9/site-packages/starlette/applications.py", line 112, in __call__
-    await self.middleware_stack(scope, receive, send)
-  File "/home/rino/deploy/lib64/python3.9/site-packages/starlette/middleware/errors.py", line 187, in __call__
-    raise exc
-  File "/home/rino/deploy/lib64/python3.9/site-packages/starlette/middleware/errors.py", line 165, in __call__
-    await self.app(scope, receive, _send)
-  File "/home/rino/deploy/lib64/python3.9/site-packages/starlette/middleware/cors.py", line 93, in __call__
-    await self.simple_response(scope, receive, send, request_headers=headers)
-  File "/home/rino/deploy/lib64/python3.9/site-packages/starlette/middleware/cors.py", line 144, in simple_response
-    await self.app(scope, receive, send)
-  File "/home/rino/deploy/lib64/python3.9/site-packages/starlette/middleware/exceptions.py", line 62, in __call__
-    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
-  File "/home/rino/deploy/lib64/python3.9/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
-    raise exc
-  File "/home/rino/deploy/lib64/python3.9/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
-    await app(scope, receive, sender)
-  File "/home/rino/deploy/lib64/python3.9/site-packages/starlette/routing.py", line 714, in __call__
-    await self.middleware_stack(scope, receive, send)
-  File "/home/rino/deploy/lib64/python3.9/site-packages/starlette/routing.py", line 734, in app
-    await route.handle(scope, receive, send)
-  File "/home/rino/deploy/lib64/python3.9/site-packages/starlette/routing.py", line 288, in handle
-    await self.app(scope, receive, send)
-  File "/home/rino/deploy/lib64/python3.9/site-packages/starlette/routing.py", line 76, in app
-    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
-  File "/home/rino/deploy/lib64/python3.9/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
-    raise exc
-  File "/home/rino/deploy/lib64/python3.9/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
-    await app(scope, receive, sender)
-  File "/home/rino/deploy/lib64/python3.9/site-packages/starlette/routing.py", line 73, in app
-    response = await f(request)
-  File "/home/rino/deploy/lib64/python3.9/site-packages/fastapi/routing.py", line 301, in app
-    raw_response = await run_endpoint_function(
-  File "/home/rino/deploy/lib64/python3.9/site-packages/fastapi/routing.py", line 214, in run_endpoint_function
-    return await run_in_threadpool(dependant.call, **values)
-  File "/home/rino/deploy/lib64/python3.9/site-packages/starlette/concurrency.py", line 37, in run_in_threadpool
-    return await anyio.to_thread.run_sync(func)
-  File "/home/rino/deploy/lib64/python3.9/site-packages/anyio/to_thread.py", line 56, in run_sync
-    return await get_async_backend().run_sync_in_worker_thread(
-  File "/home/rino/deploy/lib64/python3.9/site-packages/anyio/_backends/_asyncio.py", line 2470, in run_sync_in_worker_thread
-    return await future
-  File "/home/rino/deploy/lib64/python3.9/site-packages/anyio/_backends/_asyncio.py", line 967, in run
-    result = context.run(func, *args)
-  File "/home/rino/deploy/backend/main.py", line 135, in ask_question
-    max_ctx = get_memoire_contextuelle(req.chatbot_id)
-  File "/home/rino/deploy/backend/main.py", line 88, in get_memoire_contextuelle
-    return int(response.data.get("memoire_contextuelle", 0))
-TypeError: int() argument must be a string, a bytes-like object or a number, not 'NoneType'
-INFO:     102.17.105.208:0 - "POST /ask HTTP/1.0" 500 Internal Server Error
-ERROR:    Exception in ASGI application
-Traceback (most recent call last):
-  File "/home/rino/deploy/lib64/python3.9/site-packages/uvicorn/protocols/http/h11_impl.py", line 403, in run_asgi
-    result = await app(  # type: ignore[func-returns-value]
-  File "/home/rino/deploy/lib64/python3.9/site-packages/uvicorn/middleware/proxy_headers.py", line 60, in __call__
-    return await self.app(scope, receive, send)
-  File "/home/rino/deploy/lib64/python3.9/site-packages/fastapi/applications.py", line 1054, in __call__
-    await super().__call__(scope, receive, send)
-  File "/home/rino/deploy/lib64/python3.9/site-packages/starlette/applications.py", line 112, in __call__
-    await self.middleware_stack(scope, receive, send)
-  File "/home/rino/deploy/lib64/python3.9/site-packages/starlette/middleware/errors.py", line 187, in __call__
-    raise exc
-  File "/home/rino/deploy/lib64/python3.9/site-packages/starlette/middleware/errors.py", line 165, in __call__
-    await self.app(scope, receive, _send)
-  File "/home/rino/deploy/lib64/python3.9/site-packages/starlette/middleware/cors.py", line 93, in __call__
-    await self.simple_response(scope, receive, send, request_headers=headers)
-  File "/home/rino/deploy/lib64/python3.9/site-packages/starlette/middleware/cors.py", line 144, in simple_response
-    await self.app(scope, receive, send)
-  File "/home/rino/deploy/lib64/python3.9/site-packages/starlette/middleware/exceptions.py", line 62, in __call__
-    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
-  File "/home/rino/deploy/lib64/python3.9/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
-    raise exc
-  File "/home/rino/deploy/lib64/python3.9/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
-    await app(scope, receive, sender)
-  File "/home/rino/deploy/lib64/python3.9/site-packages/starlette/routing.py", line 714, in __call__
-    await self.middleware_stack(scope, receive, send)
-  File "/home/rino/deploy/lib64/python3.9/site-packages/starlette/routing.py", line 734, in app
-    await route.handle(scope, receive, send)
-  File "/home/rino/deploy/lib64/python3.9/site-packages/starlette/routing.py", line 288, in handle
-    await self.app(scope, receive, send)
-  File "/home/rino/deploy/lib64/python3.9/site-packages/starlette/routing.py", line 76, in app
-    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
-  File "/home/rino/deploy/lib64/python3.9/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
-    raise exc
-  File "/home/rino/deploy/lib64/python3.9/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
-    await app(scope, receive, sender)
-  File "/home/rino/deploy/lib64/python3.9/site-packages/starlette/routing.py", line 73, in app
-    response = await f(request)
-  File "/home/rino/deploy/lib64/python3.9/site-packages/fastapi/routing.py", line 301, in app
-    raw_response = await run_endpoint_function(
-  File "/home/rino/deploy/lib64/python3.9/site-packages/fastapi/routing.py", line 214, in run_endpoint_function
-    return await run_in_threadpool(dependant.call, **values)
-  File "/home/rino/deploy/lib64/python3.9/site-packages/starlette/concurrency.py", line 37, in run_in_threadpool
-    return await anyio.to_thread.run_sync(func)
-  File "/home/rino/deploy/lib64/python3.9/site-packages/anyio/to_thread.py", line 56, in run_sync
-    return await get_async_backend().run_sync_in_worker_thread(
-  File "/home/rino/deploy/lib64/python3.9/site-packages/anyio/_backends/_asyncio.py", line 2470, in run_sync_in_worker_thread
-    return await future
-  File "/home/rino/deploy/lib64/python3.9/site-packages/anyio/_backends/_asyncio.py", line 967, in run
-    result = context.run(func, *args)
-  File "/home/rino/deploy/backend/main.py", line 135, in ask_question
-    max_ctx = get_memoire_contextuelle(req.chatbot_id)
-  File "/home/rino/deploy/backend/main.py", line 88, in get_memoire_contextuelle
-    return int(response.data.get("memoire_contextuelle", 0))
-TypeError: int() argument must be a string, a bytes-like object or a number, not 'NoneType'
-WARNING:  StatReload detected changes in 'main.py'. Reloading...
-INFO:     Shutting down
-INFO:     Waiting for application shutdown.
-INFO:     Application shutdown complete.
-INFO:     Finished server process [948285]
-INFO:     Started server process [948616]
-INFO:     Waiting for application startup.
-INFO:     Application startup complete.
-INFO:     102.17.105.208:0 - "POST /ask HTTP/1.0" 500 Internal Server Error
-ERROR:    Exception in ASGI application
-Traceback (most recent call last):
-  File "/home/rino/deploy/lib64/python3.9/site-packages/uvicorn/protocols/http/h11_impl.py", line 403, in run_asgi
-    result = await app(  # type: ignore[func-returns-value]
-  File "/home/rino/deploy/lib64/python3.9/site-packages/uvicorn/middleware/proxy_headers.py", line 60, in __call__
-    return await self.app(scope, receive, send)
-  File "/home/rino/deploy/lib64/python3.9/site-packages/fastapi/applications.py", line 1054, in __call__
-    await super().__call__(scope, receive, send)
-  File "/home/rino/deploy/lib64/python3.9/site-packages/starlette/applications.py", line 112, in __call__
-    await self.middleware_stack(scope, receive, send)
-  File "/home/rino/deploy/lib64/python3.9/site-packages/starlette/middleware/errors.py", line 187, in __call__
-    raise exc
-  File "/home/rino/deploy/lib64/python3.9/site-packages/starlette/middleware/errors.py", line 165, in __call__
-    await self.app(scope, receive, _send)
-  File "/home/rino/deploy/lib64/python3.9/site-packages/starlette/middleware/cors.py", line 93, in __call__
-    await self.simple_response(scope, receive, send, request_headers=headers)
-  File "/home/rino/deploy/lib64/python3.9/site-packages/starlette/middleware/cors.py", line 144, in simple_response
-    await self.app(scope, receive, send)
-  File "/home/rino/deploy/lib64/python3.9/site-packages/starlette/middleware/exceptions.py", line 62, in __call__
-    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
-  File "/home/rino/deploy/lib64/python3.9/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
-    raise exc
-  File "/home/rino/deploy/lib64/python3.9/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
-    await app(scope, receive, sender)
-  File "/home/rino/deploy/lib64/python3.9/site-packages/starlette/routing.py", line 714, in __call__
-    await self.middleware_stack(scope, receive, send)
-  File "/home/rino/deploy/lib64/python3.9/site-packages/starlette/routing.py", line 734, in app
-    await route.handle(scope, receive, send)
-  File "/home/rino/deploy/lib64/python3.9/site-packages/starlette/routing.py", line 288, in handle
-    await self.app(scope, receive, send)
-  File "/home/rino/deploy/lib64/python3.9/site-packages/starlette/routing.py", line 76, in app
-    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
-  File "/home/rino/deploy/lib64/python3.9/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
-    raise exc
-  File "/home/rino/deploy/lib64/python3.9/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
-    await app(scope, receive, sender)
-  File "/home/rino/deploy/lib64/python3.9/site-packages/starlette/routing.py", line 73, in app
-    response = await f(request)
-  File "/home/rino/deploy/lib64/python3.9/site-packages/fastapi/routing.py", line 301, in app
-    raw_response = await run_endpoint_function(
-  File "/home/rino/deploy/lib64/python3.9/site-packages/fastapi/routing.py", line 214, in run_endpoint_function
-    return await run_in_threadpool(dependant.call, **values)
-  File "/home/rino/deploy/lib64/python3.9/site-packages/starlette/concurrency.py", line 37, in run_in_threadpool
-    return await anyio.to_thread.run_sync(func)
-  File "/home/rino/deploy/lib64/python3.9/site-packages/anyio/to_thread.py", line 56, in run_sync
-    return await get_async_backend().run_sync_in_worker_thread(
-  File "/home/rino/deploy/lib64/python3.9/site-packages/anyio/_backends/_asyncio.py", line 2470, in run_sync_in_worker_thread
-    return await future
-  File "/home/rino/deploy/lib64/python3.9/site-packages/anyio/_backends/_asyncio.py", line 967, in run
-    result = context.run(func, *args)
-  File "/home/rino/deploy/backend/main.py", line 136, in ask_question
-    context_messages = req.history[-max_ctx:]  # garder les derniers messages uniquement
-TypeError: bad operand type for unary -: 'NoneType'
-WARNING:  StatReload detected changes in 'main.py'. Reloading...
-INFO:     Shutting down
-INFO:     Waiting for application shutdown.
-INFO:     Application shutdown complete.
-INFO:     Finished server process [948616]
-INFO:     Started server process [948797]
-INFO:     Waiting for application startup.
-INFO:     Application startup complete.
-extracted sql: SELECT * FROM "Employee" WHERE "Title" = 'DSI';
-INFO:     102.17.105.208:0 - "POST /ask HTTP/1.0" 200 OK
-extracted sql: None
-INFO:     102.17.105.208:0 - "POST /ask HTTP/1.0" 200 OK
-extracted sql: None
-INFO:     102.17.105.208:0 - "POST /ask HTTP/1.0" 200 OK
-extracted sql: None
-INFO:     102.17.105.208:0 - "POST /ask HTTP/1.0" 200 OK
-extracted sql: None
-INFO:     102.17.105.208:0 - "POST /ask HTTP/1.0" 200 OK
+['Presentation_ONIRTECH.docx']
+[{'text': "Présentation de l'Entreprise ONIRTECH\nQui sommes-nous ? ONIRTECH est une entreprise innovante spécialisée dans le développement de solutions intelligentes à base d'intelligence artificielle, d'outils cloud et de technologies web avancées. Notre objectif est de transformer la manière dont les entreprises exploitent leurs données et interagissent avec leurs clients.", 'source': 'Presentation_ONIRTECH.docx'}, {'text': "Notre Vision\nNous croyons en un avenir où l'intelligence artificielle est utilisée de manière éthique et responsable pour améliorer la vie professionnelle et personnelle. ONIRTECH se positionne comme un acteur clé dans la démocratisation de l'IA et l'accessibilité des technologies avancées.", 'source': 'Presentation_ONIRTECH.docx'}, {'text': "Produits et Services\nONIRTECH propose une gamme variée de produits et services, notamment : - Chatbots intelligents et agents conversationnels personnalisés. - Solutions de fine-tuning de modèles IA pour domaines spécifiques. - Interfaces web modernes et adaptatives. - Intégration de solutions de recherche sémantique. - Déploiement cloud et gestion d'infrastructure multitenant.", 'source': 'Presentation_ONIRTECH.docx'}, {'text': 'Nos Missions\n- Accompagner les entreprises dans leur transformation numérique. - Fournir des services sur mesure en intelligence artificielle et automatisation. - Proposer des plateformes SaaS efficaces et scalables. - Offrir une expertise technique de haut niveau via des prestations de service et des formations.', 'source': 'Presentation_ONIRTECH.docx'}, {'text': "Contact\nAdresse : 50m en face de l'église catholique Ambatonilita Isoraka, Antananarivo Téléphones : 033 082 8086, 034 022 0452, 032 042 0452 Site Web : https://onirtech.com", 'source': 'Presentation_ONIRTECH.docx'}]
+Documents:  [{'text': "Présentation de l'Entreprise ONIRTECH\nQui sommes-nous ? ONIRTECH est une entreprise innovante spécialisée dans le développement de solutions intelligentes à base d'intelligence artificielle, d'outils cloud et de technologies web avancées. Notre objectif est de transformer la manière dont les entreprises exploitent leurs données et interagissent avec leurs clients.", 'source': 'Presentation_ONIRTECH.docx'}, {'text': "Notre Vision\nNous croyons en un avenir où l'intelligence artificielle est utilisée de manière éthique et responsable pour améliorer la vie professionnelle et personnelle. ONIRTECH se positionne comme un acteur clé dans la démocratisation de l'IA et l'accessibilité des technologies avancées.", 'source': 'Presentation_ONIRTECH.docx'}, {'text': "Produits et Services\nONIRTECH propose une gamme variée de produits et services, notamment : - Chatbots intelligents et agents conversationnels personnalisés. - Solutions de fine-tuning de modèles IA pour domaines spécifiques. - Interfaces web modernes et adaptatives. - Intégration de solutions de recherche sémantique. - Déploiement cloud et gestion d'infrastructure multitenant.", 'source': 'Presentation_ONIRTECH.docx'}, {'text': 'Nos Missions\n- Accompagner les entreprises dans leur transformation numérique. - Fournir des services sur mesure en intelligence artificielle et automatisation. - Proposer des plateformes SaaS efficaces et scalables. - Offrir une expertise technique de haut niveau via des prestations de service et des formations.', 'source': 'Presentation_ONIRTECH.docx'}, {'text': "Contact\nAdresse : 50m en face de l'église catholique Ambatonilita Isoraka, Antananarivo Téléphones : 033 082 8086, 034 022 0452, 032 042 0452 Site Web : https://onirtech.com", 'source': 'Presentation_ONIRTECH.docx'}]
+[Erreur chargement SQL reasoning ou schéma] : {'message': 'JSON object requested, multiple (or no) rows returned', 'code': 'PGRST116', 'hint': None, 'details': 'The result contains 0 rows'}
+INFO:     102.17.120.50:0 - "POST /ask HTTP/1.0" 200 OK
+['Presentation_ONIRTECH.docx']
+[{'text': "Contact\nAdresse : 50m en face de l'église catholique Ambatonilita Isoraka, Antananarivo Téléphones : 033 082 8086, 034 022 0452, 032 042 0452 Site Web : https://onirtech.com", 'source': 'Presentation_ONIRTECH.docx'}, {'text': "Notre Vision\nNous croyons en un avenir où l'intelligence artificielle est utilisée de manière éthique et responsable pour améliorer la vie professionnelle et personnelle. ONIRTECH se positionne comme un acteur clé dans la démocratisation de l'IA et l'accessibilité des technologies avancées.", 'source': 'Presentation_ONIRTECH.docx'}, {'text': "Présentation de l'Entreprise ONIRTECH\nQui sommes-nous ? ONIRTECH est une entreprise innovante spécialisée dans le développement de solutions intelligentes à base d'intelligence artificielle, d'outils cloud et de technologies web avancées. Notre objectif est de transformer la manière dont les entreprises exploitent leurs données et interagissent avec leurs clients.", 'source': 'Presentation_ONIRTECH.docx'}, {'text': 'Nos Missions\n- Accompagner les entreprises dans leur transformation numérique. - Fournir des services sur mesure en intelligence artificielle et automatisation. - Proposer des plateformes SaaS efficaces et scalables. - Offrir une expertise technique de haut niveau via des prestations de service et des formations.', 'source': 'Presentation_ONIRTECH.docx'}, {'text': "Produits et Services\nONIRTECH propose une gamme variée de produits et services, notamment : - Chatbots intelligents et agents conversationnels personnalisés. - Solutions de fine-tuning de modèles IA pour domaines spécifiques. - Interfaces web modernes et adaptatives. - Intégration de solutions de recherche sémantique. - Déploiement cloud et gestion d'infrastructure multitenant.", 'source': 'Presentation_ONIRTECH.docx'}]
+Documents:  [{'text': "Contact\nAdresse : 50m en face de l'église catholique Ambatonilita Isoraka, Antananarivo Téléphones : 033 082 8086, 034 022 0452, 032 042 0452 Site Web : https://onirtech.com", 'source': 'Presentation_ONIRTECH.docx'}, {'text': "Notre Vision\nNous croyons en un avenir où l'intelligence artificielle est utilisée de manière éthique et responsable pour améliorer la vie professionnelle et personnelle. ONIRTECH se positionne comme un acteur clé dans la démocratisation de l'IA et l'accessibilité des technologies avancées.", 'source': 'Presentation_ONIRTECH.docx'}, {'text': "Présentation de l'Entreprise ONIRTECH\nQui sommes-nous ? ONIRTECH est une entreprise innovante spécialisée dans le développement de solutions intelligentes à base d'intelligence artificielle, d'outils cloud et de technologies web avancées. Notre objectif est de transformer la manière dont les entreprises exploitent leurs données et interagissent avec leurs clients.", 'source': 'Presentation_ONIRTECH.docx'}, {'text': 'Nos Missions\n- Accompagner les entreprises dans leur transformation numérique. - Fournir des services sur mesure en intelligence artificielle et automatisation. - Proposer des plateformes SaaS efficaces et scalables. - Offrir une expertise technique de haut niveau via des prestations de service et des formations.', 'source': 'Presentation_ONIRTECH.docx'}, {'text': "Produits et Services\nONIRTECH propose une gamme variée de produits et services, notamment : - Chatbots intelligents et agents conversationnels personnalisés. - Solutions de fine-tuning de modèles IA pour domaines spécifiques. - Interfaces web modernes et adaptatives. - Intégration de solutions de recherche sémantique. - Déploiement cloud et gestion d'infrastructure multitenant.", 'source': 'Presentation_ONIRTECH.docx'}]
+[Erreur chargement SQL reasoning ou schéma] : {'message': 'JSON object requested, multiple (or no) rows returned', 'code': 'PGRST116', 'hint': None, 'details': 'The result contains 0 rows'}
+INFO:     102.17.120.50:0 - "OPTIONS /ask HTTP/1.0" 200 OK
+['Presentation_ONIRTECH.docx']
+[{'text': "Contact\nAdresse : 50m en face de l'église catholique Ambatonilita Isoraka, Antananarivo Téléphones : 033 082 8086, 034 022 0452, 032 042 0452 Site Web : https://onirtech.com", 'source': 'Presentation_ONIRTECH.docx'}, {'text': "Notre Vision\nNous croyons en un avenir où l'intelligence artificielle est utilisée de manière éthique et responsable pour améliorer la vie professionnelle et personnelle. ONIRTECH se positionne comme un acteur clé dans la démocratisation de l'IA et l'accessibilité des technologies avancées.", 'source': 'Presentation_ONIRTECH.docx'}, {'text': 'Nos Missions\n- Accompagner les entreprises dans leur transformation numérique. - Fournir des services sur mesure en intelligence artificielle et automatisation. - Proposer des plateformes SaaS efficaces et scalables. - Offrir une expertise technique de haut niveau via des prestations de service et des formations.', 'source': 'Presentation_ONIRTECH.docx'}, {'text': "Présentation de l'Entreprise ONIRTECH\nQui sommes-nous ? ONIRTECH est une entreprise innovante spécialisée dans le développement de solutions intelligentes à base d'intelligence artificielle, d'outils cloud et de technologies web avancées. Notre objectif est de transformer la manière dont les entreprises exploitent leurs données et interagissent avec leurs clients.", 'source': 'Presentation_ONIRTECH.docx'}, {'text': "Produits et Services\nONIRTECH propose une gamme variée de produits et services, notamment : - Chatbots intelligents et agents conversationnels personnalisés. - Solutions de fine-tuning de modèles IA pour domaines spécifiques. - Interfaces web modernes et adaptatives. - Intégration de solutions de recherche sémantique. - Déploiement cloud et gestion d'infrastructure multitenant.", 'source': 'Presentation_ONIRTECH.docx'}]
+Documents:  [{'text': "Contact\nAdresse : 50m en face de l'église catholique Ambatonilita Isoraka, Antananarivo Téléphones : 033 082 8086, 034 022 0452, 032 042 0452 Site Web : https://onirtech.com", 'source': 'Presentation_ONIRTECH.docx'}, {'text': "Notre Vision\nNous croyons en un avenir où l'intelligence artificielle est utilisée de manière éthique et responsable pour améliorer la vie professionnelle et personnelle. ONIRTECH se positionne comme un acteur clé dans la démocratisation de l'IA et l'accessibilité des technologies avancées.", 'source': 'Presentation_ONIRTECH.docx'}, {'text': 'Nos Missions\n- Accompagner les entreprises dans leur transformation numérique. - Fournir des services sur mesure en intelligence artificielle et automatisation. - Proposer des plateformes SaaS efficaces et scalables. - Offrir une expertise technique de haut niveau via des prestations de service et des formations.', 'source': 'Presentation_ONIRTECH.docx'}, {'text': "Présentation de l'Entreprise ONIRTECH\nQui sommes-nous ? ONIRTECH est une entreprise innovante spécialisée dans le développement de solutions intelligentes à base d'intelligence artificielle, d'outils cloud et de technologies web avancées. Notre objectif est de transformer la manière dont les entreprises exploitent leurs données et interagissent avec leurs clients.", 'source': 'Presentation_ONIRTECH.docx'}, {'text': "Produits et Services\nONIRTECH propose une gamme variée de produits et services, notamment : - Chatbots intelligents et agents conversationnels personnalisés. - Solutions de fine-tuning de modèles IA pour domaines spécifiques. - Interfaces web modernes et adaptatives. - Intégration de solutions de recherche sémantique. - Déploiement cloud et gestion d'infrastructure multitenant.", 'source': 'Presentation_ONIRTECH.docx'}]
+[Erreur chargement SQL reasoning ou schéma] : {'message': 'JSON object requested, multiple (or no) rows returned', 'code': 'PGRST116', 'hint': None, 'details': 'The result contains 0 rows'}
+INFO:     102.17.120.50:0 - "POST /ask HTTP/1.0" 200 OK
+['Presentation_ONIRTECH.docx']
+[{'text': "Contact\nAdresse : 50m en face de l'église catholique Ambatonilita Isoraka, Antananarivo Téléphones : 033 082 8086, 034 022 0452, 032 042 0452 Site Web : https://onirtech.com", 'source': 'Presentation_ONIRTECH.docx'}, {'text': "Notre Vision\nNous croyons en un avenir où l'intelligence artificielle est utilisée de manière éthique et responsable pour améliorer la vie professionnelle et personnelle. ONIRTECH se positionne comme un acteur clé dans la démocratisation de l'IA et l'accessibilité des technologies avancées.", 'source': 'Presentation_ONIRTECH.docx'}, {'text': 'Nos Missions\n- Accompagner les entreprises dans leur transformation numérique. - Fournir des services sur mesure en intelligence artificielle et automatisation. - Proposer des plateformes SaaS efficaces et scalables. - Offrir une expertise technique de haut niveau via des prestations de service et des formations.', 'source': 'Presentation_ONIRTECH.docx'}, {'text': "Produits et Services\nONIRTECH propose une gamme variée de produits et services, notamment : - Chatbots intelligents et agents conversationnels personnalisés. - Solutions de fine-tuning de modèles IA pour domaines spécifiques. - Interfaces web modernes et adaptatives. - Intégration de solutions de recherche sémantique. - Déploiement cloud et gestion d'infrastructure multitenant.", 'source': 'Presentation_ONIRTECH.docx'}, {'text': "Présentation de l'Entreprise ONIRTECH\nQui sommes-nous ? ONIRTECH est une entreprise innovante spécialisée dans le développement de solutions intelligentes à base d'intelligence artificielle, d'outils cloud et de technologies web avancées. Notre objectif est de transformer la manière dont les entreprises exploitent leurs données et interagissent avec leurs clients.", 'source': 'Presentation_ONIRTECH.docx'}]
+Documents:  [{'text': "Contact\nAdresse : 50m en face de l'église catholique Ambatonilita Isoraka, Antananarivo Téléphones : 033 082 8086, 034 022 0452, 032 042 0452 Site Web : https://onirtech.com", 'source': 'Presentation_ONIRTECH.docx'}, {'text': "Notre Vision\nNous croyons en un avenir où l'intelligence artificielle est utilisée de manière éthique et responsable pour améliorer la vie professionnelle et personnelle. ONIRTECH se positionne comme un acteur clé dans la démocratisation de l'IA et l'accessibilité des technologies avancées.", 'source': 'Presentation_ONIRTECH.docx'}, {'text': 'Nos Missions\n- Accompagner les entreprises dans leur transformation numérique. - Fournir des services sur mesure en intelligence artificielle et automatisation. - Proposer des plateformes SaaS efficaces et scalables. - Offrir une expertise technique de haut niveau via des prestations de service et des formations.', 'source': 'Presentation_ONIRTECH.docx'}, {'text': "Produits et Services\nONIRTECH propose une gamme variée de produits et services, notamment : - Chatbots intelligents et agents conversationnels personnalisés. - Solutions de fine-tuning de modèles IA pour domaines spécifiques. - Interfaces web modernes et adaptatives. - Intégration de solutions de recherche sémantique. - Déploiement cloud et gestion d'infrastructure multitenant.", 'source': 'Presentation_ONIRTECH.docx'}, {'text': "Présentation de l'Entreprise ONIRTECH\nQui sommes-nous ? ONIRTECH est une entreprise innovante spécialisée dans le développement de solutions intelligentes à base d'intelligence artificielle, d'outils cloud et de technologies web avancées. Notre objectif est de transformer la manière dont les entreprises exploitent leurs données et interagissent avec leurs clients.", 'source': 'Presentation_ONIRTECH.docx'}]
+[Erreur chargement SQL reasoning ou schéma] : {'message': 'JSON object requested, multiple (or no) rows returned', 'code': 'PGRST116', 'hint': None, 'details': 'The result contains 0 rows'}
+INFO:     102.17.120.50:0 - "POST /ask HTTP/1.0" 200 OK
+['Presentation_ONIRTECH.docx']
+[{'text': "Contact\nAdresse : 50m en face de l'église catholique Ambatonilita Isoraka, Antananarivo Téléphones : 033 082 8086, 034 022 0452, 032 042 0452 Site Web : https://onirtech.com", 'source': 'Presentation_ONIRTECH.docx'}, {'text': "Notre Vision\nNous croyons en un avenir où l'intelligence artificielle est utilisée de manière éthique et responsable pour améliorer la vie professionnelle et personnelle. ONIRTECH se positionne comme un acteur clé dans la démocratisation de l'IA et l'accessibilité des technologies avancées.", 'source': 'Presentation_ONIRTECH.docx'}, {'text': 'Nos Missions\n- Accompagner les entreprises dans leur transformation numérique. - Fournir des services sur mesure en intelligence artificielle et automatisation. - Proposer des plateformes SaaS efficaces et scalables. - Offrir une expertise technique de haut niveau via des prestations de service et des formations.', 'source': 'Presentation_ONIRTECH.docx'}, {'text': "Produits et Services\nONIRTECH propose une gamme variée de produits et services, notamment : - Chatbots intelligents et agents conversationnels personnalisés. - Solutions de fine-tuning de modèles IA pour domaines spécifiques. - Interfaces web modernes et adaptatives. - Intégration de solutions de recherche sémantique. - Déploiement cloud et gestion d'infrastructure multitenant.", 'source': 'Presentation_ONIRTECH.docx'}, {'text': "Présentation de l'Entreprise ONIRTECH\nQui sommes-nous ? ONIRTECH est une entreprise innovante spécialisée dans le développement de solutions intelligentes à base d'intelligence artificielle, d'outils cloud et de technologies web avancées. Notre objectif est de transformer la manière dont les entreprises exploitent leurs données et interagissent avec leurs clients.", 'source': 'Presentation_ONIRTECH.docx'}]
+Documents:  [{'text': "Contact\nAdresse : 50m en face de l'église catholique Ambatonilita Isoraka, Antananarivo Téléphones : 033 082 8086, 034 022 0452, 032 042 0452 Site Web : https://onirtech.com", 'source': 'Presentation_ONIRTECH.docx'}, {'text': "Notre Vision\nNous croyons en un avenir où l'intelligence artificielle est utilisée de manière éthique et responsable pour améliorer la vie professionnelle et personnelle. ONIRTECH se positionne comme un acteur clé dans la démocratisation de l'IA et l'accessibilité des technologies avancées.", 'source': 'Presentation_ONIRTECH.docx'}, {'text': 'Nos Missions\n- Accompagner les entreprises dans leur transformation numérique. - Fournir des services sur mesure en intelligence artificielle et automatisation. - Proposer des plateformes SaaS efficaces et scalables. - Offrir une expertise technique de haut niveau via des prestations de service et des formations.', 'source': 'Presentation_ONIRTECH.docx'}, {'text': "Produits et Services\nONIRTECH propose une gamme variée de produits et services, notamment : - Chatbots intelligents et agents conversationnels personnalisés. - Solutions de fine-tuning de modèles IA pour domaines spécifiques. - Interfaces web modernes et adaptatives. - Intégration de solutions de recherche sémantique. - Déploiement cloud et gestion d'infrastructure multitenant.", 'source': 'Presentation_ONIRTECH.docx'}, {'text': "Présentation de l'Entreprise ONIRTECH\nQui sommes-nous ? ONIRTECH est une entreprise innovante spécialisée dans le développement de solutions intelligentes à base d'intelligence artificielle, d'outils cloud et de technologies web avancées. Notre objectif est de transformer la manière dont les entreprises exploitent leurs données et interagissent avec leurs clients.", 'source': 'Presentation_ONIRTECH.docx'}]
+[Erreur chargement SQL reasoning ou schéma] : {'message': 'JSON object requested, multiple (or no) rows returned', 'code': 'PGRST116', 'hint': None, 'details': 'The result contains 0 rows'}
+INFO:     102.17.120.50:0 - "POST /ask HTTP/1.0" 200 OK
+['Presentation_ONIRTECH.docx']
+[{'text': "Présentation de l'Entreprise ONIRTECH\nQui sommes-nous ? ONIRTECH est une entreprise innovante spécialisée dans le développement de solutions intelligentes à base d'intelligence artificielle, d'outils cloud et de technologies web avancées. Notre objectif est de transformer la manière dont les entreprises exploitent leurs données et interagissent avec leurs clients.", 'source': 'Presentation_ONIRTECH.docx'}, {'text': "Notre Vision\nNous croyons en un avenir où l'intelligence artificielle est utilisée de manière éthique et responsable pour améliorer la vie professionnelle et personnelle. ONIRTECH se positionne comme un acteur clé dans la démocratisation de l'IA et l'accessibilité des technologies avancées.", 'source': 'Presentation_ONIRTECH.docx'}, {'text': "Produits et Services\nONIRTECH propose une gamme variée de produits et services, notamment : - Chatbots intelligents et agents conversationnels personnalisés. - Solutions de fine-tuning de modèles IA pour domaines spécifiques. - Interfaces web modernes et adaptatives. - Intégration de solutions de recherche sémantique. - Déploiement cloud et gestion d'infrastructure multitenant.", 'source': 'Presentation_ONIRTECH.docx'}, {'text': 'Nos Missions\n- Accompagner les entreprises dans leur transformation numérique. - Fournir des services sur mesure en intelligence artificielle et automatisation. - Proposer des plateformes SaaS efficaces et scalables. - Offrir une expertise technique de haut niveau via des prestations de service et des formations.', 'source': 'Presentation_ONIRTECH.docx'}, {'text': "Contact\nAdresse : 50m en face de l'église catholique Ambatonilita Isoraka, Antananarivo Téléphones : 033 082 8086, 034 022 0452, 032 042 0452 Site Web : https://onirtech.com", 'source': 'Presentation_ONIRTECH.docx'}]
+Documents:  [{'text': "Présentation de l'Entreprise ONIRTECH\nQui sommes-nous ? ONIRTECH est une entreprise innovante spécialisée dans le développement de solutions intelligentes à base d'intelligence artificielle, d'outils cloud et de technologies web avancées. Notre objectif est de transformer la manière dont les entreprises exploitent leurs données et interagissent avec leurs clients.", 'source': 'Presentation_ONIRTECH.docx'}, {'text': "Notre Vision\nNous croyons en un avenir où l'intelligence artificielle est utilisée de manière éthique et responsable pour améliorer la vie professionnelle et personnelle. ONIRTECH se positionne comme un acteur clé dans la démocratisation de l'IA et l'accessibilité des technologies avancées.", 'source': 'Presentation_ONIRTECH.docx'}, {'text': "Produits et Services\nONIRTECH propose une gamme variée de produits et services, notamment : - Chatbots intelligents et agents conversationnels personnalisés. - Solutions de fine-tuning de modèles IA pour domaines spécifiques. - Interfaces web modernes et adaptatives. - Intégration de solutions de recherche sémantique. - Déploiement cloud et gestion d'infrastructure multitenant.", 'source': 'Presentation_ONIRTECH.docx'}, {'text': 'Nos Missions\n- Accompagner les entreprises dans leur transformation numérique. - Fournir des services sur mesure en intelligence artificielle et automatisation. - Proposer des plateformes SaaS efficaces et scalables. - Offrir une expertise technique de haut niveau via des prestations de service et des formations.', 'source': 'Presentation_ONIRTECH.docx'}, {'text': "Contact\nAdresse : 50m en face de l'église catholique Ambatonilita Isoraka, Antananarivo Téléphones : 033 082 8086, 034 022 0452, 032 042 0452 Site Web : https://onirtech.com", 'source': 'Presentation_ONIRTECH.docx'}]
+[Erreur chargement SQL reasoning ou schéma] : {'message': 'JSON object requested, multiple (or no) rows returned', 'code': 'PGRST116', 'hint': None, 'details': 'The result contains 0 rows'}
+INFO:     102.17.120.50:0 - "POST /ask HTTP/1.0" 200 OK
+['Presentation_ONIRTECH.docx']
+[{'text': 'Nos Missions\n- Accompagner les entreprises dans leur transformation numérique. - Fournir des services sur mesure en intelligence artificielle et automatisation. - Proposer des plateformes SaaS efficaces et scalables. - Offrir une expertise technique de haut niveau via des prestations de service et des formations.', 'source': 'Presentation_ONIRTECH.docx'}, {'text': "Notre Vision\nNous croyons en un avenir où l'intelligence artificielle est utilisée de manière éthique et responsable pour améliorer la vie professionnelle et personnelle. ONIRTECH se positionne comme un acteur clé dans la démocratisation de l'IA et l'accessibilité des technologies avancées.", 'source': 'Presentation_ONIRTECH.docx'}, {'text': "Contact\nAdresse : 50m en face de l'église catholique Ambatonilita Isoraka, Antananarivo Téléphones : 033 082 8086, 034 022 0452, 032 042 0452 Site Web : https://onirtech.com", 'source': 'Presentation_ONIRTECH.docx'}, {'text': "Présentation de l'Entreprise ONIRTECH\nQui sommes-nous ? ONIRTECH est une entreprise innovante spécialisée dans le développement de solutions intelligentes à base d'intelligence artificielle, d'outils cloud et de technologies web avancées. Notre objectif est de transformer la manière dont les entreprises exploitent leurs données et interagissent avec leurs clients.", 'source': 'Presentation_ONIRTECH.docx'}, {'text': "Produits et Services\nONIRTECH propose une gamme variée de produits et services, notamment : - Chatbots intelligents et agents conversationnels personnalisés. - Solutions de fine-tuning de modèles IA pour domaines spécifiques. - Interfaces web modernes et adaptatives. - Intégration de solutions de recherche sémantique. - Déploiement cloud et gestion d'infrastructure multitenant.", 'source': 'Presentation_ONIRTECH.docx'}]
+Documents:  [{'text': 'Nos Missions\n- Accompagner les entreprises dans leur transformation numérique. - Fournir des services sur mesure en intelligence artificielle et automatisation. - Proposer des plateformes SaaS efficaces et scalables. - Offrir une expertise technique de haut niveau via des prestations de service et des formations.', 'source': 'Presentation_ONIRTECH.docx'}, {'text': "Notre Vision\nNous croyons en un avenir où l'intelligence artificielle est utilisée de manière éthique et responsable pour améliorer la vie professionnelle et personnelle. ONIRTECH se positionne comme un acteur clé dans la démocratisation de l'IA et l'accessibilité des technologies avancées.", 'source': 'Presentation_ONIRTECH.docx'}, {'text': "Contact\nAdresse : 50m en face de l'église catholique Ambatonilita Isoraka, Antananarivo Téléphones : 033 082 8086, 034 022 0452, 032 042 0452 Site Web : https://onirtech.com", 'source': 'Presentation_ONIRTECH.docx'}, {'text': "Présentation de l'Entreprise ONIRTECH\nQui sommes-nous ? ONIRTECH est une entreprise innovante spécialisée dans le développement de solutions intelligentes à base d'intelligence artificielle, d'outils cloud et de technologies web avancées. Notre objectif est de transformer la manière dont les entreprises exploitent leurs données et interagissent avec leurs clients.", 'source': 'Presentation_ONIRTECH.docx'}, {'text': "Produits et Services\nONIRTECH propose une gamme variée de produits et services, notamment : - Chatbots intelligents et agents conversationnels personnalisés. - Solutions de fine-tuning de modèles IA pour domaines spécifiques. - Interfaces web modernes et adaptatives. - Intégration de solutions de recherche sémantique. - Déploiement cloud et gestion d'infrastructure multitenant.", 'source': 'Presentation_ONIRTECH.docx'}]
+[Erreur chargement SQL reasoning ou schéma] : {'message': 'JSON object requested, multiple (or no) rows returned', 'code': 'PGRST116', 'hint': None, 'details': 'The result contains 0 rows'}
+INFO:     102.17.120.50:0 - "POST /ask HTTP/1.0" 200 OK
+['Presentation_ONIRTECH.docx']
+[{'text': 'Nos Missions\n- Accompagner les entreprises dans leur transformation numérique. - Fournir des services sur mesure en intelligence artificielle et automatisation. - Proposer des plateformes SaaS efficaces et scalables. - Offrir une expertise technique de haut niveau via des prestations de service et des formations.', 'source': 'Presentation_ONIRTECH.docx'}, {'text': "Notre Vision\nNous croyons en un avenir où l'intelligence artificielle est utilisée de manière éthique et responsable pour améliorer la vie professionnelle et personnelle. ONIRTECH se positionne comme un acteur clé dans la démocratisation de l'IA et l'accessibilité des technologies avancées.", 'source': 'Presentation_ONIRTECH.docx'}, {'text': "Contact\nAdresse : 50m en face de l'église catholique Ambatonilita Isoraka, Antananarivo Téléphones : 033 082 8086, 034 022 0452, 032 042 0452 Site Web : https://onirtech.com", 'source': 'Presentation_ONIRTECH.docx'}, {'text': "Présentation de l'Entreprise ONIRTECH\nQui sommes-nous ? ONIRTECH est une entreprise innovante spécialisée dans le développement de solutions intelligentes à base d'intelligence artificielle, d'outils cloud et de technologies web avancées. Notre objectif est de transformer la manière dont les entreprises exploitent leurs données et interagissent avec leurs clients.", 'source': 'Presentation_ONIRTECH.docx'}, {'text': "Produits et Services\nONIRTECH propose une gamme variée de produits et services, notamment : - Chatbots intelligents et agents conversationnels personnalisés. - Solutions de fine-tuning de modèles IA pour domaines spécifiques. - Interfaces web modernes et adaptatives. - Intégration de solutions de recherche sémantique. - Déploiement cloud et gestion d'infrastructure multitenant.", 'source': 'Presentation_ONIRTECH.docx'}]
+Documents:  [{'text': 'Nos Missions\n- Accompagner les entreprises dans leur transformation numérique. - Fournir des services sur mesure en intelligence artificielle et automatisation. - Proposer des plateformes SaaS efficaces et scalables. - Offrir une expertise technique de haut niveau via des prestations de service et des formations.', 'source': 'Presentation_ONIRTECH.docx'}, {'text': "Notre Vision\nNous croyons en un avenir où l'intelligence artificielle est utilisée de manière éthique et responsable pour améliorer la vie professionnelle et personnelle. ONIRTECH se positionne comme un acteur clé dans la démocratisation de l'IA et l'accessibilité des technologies avancées.", 'source': 'Presentation_ONIRTECH.docx'}, {'text': "Contact\nAdresse : 50m en face de l'église catholique Ambatonilita Isoraka, Antananarivo Téléphones : 033 082 8086, 034 022 0452, 032 042 0452 Site Web : https://onirtech.com", 'source': 'Presentation_ONIRTECH.docx'}, {'text': "Présentation de l'Entreprise ONIRTECH\nQui sommes-nous ? ONIRTECH est une entreprise innovante spécialisée dans le développement de solutions intelligentes à base d'intelligence artificielle, d'outils cloud et de technologies web avancées. Notre objectif est de transformer la manière dont les entreprises exploitent leurs données et interagissent avec leurs clients.", 'source': 'Presentation_ONIRTECH.docx'}, {'text': "Produits et Services\nONIRTECH propose une gamme variée de produits et services, notamment : - Chatbots intelligents et agents conversationnels personnalisés. - Solutions de fine-tuning de modèles IA pour domaines spécifiques. - Interfaces web modernes et adaptatives. - Intégration de solutions de recherche sémantique. - Déploiement cloud et gestion d'infrastructure multitenant.", 'source': 'Presentation_ONIRTECH.docx'}]
+[Erreur chargement SQL reasoning ou schéma] : {'message': 'JSON object requested, multiple (or no) rows returned', 'code': 'PGRST116', 'hint': None, 'details': 'The result contains 0 rows'}
+INFO:     102.17.120.50:0 - "POST /ask HTTP/1.0" 200 OK
+['Presentation_ONIRTECH.docx']
+[{'text': "Notre Vision\nNous croyons en un avenir où l'intelligence artificielle est utilisée de manière éthique et responsable pour améliorer la vie professionnelle et personnelle. ONIRTECH se positionne comme un acteur clé dans la démocratisation de l'IA et l'accessibilité des technologies avancées.", 'source': 'Presentation_ONIRTECH.docx'}, {'text': "Présentation de l'Entreprise ONIRTECH\nQui sommes-nous ? ONIRTECH est une entreprise innovante spécialisée dans le développement de solutions intelligentes à base d'intelligence artificielle, d'outils cloud et de technologies web avancées. Notre objectif est de transformer la manière dont les entreprises exploitent leurs données et interagissent avec leurs clients.", 'source': 'Presentation_ONIRTECH.docx'}, {'text': "Produits et Services\nONIRTECH propose une gamme variée de produits et services, notamment : - Chatbots intelligents et agents conversationnels personnalisés. - Solutions de fine-tuning de modèles IA pour domaines spécifiques. - Interfaces web modernes et adaptatives. - Intégration de solutions de recherche sémantique. - Déploiement cloud et gestion d'infrastructure multitenant.", 'source': 'Presentation_ONIRTECH.docx'}, {'text': 'Nos Missions\n- Accompagner les entreprises dans leur transformation numérique. - Fournir des services sur mesure en intelligence artificielle et automatisation. - Proposer des plateformes SaaS efficaces et scalables. - Offrir une expertise technique de haut niveau via des prestations de service et des formations.', 'source': 'Presentation_ONIRTECH.docx'}, {'text': "Contact\nAdresse : 50m en face de l'église catholique Ambatonilita Isoraka, Antananarivo Téléphones : 033 082 8086, 034 022 0452, 032 042 0452 Site Web : https://onirtech.com", 'source': 'Presentation_ONIRTECH.docx'}]
+Documents:  [{'text': "Notre Vision\nNous croyons en un avenir où l'intelligence artificielle est utilisée de manière éthique et responsable pour améliorer la vie professionnelle et personnelle. ONIRTECH se positionne comme un acteur clé dans la démocratisation de l'IA et l'accessibilité des technologies avancées.", 'source': 'Presentation_ONIRTECH.docx'}, {'text': "Présentation de l'Entreprise ONIRTECH\nQui sommes-nous ? ONIRTECH est une entreprise innovante spécialisée dans le développement de solutions intelligentes à base d'intelligence artificielle, d'outils cloud et de technologies web avancées. Notre objectif est de transformer la manière dont les entreprises exploitent leurs données et interagissent avec leurs clients.", 'source': 'Presentation_ONIRTECH.docx'}, {'text': "Produits et Services\nONIRTECH propose une gamme variée de produits et services, notamment : - Chatbots intelligents et agents conversationnels personnalisés. - Solutions de fine-tuning de modèles IA pour domaines spécifiques. - Interfaces web modernes et adaptatives. - Intégration de solutions de recherche sémantique. - Déploiement cloud et gestion d'infrastructure multitenant.", 'source': 'Presentation_ONIRTECH.docx'}, {'text': 'Nos Missions\n- Accompagner les entreprises dans leur transformation numérique. - Fournir des services sur mesure en intelligence artificielle et automatisation. - Proposer des plateformes SaaS efficaces et scalables. - Offrir une expertise technique de haut niveau via des prestations de service et des formations.', 'source': 'Presentation_ONIRTECH.docx'}, {'text': "Contact\nAdresse : 50m en face de l'église catholique Ambatonilita Isoraka, Antananarivo Téléphones : 033 082 8086, 034 022 0452, 032 042 0452 Site Web : https://onirtech.com", 'source': 'Presentation_ONIRTECH.docx'}]
+[Erreur chargement SQL reasoning ou schéma] : {'message': 'JSON object requested, multiple (or no) rows returned', 'code': 'PGRST116', 'hint': None, 'details': 'The result contains 0 rows'}
+INFO:     102.17.120.50:0 - "POST /ask HTTP/1.0" 200 OK
+[]
+[]
+Documents:  [{'text': "L' employée Adams a pour poste General Manager, son numéro est +1 (780) 428-9482 et son Email est andrew@chinookcorp.com. Son  address est 11120 Jasper Ave NW", 'source': 'postgres/Employee'}, {'text': "L' employée King a pour poste IT Staff, son numéro est +1 (403) 456-9986 et son Email est robert@chinookcorp.com. Son  address est 590 Columbia Boulevard West", 'source': 'postgres/Employee'}, {'text': "L' employée Edwards a pour poste Sales Manager, son numéro est +1 (403) 262-3443 et son Email est nancy@chinookcorp.com. Son  address est 825 8 Ave SW", 'source': 'postgres/Employee'}, {'text': "L' employée Park a pour poste Sales Support Agent, son numéro est +1 (403) 263-4423 et son Email est margaret@chinookcorp.com. Son  address est 683 10 Street SW", 'source': 'postgres/Employee'}, {'text': "L' employée Johnson a pour poste Sales Support Agent, son numéro est 1 (780) 836-9987 et son Email est steve@chinookcorp.com. Son  address est 7727B 41 Ave", 'source': 'postgres/Employee'}]
+extracted sql: SELECT COUNT(*) FROM "Employee";
+INFO:     102.17.120.50:0 - "POST /ask HTTP/1.0" 200 OK
+[]
+[]
+Documents:  [{'text': "L' employée King a pour poste IT Staff, son numéro est +1 (403) 456-9986 et son Email est robert@chinookcorp.com. Son  address est 590 Columbia Boulevard West", 'source': 'postgres/Employee'}, {'text': "L' employée Callahan a pour poste IT Staff, son numéro est +1 (403) 467-3351 et son Email est laura@chinookcorp.com. Son  address est 923 7 ST NW", 'source': 'postgres/Employee'}, {'text': "L' employée Edwards a pour poste Sales Manager, son numéro est +1 (403) 262-3443 et son Email est nancy@chinookcorp.com. Son  address est 825 8 Ave SW", 'source': 'postgres/Employee'}, {'text': "L' employée Adams a pour poste General Manager, son numéro est +1 (780) 428-9482 et son Email est andrew@chinookcorp.com. Son  address est 11120 Jasper Ave NW", 'source': 'postgres/Employee'}, {'text': "L' employée Johnson a pour poste Sales Support Agent, son numéro est 1 (780) 836-9987 et son Email est steve@chinookcorp.com. Son  address est 7727B 41 Ave", 'source': 'postgres/Employee'}]
 extracted sql: SELECT * FROM "Employee" WHERE "Title" = 'IT Staff';
-INFO:     102.17.105.208:0 - "POST /ask HTTP/1.0" 200 OK
+INFO:     102.17.120.50:0 - "POST /ask HTTP/1.0" 200 OK
+[]
+[]
+Documents:  [{'text': "L' employée King a pour poste IT Staff, son numéro est +1 (403) 456-9986 et son Email est robert@chinookcorp.com. Son  address est 590 Columbia Boulevard West", 'source': 'postgres/Employee'}, {'text': "L' employée Peacock a pour poste Sales Support Agent, son numéro est +1 (403) 262-3443 et son Email est jane@chinookcorp.com. Son  address est 1111 6 Ave SW", 'source': 'postgres/Employee'}, {'text': "L' employée Edwards a pour poste Sales Manager, son numéro est +1 (403) 262-3443 et son Email est nancy@chinookcorp.com. Son  address est 825 8 Ave SW", 'source': 'postgres/Employee'}, {'text': "L' employée Johnson a pour poste Sales Support Agent, son numéro est 1 (780) 836-9987 et son Email est steve@chinookcorp.com. Son  address est 7727B 41 Ave", 'source': 'postgres/Employee'}, {'text': "L' employée Callahan a pour poste IT Staff, son numéro est +1 (403) 467-3351 et son Email est laura@chinookcorp.com. Son  address est 923 7 ST NW", 'source': 'postgres/Employee'}]
+extracted sql: SELECT "Email" FROM "Employee" WHERE "Title" = 'Sales Manager';
+INFO:     102.17.120.50:0 - "POST /ask HTTP/1.0" 200 OK
+[]
+[]
+Documents:  [{'text': "L' employée King a pour poste IT Staff, son numéro est +1 (403) 456-9986 et son Email est robert@chinookcorp.com. Son  address est 590 Columbia Boulevard West", 'source': 'postgres/Employee'}, {'text': "L' employée Edwards a pour poste Sales Manager, son numéro est +1 (403) 262-3443 et son Email est nancy@chinookcorp.com. Son  address est 825 8 Ave SW", 'source': 'postgres/Employee'}, {'text': "L' employée Adams a pour poste General Manager, son numéro est +1 (780) 428-9482 et son Email est andrew@chinookcorp.com. Son  address est 11120 Jasper Ave NW", 'source': 'postgres/Employee'}, {'text': "L' employée Johnson a pour poste Sales Support Agent, son numéro est 1 (780) 836-9987 et son Email est steve@chinookcorp.com. Son  address est 7727B 41 Ave", 'source': 'postgres/Employee'}, {'text': "L' employée Park a pour poste Sales Support Agent, son numéro est +1 (403) 263-4423 et son Email est margaret@chinookcorp.com. Son  address est 683 10 Street SW", 'source': 'postgres/Employee'}]
 extracted sql: None
-INFO:     102.17.105.208:0 - "POST /ask HTTP/1.0" 200 OK
-extracted sql: None
-INFO:     102.17.105.208:0 - "POST /ask HTTP/1.0" 200 OK
+INFO:     102.17.120.50:0 - "POST /ask HTTP/1.0" 200 OK
+INFO:     102.17.120.50:0 - "OPTIONS /ask HTTP/1.0" 200 OK
+[]
+[]
+Documents:  [{'text': "L' employée Adams a pour poste General Manager, son numéro est +1 (780) 428-9482 et son Email est andrew@chinookcorp.com. Son  address est 11120 Jasper Ave NW", 'source': 'postgres/Employee'}, {'text': "L' employée King a pour poste IT Staff, son numéro est +1 (403) 456-9986 et son Email est robert@chinookcorp.com. Son  address est 590 Columbia Boulevard West", 'source': 'postgres/Employee'}, {'text': "L' employée Edwards a pour poste Sales Manager, son numéro est +1 (403) 262-3443 et son Email est nancy@chinookcorp.com. Son  address est 825 8 Ave SW", 'source': 'postgres/Employee'}, {'text': "L' employée Mitchell a pour poste IT Manager, son numéro est +1 (403) 246-9887 et son Email est michael@chinookcorp.com. Son  address est 5827 Bowness Road NW", 'source': 'postgres/Employee'}, {'text': "L' employée Johnson a pour poste Sales Support Agent, son numéro est 1 (780) 836-9987 et son Email est steve@chinookcorp.com. Son  address est 7727B 41 Ave", 'source': 'postgres/Employee'}]
+extracted sql: SELECT * FROM "Employee" WHERE EXTRACT(MONTH FROM "HireDate") = 3;
+INFO:     102.17.120.50:0 - "POST /ask HTTP/1.0" 200 OK
+[]
+[]
+Documents:  [{'text': "L' employée King a pour poste IT Staff, son numéro est +1 (403) 456-9986 et son Email est robert@chinookcorp.com. Son  address est 590 Columbia Boulevard West", 'source': 'postgres/Employee'}, {'text': "L' employée Edwards a pour poste Sales Manager, son numéro est +1 (403) 262-3443 et son Email est nancy@chinookcorp.com. Son  address est 825 8 Ave SW", 'source': 'postgres/Employee'}, {'text': "L' employée Johnson a pour poste Sales Support Agent, son numéro est 1 (780) 836-9987 et son Email est steve@chinookcorp.com. Son  address est 7727B 41 Ave", 'source': 'postgres/Employee'}, {'text': "L' employée Adams a pour poste General Manager, son numéro est +1 (780) 428-9482 et son Email est andrew@chinookcorp.com. Son  address est 11120 Jasper Ave NW", 'source': 'postgres/Employee'}, {'text': "L' employée Park a pour poste Sales Support Agent, son numéro est +1 (403) 263-4423 et son Email est margaret@chinookcorp.com. Son  address est 683 10 Street SW", 'source': 'postgres/Employee'}]
+extracted sql: SELECT * FROM "Employee" WHERE "HireDate" IS NOT NULL AND EXTRACT(MONTH FROM "HireDate") = 3;
+INFO:     102.17.120.50:0 - "POST /ask HTTP/1.0" 200 OK
+INFO:     205.210.31.19:0 - "GET / HTTP/1.0" 404 Not Found
+INFO:     45.148.10.80:0 - "GET /.git/config HTTP/1.0" 404 Not Found
 WARNING:  StatReload detected changes in 'rag/rag_engine.py'. Reloading...
 INFO:     Shutting down
-INFO:     Waiting for application shutdown.
-INFO:     Application shutdown complete.
-INFO:     Finished server process [948797]
-INFO:     Started server process [949937]
-INFO:     Waiting for application startup.
-INFO:     Application startup complete.
-INFO:     102.17.105.208:0 - "OPTIONS /ask HTTP/1.0" 200 OK
-extracted sql: None
-INFO:     102.17.105.208:0 - "POST /ask HTTP/1.0" 200 OK
-extracted sql: SELECT "HireDate" 
-FROM "Employee" 
-WHERE "FirstName" = 'Nancy' AND "LastName" = 'Edwards';
-INFO:     102.17.105.208:0 - "POST /ask HTTP/1.0" 200 OK
-[Erreur chargement SQL reasoning ou schéma] : {'message': 'JSON object requested, multiple (or no) rows returned', 'code': 'PGRST116', 'hint': None, 'details': 'The result contains 2 rows'}
-INFO:     102.17.105.208:0 - "POST /ask HTTP/1.0" 200 OK
-[Erreur chargement SQL reasoning ou schéma] : {'message': 'JSON object requested, multiple (or no) rows returned', 'code': 'PGRST116', 'hint': None, 'details': 'The result contains 2 rows'}
-INFO:     102.17.105.208:0 - "POST /ask HTTP/1.0" 200 OK
-[Erreur chargement SQL reasoning ou schéma] : {'message': 'JSON object requested, multiple (or no) rows returned', 'code': 'PGRST116', 'hint': None, 'details': 'The result contains 2 rows'}
-INFO:     102.17.105.208:0 - "POST /ask HTTP/1.0" 200 OK
-[Erreur chargement SQL reasoning ou schéma] : {'message': 'JSON object requested, multiple (or no) rows returned', 'code': 'PGRST116', 'hint': None, 'details': 'The result contains 2 rows'}
-INFO:     102.17.105.208:0 - "POST /ask HTTP/1.0" 200 OK
-WARNING:  StatReload detected changes in 'rag/rag_engine.py'. Reloading...
-INFO:     Shutting down
-INFO:     Waiting for application shutdown.
-INFO:     Application shutdown complete.
-INFO:     Finished server process [949937]
-INFO:     Started server process [951040]
-INFO:     Waiting for application startup.
-INFO:     Application startup complete.
+INFO:     Waiting for background tasks to complete. (CTRL+C to force quit)

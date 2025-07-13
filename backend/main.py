@@ -94,6 +94,7 @@ def ask_question(req: QuestionRequest):
 
     if req.chatbot_id:
         document_names = get_document_names_from_chatbot(req.chatbot_id)
+        print(document_names)
         if document_names:
             docs_classic = retrieve_documents(
                 client=client,
@@ -104,7 +105,7 @@ def ask_question(req: QuestionRequest):
                 document_filter=document_names
             )
             combined_docs.extend(docs_classic)
-
+        print(combined_docs)
         pgsql_sources = get_pgsql_sources_from_chatbot(req.chatbot_id)
         if pgsql_sources:
             docs_pgsql = retrieve_documents(
@@ -118,6 +119,7 @@ def ask_question(req: QuestionRequest):
             combined_docs.extend(docs_pgsql)
 
     if not req.chatbot_id:
+        print("trueeeeeee")
         combined_docs = retrieve_documents(
             client=client,
             collection_name=os.getenv("COLLECTION_NAME"),
