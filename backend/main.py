@@ -10,8 +10,8 @@ import tempfile
 import requests
 import numpy as np
 import zipfile
-from rag.embedding import get_embedding  # <-- modèle SentenceTransformer à jour
-from rag.rag_engine import retrieve_documents, generate_answer
+from core.retrieval import retrieve_documents
+from core.agent import generate_answer
 from qdrant_client import QdrantClient
 from typing import Optional
 from supabase import create_client
