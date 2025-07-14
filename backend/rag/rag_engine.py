@@ -186,27 +186,31 @@ def generate_answer(query, docs, chatbot_id=None, history=None):
             connexion_params = res_conn.data
     except Exception as e:
         print(f"[Erreur chargement SQL reasoning ou schéma] : {e}")
+       # 5.1 Ajouter l'historique conversationnel
+    history_formatted = ""
+    if history:
+        for i, msg in enumerate(history):
+            role = "Utilisateur" if msg.role == "user" else "Assistant"
+            history_formatted += f"{role} : {msg.content.strip()}\n"
 
     # 3. Construire prompt système
     system_prompt = (
         "Tu es un assistant intelligent, clair et naturel. "
-        "Tu prends en compte la conversation précédente pour raisonner"
+        "Tu prends en compte la conversation précédente pour comprendre les questions vagues"
         f"Tu suis la consigne suivante : {description or 'réponds poliment et avec clarté.'} "
     )
     if sql_reasoning_enabled and schema_text:
         system_prompt += (
-            f"\n\nVoici le schéma de la base de données PostgreSQL à ta disposition :\n{schema_text}\n\n"
-            "Règles de réponse :\n"
-            "1. Si tu trouves la réponse dans le contexte fourni, réponds directement et naturellement sans aucun SQL.\n"
-            "2. Si la réponse n’est pas présente dans le contexte, retourne uniquement une requête SQL PostgreSQL valide (sans commentaire ni explication).\n"
-            "3. Le SQL doit commencer directement par SELECT.\n"
-            "4. Ne parle jamais de requête SQL donne juste le code si besoin\n"
-            "5. PostgreSQL est sensible à la casse : les noms de table et colonnes doivent être entre guillemets.\n"
-            "6. Exemple correct : SELECT * FROM \"Employee\" WHERE \"Title\" = 'IT Director';\n"
-            "7. Ne retourne jamais du base64, convertis-les en chaînes lisibles.\n"
-            "8. N’utilise pas de balises Markdown ni d’explication, retourne juste la requête."
-            
-        )
+    f"Entant qu'expert POSTGRESQL, Voici le schéma de la base de données PostgreSQL à ta disposition :\n{schema_text}\n\n"
+    "Règles strictes que tu dois respecter pour une requête SQL :\n"
+    "1. Retourne uniquement une requête SQL PostgreSQL valide, exécutable.\n"
+    "2. Ne retourne jamais de texte, d'explication ou de balises Markdown (` ```sql ` ou `sql:`).\n"
+    "3. La requête doit contenir toutes les clauses nécessaires : SELECT, FROM, GROUP BY, etc.\n"
+    "4. Les noms de colonnes et de tables  doivent être mis entre guillemets (ex: \"HireDate\").\n"
+    "5. Si un champ est agrégé (comme COUNT), utilise GROUP BY si besoin.\n"
+    "6. Donne du code sql directement executable et complète\n"
+ 
+)
     else:
         system_prompt += "\n\nSi tu ne trouves pas la réponse dans les contextes fournis, indique que l'information n'est pas disponible."
 
@@ -216,19 +220,13 @@ def generate_answer(query, docs, chatbot_id=None, history=None):
     # 5. Construire les messages
     messages = [{"role": "system", "content": system_prompt}]
 
-    # 5.1 Ajouter l'historique conversationnel
-    history_formatted = ""
-    if history:
-        for i, msg in enumerate(history):
-            role = "Utilisateur" if msg.role == "user" else "Assistant"
-            history_formatted += f"{role} : {msg.content.strip()}\n"
-
-
+ 
+    print(history_formatted.strip())
     # 5.2 Ajouter la question avec le contexte
     messages.append({
         "role": "user",
         "content": (
-            f"Voici la conversation précédente :\n{history_formatted.strip()}\n\n"
+            f"Voici la conversation précédente entre toi es l'user :\n{history_formatted.strip()}\n\n"
             f"Voici le contexte :\n{contexte.strip()}\n\n"
             f"Voici la question :\n{query.strip()}"
         )
