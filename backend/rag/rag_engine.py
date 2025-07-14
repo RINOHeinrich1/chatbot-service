@@ -199,17 +199,19 @@ def generate_answer(query, docs, chatbot_id=None, history=None):
         "Tu prends en compte la conversation précédente pour comprendre les questions vagues"
         f"Tu suis la consigne suivante : {description or 'réponds poliment et avec clarté.'} "
     )
+    print(schema_text)
     if sql_reasoning_enabled and schema_text:
         system_prompt += (
-    f"Entant qu'expert POSTGRESQL, Voici le schéma de la base de données PostgreSQL à ta disposition :\n{schema_text}\n\n"
-    "Règles strictes que tu dois respecter pour une requête SQL :\n"
+    f"\n\nVoici les information sur la table PostgreSQL à ta disposition :\n{schema_text}\n\n"
+    "Règles strictes pour écrire une requête SQL :\n"
     "1. Retourne uniquement une requête SQL PostgreSQL valide, exécutable.\n"
     "2. Ne retourne jamais de texte, d'explication ou de balises Markdown (` ```sql ` ou `sql:`).\n"
     "3. La requête doit contenir toutes les clauses nécessaires : SELECT, FROM, GROUP BY, etc.\n"
-    "4. Les noms de colonnes et de tables  doivent être mis entre guillemets (ex: \"HireDate\").\n"
+    "4. Les noms de colonnes et de tables sont sensibles à la casse : ils doivent être entre guillemets (ex: \"HireDate\").\n"
     "5. Si un champ est agrégé (comme COUNT), utilise GROUP BY si besoin.\n"
-    "6. Donne du code sql directement executable et complète\n"
- 
+    "6. Ne fais pas d'erreur de syntaxe.\n"
+    "7. N'oublies jamais de spécifier la table à utiliser pour les requêtes\n"
+  
 )
     else:
         system_prompt += "\n\nSi tu ne trouves pas la réponse dans les contextes fournis, indique que l'information n'est pas disponible."
@@ -242,7 +244,7 @@ def generate_answer(query, docs, chatbot_id=None, history=None):
         "model": "mixtral",
         "messages": messages,
         "temperature": 0.3,
-        "max_tokens": 512,
+        "max_tokens": 2000,
     }
 
     try:

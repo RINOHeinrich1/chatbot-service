@@ -7,6 +7,7 @@ from fastapi.responses import JSONResponse
 import os
 import shutil
 import tempfile
+import json
 import requests
 import numpy as np
 import zipfile
@@ -87,39 +88,140 @@ def get_memoire_contextuelle(chatbot_id: str) -> int:
 
     return int(response.data.get("memoire_contextuelle", 0))
 
+
+def get_connexions_for_chatbot(chatbot_id: str):
+    response = supabase.table("chatbot_pgsql_connexions") \
+                       .select("connexion_name, description") \
+                       .eq("chatbot_id", chatbot_id) \
+                       .execute()
+    return response.data or []
+
+def get_documents_for_chatbot(chatbot_id: str):
+    response = supabase.table("chatbot_document_association") \
+                       .select("document_name, description") \
+                       .eq("chatbot_id", chatbot_id) \
+                       .execute()
+    return response.data or []
+TOKEN = os.getenv("AI_API_TOKEN")
+PRODUCT_ID = os.getenv("AI_PRODUCT_ID")
+URL = f"https://api.infomaniak.com/1/ai/{PRODUCT_ID}/openai/chat/completions"
+def ask_mixtral_for_relevant_sources(chatbot_id: str, question: str):
+    connexions = get_connexions_for_chatbot(chatbot_id)
+    documents = get_documents_for_chatbot(chatbot_id)
+
+    sources = []
+
+    for c in connexions:
+        sources.append({
+            "type": "connexion",
+            "name": c["connexion_name"],
+            "description": c["description"]
+        })
+
+    for d in documents:
+        sources.append({
+            "type": "document",
+            "name": d["document_name"],
+            "description": d["description"]
+        })
+    print(sources)
+    mixtral_prompt = (
+        "Tu es un assistant intelligent va sélectionner les sources les plus pertinentes pour répondre à une question.\n"
+        "Voici la question posée par l'utilisateur :\n"
+        f"{question}\n\n"
+        "Voici la liste des sources disponibles (documents et connexions) avec leurs descriptions :\n"
+        f"{json.dumps(sources, indent=2, ensure_ascii=False)}\n\n"
+        f"Réponds uniquement avec une liste JSON au format suivant :\n"
+        "[{\"type\": \"document\" | \"connexion\", \"name\": \"nom_de_la_source\"}, ...]\n"
+        "Ne fais aucun commentaire, ne donne aucune explication. "
+        "Si aucune source ne correspond exactement, indique celle qui semble la plus proche."
+
+    )
+
+
+
+    messages = [
+        {"role": "system", "content": "Tu es un assistant intelligent qui sélectionne les sources pertinentes."},
+        {"role": "user", "content": mixtral_prompt}
+    ]
+
+    payload = {
+        "model": "mixtral",
+        "messages": messages,
+        "temperature": 0.3,
+        "max_tokens": 3000,
+    }
+
+    headers = {
+        "Authorization": f"Bearer {TOKEN}",
+        "Content-Type": "application/json",
+    }
+
+    response = requests.post(URL, headers=headers, data=json.dumps(payload))
+    response.raise_for_status()
+
+    result = response.json()["choices"][0]["message"]["content"].strip()
+
+    try:
+        # On tente de parser comme JSON directement
+        sources_selected = json.loads(result)
+    except Exception:
+        # Sinon on renvoie le texte brut
+        sources_selected = result
+
+    return sources_selected
+
+
 @app.post("/ask", response_model=AnswerResponse)
 def ask_question(req: QuestionRequest):
     question = req.question
     combined_docs = []
 
-    if req.chatbot_id:
-        document_names = get_document_names_from_chatbot(req.chatbot_id)
-        print(document_names)
-        if document_names:
-            docs_classic = retrieve_documents(
-                client=client,
-                collection_name=os.getenv("COLLECTION_NAME"),
-                query=question,
-                k=5,
-                threshold=0,
-                document_filter=document_names
-            )
-            combined_docs.extend(docs_classic)
-        print(combined_docs)
-        pgsql_sources = get_pgsql_sources_from_chatbot(req.chatbot_id)
-        if pgsql_sources:
-            docs_pgsql = retrieve_documents(
-                client=client,
-                collection_name=os.getenv("POSTGRESS_COLLECTION_NAME"),
-                query=question,
-                k=5,
-                threshold=0,
-                document_filter=pgsql_sources
-            )
-            combined_docs.extend(docs_pgsql)
+    relevant_sources = ask_mixtral_for_relevant_sources(req.chatbot_id, req.question)
+    print("🔎 Sources sélectionnées :", relevant_sources)
 
-    if not req.chatbot_id:
-        print("trueeeeeee")
+    # --- Séparation des sources documents / connexions ---
+    documents_to_use = []
+    connexions_to_use = []
+
+    if isinstance(relevant_sources, str):
+        try:
+            relevant_sources = json.loads(relevant_sources)
+        except Exception:
+            relevant_sources = []
+
+    for src in relevant_sources:
+        if isinstance(src, dict):
+            if src.get("type") == "document":
+                documents_to_use.append(src["name"])
+            elif src.get("type") == "connexion":
+                connexions_to_use.append(src["name"])
+
+    # --- Recherche documentaire vectorielle via Qdrant ---
+    if documents_to_use:
+        docs_classic = retrieve_documents(
+            client=client,
+            collection_name=os.getenv("COLLECTION_NAME"),
+            query=question,
+            k=5,
+            threshold=0,
+            document_filter=documents_to_use
+        )
+        combined_docs.extend(docs_classic)
+
+    if connexions_to_use:
+        docs_pgsql = retrieve_documents(
+            client=client,
+            collection_name=os.getenv("POSTGRESS_COLLECTION_NAME"),
+            query=question,
+            k=5,
+            threshold=0,
+            document_filter=connexions_to_use
+        )
+        combined_docs.extend(docs_pgsql)
+
+    # --- Mode fallback sans chatbot_id ---
+    if not req.chatbot_id and not combined_docs:
         combined_docs = retrieve_documents(
             client=client,
             collection_name=os.getenv("COLLECTION_NAME"),
@@ -135,7 +237,7 @@ def ask_question(req: QuestionRequest):
     context_messages = []
     if req.chatbot_id and req.history:
         max_ctx = get_memoire_contextuelle(req.chatbot_id)
-        context_messages = req.history[-max_ctx:]  # garder les derniers messages uniquement
+        context_messages = req.history[-max_ctx:]
 
     # === Génération de la réponse ===
     answer = generate_answer(
@@ -144,7 +246,6 @@ def ask_question(req: QuestionRequest):
         chatbot_id=req.chatbot_id,
         history=context_messages
     )
-
 
     return AnswerResponse(documents=docs_text_only, answer=answer)
 
