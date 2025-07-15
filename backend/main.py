@@ -130,11 +130,11 @@ def ask_mixtral_for_relevant_sources(chatbot_id: str, question: str):
         "Voici la question posée par l'utilisateur :\n"
         f"{question}\n\n"
         "Voici la liste des sources disponibles (documents et connexions) avec leurs descriptions :\n"
-        f"{json.dumps(sources, indent=2, ensure_ascii=False)}\n\n"
+        f"{json.dumps(sources, ensure_ascii=False)}\n\n"
         f"Réponds uniquement avec une liste JSON au format suivant :\n"
         "[{\"type\": \"document\" | \"connexion\", \"name\": \"nom_de_la_source\"}, ...]\n"
         "Ne fais aucun commentaire, ne donne aucune explication. "
-        "Si aucune source ne correspond exactement, indique celle qui semble la plus proche."
+        "Tu dois obligatoirement choisir un parmis les sources"
 
     )
 
@@ -148,8 +148,8 @@ def ask_mixtral_for_relevant_sources(chatbot_id: str, question: str):
     payload = {
         "model": "mixtral",
         "messages": messages,
-        "temperature": 0.3,
-        "max_tokens": 3000,
+        "temperature": 0.5,
+        "max_tokens": 300,
     }
 
     headers = {
@@ -203,7 +203,7 @@ def ask_question(req: QuestionRequest):
             client=client,
             collection_name=os.getenv("COLLECTION_NAME"),
             query=question,
-            k=5,
+            k=100,
             threshold=0,
             document_filter=documents_to_use
         )
@@ -214,7 +214,7 @@ def ask_question(req: QuestionRequest):
             client=client,
             collection_name=os.getenv("POSTGRESS_COLLECTION_NAME"),
             query=question,
-            k=5,
+            k=100,
             threshold=0,
             document_filter=connexions_to_use
         )

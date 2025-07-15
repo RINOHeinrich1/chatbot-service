@@ -1,6 +1,7 @@
 from rag.embedding import get_embedding
 from rag.cache import get_cache, set_cache
 from qdrant_client import QdrantClient
+from datetime import datetime
 from qdrant_client.models import Filter, SearchParams,MatchAny,FieldCondition,Filter
 from dotenv import load_dotenv
 from supabase import create_client, Client
@@ -125,7 +126,7 @@ def reformulate_answer_via_llm(query, sql_result):
         "Tu es un assistant qui reformule une réponse claire, naturelle et concise pour un utilisateur.\n"
         f"Voici la question posée :\n{query}\n\n"
         f"Voici les résultats SQL obtenus :\n{json.dumps(sql_result, indent=2, ensure_ascii=False)}\n\n"
-        "Formule une réponse naturelle, sans mentionner SQL ni format brut."
+        "Formule une réponse naturelle, sans mentionner SQL ni format brut.\n"
     )
 
     messages = [
@@ -136,8 +137,8 @@ def reformulate_answer_via_llm(query, sql_result):
     payload = {
         "model": "mixtral",
         "messages": messages,
-        "temperature": 0.3,
-        "max_tokens": 256,
+        "temperature": 0.5,
+        "max_tokens": 300,
     }
 
     headers = {
@@ -150,6 +151,7 @@ def reformulate_answer_via_llm(query, sql_result):
     return response.json()["choices"][0]["message"]["content"].strip()
 
 def generate_answer(query, docs, chatbot_id=None, history=None):
+    print(docs)
     cached = get_cache(query, docs)
     if cached:
         return cached
@@ -175,7 +177,6 @@ def generate_answer(query, docs, chatbot_id=None, history=None):
             .execute()
         connexion_name = res.data["connexion_name"]
         sql_reasoning_enabled = res.data.get("sql_reasoning", False)
-
         if sql_reasoning_enabled:
             res_conn = supabase.table("postgresql_connexions") \
                 .select("data_schema, host_name, port, user, password, database, ssl_mode") \
@@ -195,46 +196,49 @@ def generate_answer(query, docs, chatbot_id=None, history=None):
 
     # 3. Construire prompt système
     system_prompt = (
-        "Tu es un assistant intelligent, clair et naturel. "
+        "Tu es un assistant intelligent, clair et naturel parlant francais uniquement. "
         "Tu prends en compte la conversation précédente pour comprendre les questions vagues"
         f"Tu suis la consigne suivante : {description or 'réponds poliment et avec clarté.'} "
     )
-    print(schema_text)
+    # 4. Formater les documents
+    contexte = "\n---\n".join(f"{doc['text']}\n(Source: {doc.get('source', 'inconnu')})" for doc in docs)
+    print(f"contexte:\n{contexte}")
+    now = datetime.now().isoformat()
     if sql_reasoning_enabled and schema_text:
         system_prompt += (
-    f"\n\nVoici les information sur la table PostgreSQL à ta disposition :\n{schema_text}\n\n"
+    f"\n\nVoici les informations sur la table PostgreSQL et ses colonnes :\n{schema_text}\n\n"
     "Règles strictes pour écrire une requête SQL :\n"
     "1. Retourne uniquement une requête SQL PostgreSQL valide, exécutable.\n"
     "2. Ne retourne jamais de texte, d'explication ou de balises Markdown (` ```sql ` ou `sql:`).\n"
     "3. La requête doit contenir toutes les clauses nécessaires : SELECT, FROM, GROUP BY, etc.\n"
-    "4. Les noms de colonnes et de tables sont sensibles à la casse : ils doivent être entre guillemets (ex: \"HireDate\").\n"
+    "4. Les noms de colonnes et de tables  doivent  obligatoirement être mis entre guillemets (ex: \"HireDate\").\n"
     "5. Si un champ est agrégé (comme COUNT), utilise GROUP BY si besoin.\n"
-    "6. Ne fais pas d'erreur de syntaxe.\n"
-    "7. N'oublies jamais de spécifier la table à utiliser pour les requêtes\n"
-  
+    "6. N'oublies jamais de spécifier la table à utiliser pour les requêtes\n"
+    "7. Les requêtes doivent toujours être écrit en une seule ligne\n"
+    "8. Les requêtes doivent être cohérent au types et format des colonnes\n"
+    "9. Tu dois utilisées uniquement les codes compatible POSTGRESQL (exemple DATEDIFF n'existe pas en POSTGRESQL)\n"
+    "10. Si tu n'es pas sure récupère juste tous les données"
 )
     else:
         system_prompt += "\n\nSi tu ne trouves pas la réponse dans les contextes fournis, indique que l'information n'est pas disponible."
 
-    # 4. Formater les documents
-    contexte = "\n---\n".join(f"{doc['text']}\n(Source: {doc.get('source', 'inconnu')})" for doc in docs)
+
 
     # 5. Construire les messages
     messages = [{"role": "system", "content": system_prompt}]
 
  
-    print(history_formatted.strip())
-    # 5.2 Ajouter la question avec le contexte
+    # 6 Ajouter la question avec le contexte
     messages.append({
         "role": "user",
         "content": (
-            f"Voici la conversation précédente entre toi es l'user :\n{history_formatted.strip()}\n\n"
+            f"Voici la conversation précédente entre toi et l'user :\n{history_formatted.strip()}\n\n"
             f"Voici le contexte :\n{contexte.strip()}\n\n"
             f"Voici la question :\n{query.strip()}"
         )
     })
     
-    # 6. Appel LLM
+    # 7. Appel LLM
     headers = {
         "Authorization": f"Bearer {TOKEN}",
         "Content-Type": "application/json",
@@ -243,8 +247,8 @@ def generate_answer(query, docs, chatbot_id=None, history=None):
     payload = {
         "model": "mixtral",
         "messages": messages,
-        "temperature": 0.3,
-        "max_tokens": 2000,
+        "temperature": 0,
+        "max_tokens": 300,
     }
 
     try:
@@ -259,7 +263,6 @@ def generate_answer(query, docs, chatbot_id=None, history=None):
     # 7. SQL Reasoning
     if sql_reasoning_enabled:
         extracted_sql = extract_sql_from_text(raw_result)
-        print(f"extracted sql: {extracted_sql}")
 
         if extracted_sql:
             sql_result = execute_sql_via_api(connexion_params, extracted_sql)
