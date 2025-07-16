@@ -39,6 +39,7 @@ def ask_question(req: QuestionRequest):
     combined_docs = []
 
     relevant_sources = ask_mixtral_for_relevant_sources(req.chatbot_id, req.question)
+    print(f"Sources utilisées pour '{question}' : {relevant_sources}")
 
     documents_to_use = []
     connexions_to_use = []
