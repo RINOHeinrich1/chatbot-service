@@ -1,6 +1,6 @@
 
 from .embedding import get_embedding
-from qdrant_client.models import Filter, FieldCondition, MatchAny
+from qdrant_client.models import Filter, FieldCondition, MatchAny,MatchValue
 import requests
 from utils.helpers import generate_jwt
 from config import *
@@ -52,25 +52,33 @@ def render_template_from_service(service_url: str, template: str, conn_data: dic
         print(f"Exception lors du rendu template : {e}")
     return "[Erreur de rendu]"
 
+
+
 def retrieve_documents(client, collection_name, query, k=5, threshold=0, document_filter=None):
     query_vector = get_embedding([query])[0]
 
-    # Appliquer le filtre "in" si document_filter est fourni
-    if document_filter:
-        filter_condition = Filter(
-            must=[
-                FieldCondition(
-                    key="source",
-                    match=MatchAny(any=document_filter)
-                )
-            ]
-        )
-        
-    else:
-        filter_condition = None
+    filter_conditions = []
 
-    if not filter_condition:
-        return [{"text": "Aucun contexte disponible", "source": None}]
+    if document_filter:
+        filter_conditions.append(
+            FieldCondition(
+                key="source",
+                match=MatchAny(any=document_filter)
+            )
+        )
+
+    # Ajouter condition pour contextual = "true"
+    filter_conditions.append(
+        FieldCondition(
+            key="contextual",
+            match=MatchValue(value="true")  # ou bool True si stocké en bool
+        )
+    )
+
+    # Construire le filtre combiné avec "should" (équivaut à un OR logique)
+    filter_condition = Filter(
+        should=filter_conditions
+    )
 
     search_result = client.search(
         collection_name=collection_name,
@@ -92,7 +100,6 @@ def retrieve_documents(client, collection_name, query, k=5, threshold=0, documen
 
         if is_template:
             service_url = get_postgres_service_url(source)
-            print(f"URL services:{service_url}")
             if service_url:
                 res_conn = supabase.table("postgresql_connexions") \
                 .select("data_schema, host_name, port, user, password, database, ssl_mode") \
@@ -101,11 +108,10 @@ def retrieve_documents(client, collection_name, query, k=5, threshold=0, documen
 
                 if res_conn.data:
                     text = render_template_from_service(
-                        service_url="https://postgresvectorizer.onirtech.com",
-                        template="Voici la liste des postes disponibles: {{.listeDesPostes}}",
+                        service_url=service_url,
+                        template=text,  # on utilise ici le vrai template
                         conn_data=res_conn.data
                     )
-                    print(text)
                 else:
                     print("Connexion non trouvée dans Supabase")
 
@@ -113,5 +119,5 @@ def retrieve_documents(client, collection_name, query, k=5, threshold=0, documen
             "text": text,
             "source": source
         })
-
+    print(f"Documents:  {documents}")
     return documents
