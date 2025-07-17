@@ -119,5 +119,4 @@ def retrieve_documents(client, collection_name, query, k=5, threshold=0, documen
             "text": text,
             "source": source
         })
-    print(f"Documents:  {documents}")
     return documents
