@@ -61,12 +61,12 @@ def ask_question(req: QuestionRequest):
     # Récupération des documents
     if documents_to_use:
         combined_docs.extend(retrieve_documents(
-            client, COLLECTION_NAME, question, k=100, threshold=0, document_filter=documents_to_use
+            client, COLLECTION_NAME, question, k=10, threshold=0, document_filter=documents_to_use
         ))
 
     if connexions_to_use:
         combined_docs.extend(retrieve_documents(
-            client, POSTGRESS_COLLECTION_NAME, question, k=100, threshold=0, document_filter=connexions_to_use
+            client, POSTGRESS_COLLECTION_NAME, question, k=10, threshold=0, document_filter=connexions_to_use
         ))
 
     # Fallback si aucun doc

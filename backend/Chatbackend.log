@@ -1,27 +1,39 @@
 INFO:     Will watch for changes in these directories: ['/home/rino/deploy/backend']
 INFO:     Uvicorn running on http://0.0.0.0:8010 (Press CTRL+C to quit)
-INFO:     Started reloader process [1592934] using StatReload
-INFO:     Started server process [1592943]
+INFO:     Started reloader process [2286405] using StatReload
+INFO:     Started server process [2286425]
 INFO:     Waiting for application startup.
 INFO:     Application startup complete.
-WARNING:  StatReload detected changes in 'services/retrieval.py'. Reloading...
+INFO:     129.222.109.34:0 - "OPTIONS /ask HTTP/1.0" 200 OK
+Sources utilisées pour 'vous avez des tables?' : [{'type': 'connexion', 'name': 'testdb'}]
+Documents: [{'text': 'Voici la liste des produits présents: [{&#34;nom&#34;:&#34;Chaise&#34;},{&#34;nom&#34;:&#34;models.Table&#34;},{&#34;nom&#34;:&#34;Lampe&#34;}]', 'source': 'testdb'}]
+🔧 Contenu brut du LLM:
+ "SELECT * FROM \"produits\";"
+SQL à exécutée: SELECT * FROM "produits";
+response:[{'categorie': 'Mobilier', 'created_at': '2025-07-09T06:21:00.903073Z', 'description': 'Chaise en bois confortable', 'id': 1, 'nom': 'Chaise', 'prix': '49.99', 'stock': 10, 'updated_at': '2025-07-09T06:21:00.903073Z'}, {'categorie': 'Mobilier', 'created_at': '2025-07-09T06:21:00.903073Z', 'description': 'models.Table en palissandre', 'id': 2, 'nom': 'models.Table', 'prix': '149.50', 'stock': 5, 'updated_at': '2025-07-09T06:21:00.903073Z'}, {'categorie': 'Éclairage', 'created_at': '2025-07-09T06:21:00.903073Z', 'description': 'Lampe LED écoénergétique', 'id': 3, 'nom': 'Lampe', 'prix': '25.00', 'stock': 20, 'updated_at': '2025-07-09T06:21:00.903073Z'}]
+Résultat SQL:[{'categorie': 'Mobilier', 'created_at': '2025-07-09T06:21:00.903073Z', 'description': 'Chaise en bois confortable', 'id': 1, 'nom': 'Chaise', 'prix': '49.99', 'stock': 10, 'updated_at': '2025-07-09T06:21:00.903073Z'}, {'categorie': 'Mobilier', 'created_at': '2025-07-09T06:21:00.903073Z', 'description': 'models.Table en palissandre', 'id': 2, 'nom': 'models.Table', 'prix': '149.50', 'stock': 5, 'updated_at': '2025-07-09T06:21:00.903073Z'}, {'categorie': 'Éclairage', 'created_at': '2025-07-09T06:21:00.903073Z', 'description': 'Lampe LED écoénergétique', 'id': 3, 'nom': 'Lampe', 'prix': '25.00', 'stock': 20, 'updated_at': '2025-07-09T06:21:00.903073Z'}]
+Docs:[{'text': 'Résultat SQL pour la requête suivante : vous avez des tables?\nCode SQL : SELECT * FROM "produits";\n\nRésultat :\n[\n  {\n    "categorie": "Mobilier",\n    "created_at": "2025-07-09T06:21:00.903073Z",\n    "description": "Chaise en bois confortable",\n    "id": 1,\n    "nom": "Chaise",\n    "prix": "49.99",\n    "stock": 10,\n    "updated_at": "2025-07-09T06:21:00.903073Z"\n  },\n  {\n    "categorie": "Mobilier",\n    "created_at": "2025-07-09T06:21:00.903073Z",\n    "description": "models.Table en palissandre",\n    "id": 2,\n    "nom": "models.Table",\n    "prix": "149.50",\n    "stock": 5,\n    "updated_at": "2025-07-09T06:21:00.903073Z"\n  },\n  {\n    "categorie": "Éclairage",\n    "created_at": "2025-07-09T06:21:00.903073Z",\n    "description": "Lampe LED écoénergétique",\n    "id": 3,\n    "nom": "Lampe",\n    "prix": "25.00",\n    "stock": 20,\n    "updated_at": "2025-07-09T06:21:00.903073Z"\n  }\n]', 'source': 'résultat_sql'}, {'text': 'Voici la liste des produits présents: [{&#34;nom&#34;:&#34;Chaise&#34;},{&#34;nom&#34;:&#34;models.Table&#34;},{&#34;nom&#34;:&#34;Lampe&#34;}]', 'source': 'testdb'}]
+INFO:     129.222.109.34:0 - "POST /ask HTTP/1.0" 200 OK
+Sources utilisées pour 'parle moi du lampe' : [{'type': 'connexion', 'name': 'testdb'}]
+Documents: [{'text': 'Voici la liste des produits présents: [{&#34;nom&#34;:&#34;Chaise&#34;},{&#34;nom&#34;:&#34;models.Table&#34;},{&#34;nom&#34;:&#34;Lampe&#34;}]', 'source': 'testdb'}]
+🔧 Contenu brut du LLM:
+ SELECT * FROM "produits" WHERE "nom" = 'Lampe';
+SQL à exécutée: SELECT * FROM "produits" WHERE "nom" = 'Lampe';
+response:[{'categorie': 'Éclairage', 'created_at': '2025-07-09T06:21:00.903073Z', 'description': 'Lampe LED écoénergétique', 'id': 3, 'nom': 'Lampe', 'prix': '25.00', 'stock': 20, 'updated_at': '2025-07-09T06:21:00.903073Z'}]
+Résultat SQL:[{'categorie': 'Éclairage', 'created_at': '2025-07-09T06:21:00.903073Z', 'description': 'Lampe LED écoénergétique', 'id': 3, 'nom': 'Lampe', 'prix': '25.00', 'stock': 20, 'updated_at': '2025-07-09T06:21:00.903073Z'}]
+Docs:[{'text': 'Résultat SQL pour la requête suivante : parle moi du lampe\nCode SQL : SELECT * FROM "produits" WHERE "nom" = \'Lampe\';\n\nRésultat :\n[\n  {\n    "categorie": "Éclairage",\n    "created_at": "2025-07-09T06:21:00.903073Z",\n    "description": "Lampe LED écoénergétique",\n    "id": 3,\n    "nom": "Lampe",\n    "prix": "25.00",\n    "stock": 20,\n    "updated_at": "2025-07-09T06:21:00.903073Z"\n  }\n]', 'source': 'résultat_sql'}, {'text': 'Voici la liste des produits présents: [{&#34;nom&#34;:&#34;Chaise&#34;},{&#34;nom&#34;:&#34;models.Table&#34;},{&#34;nom&#34;:&#34;Lampe&#34;}]', 'source': 'testdb'}]
+INFO:     129.222.109.34:0 - "POST /ask HTTP/1.0" 200 OK
+Sources utilisées pour 'Je veux en commander 5' : [{'type': 'connexion', 'name': 'testdb'}]
+Documents: [{'text': 'Voici la liste des produits présents: [{&#34;nom&#34;:&#34;Chaise&#34;},{&#34;nom&#34;:&#34;models.Table&#34;},{&#34;nom&#34;:&#34;Lampe&#34;}]', 'source': 'testdb'}]
+🔧 Contenu brut du LLM:
+ SELECT * FROM "produits" WHERE "nom" = 'Lampe' AND "stock" >= 5 FOR UPDATE;
+SQL à exécutée: SELECT * FROM "produits" WHERE "nom" = 'Lampe' AND "stock" >= 5 FOR UPDATE;
+response:[{'categorie': 'Éclairage', 'created_at': '2025-07-09T06:21:00.903073Z', 'description': 'Lampe LED écoénergétique', 'id': 3, 'nom': 'Lampe', 'prix': '25.00', 'stock': 20, 'updated_at': '2025-07-09T06:21:00.903073Z'}]
+Résultat SQL:[{'categorie': 'Éclairage', 'created_at': '2025-07-09T06:21:00.903073Z', 'description': 'Lampe LED écoénergétique', 'id': 3, 'nom': 'Lampe', 'prix': '25.00', 'stock': 20, 'updated_at': '2025-07-09T06:21:00.903073Z'}]
+Docs:[{'text': 'Résultat SQL pour la requête suivante : Je veux en commander 5\nCode SQL : SELECT * FROM "produits" WHERE "nom" = \'Lampe\' AND "stock" >= 5 FOR UPDATE;\n\nRésultat :\n[\n  {\n    "categorie": "Éclairage",\n    "created_at": "2025-07-09T06:21:00.903073Z",\n    "description": "Lampe LED écoénergétique",\n    "id": 3,\n    "nom": "Lampe",\n    "prix": "25.00",\n    "stock": 20,\n    "updated_at": "2025-07-09T06:21:00.903073Z"\n  }\n]', 'source': 'résultat_sql'}, {'text': 'Voici la liste des produits présents: [{&#34;nom&#34;:&#34;Chaise&#34;},{&#34;nom&#34;:&#34;models.Table&#34;},{&#34;nom&#34;:&#34;Lampe&#34;}]', 'source': 'testdb'}]
+INFO:     129.222.109.34:0 - "POST /ask HTTP/1.0" 200 OK
 INFO:     Shutting down
 INFO:     Waiting for application shutdown.
 INFO:     Application shutdown complete.
-INFO:     Finished server process [1592943]
-INFO:     Started server process [1593903]
-INFO:     Waiting for application startup.
-INFO:     Application startup complete.
-WARNING:  StatReload detected changes in 'services/retrieval.py'. Reloading...
-INFO:     Shutting down
-INFO:     Waiting for application shutdown.
-INFO:     Application shutdown complete.
-INFO:     Finished server process [1593903]
-INFO:     Started server process [1594022]
-INFO:     Waiting for application startup.
-INFO:     Application startup complete.
-INFO:     Shutting down
-INFO:     Waiting for application shutdown.
-INFO:     Application shutdown complete.
-INFO:     Finished server process [1594022]
-INFO:     Stopping reloader process [1592934]
+INFO:     Finished server process [2286425]
+INFO:     Stopping reloader process [2286405]

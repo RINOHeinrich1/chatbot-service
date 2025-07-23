@@ -23,7 +23,7 @@ def execute_sql_via_api(connexion_params, extracted_sql):
         response = requests.post(url, json=payload, headers=headers)
         response.raise_for_status()
         result = response.json()
-
+        print(f"response:{result}")
         # Assure que le résultat est bien un tableau, même vide
         if result is None:
             return []

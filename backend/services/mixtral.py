@@ -58,27 +58,24 @@ def get_connexion_info(chatbot_id):
         print(f"[Erreur chargement SQL reasoning ou schéma] : {e}")
         return "", False, "", {}
 
-def build_system_prompt(description, sql_reasoning_enabled, schema_text):
+def build_system_prompt(query,description, sql_reasoning_enabled, schema_text,discu):
     prompt = (
         "Tu es un assistant intelligent, clair et naturel. "
-        "Tu prends en compte la conversation précédente pour comprendre les questions vagues. "
         f"Tu suis la consigne suivante : {description or 'réponds poliment et avec clarté.'} "
     )
     if sql_reasoning_enabled and schema_text:
         prompt += (
-            f"\n\nVoici les informations sur la table PostgreSQL et ses colonnes :\n{schema_text}\n\n"
-            "\n\nIMPORTANT :\n"
+            f"\n\nVoici les tables de la base de donnée postgres avec leurs colonnes respectif :\n{schema_text}\n\n"
+            f"\nEn te basant sur ces informations sur la base de donnée, donne  un requête SQL pour répondre au question :\"{query}\", en respectant les règles:\n"
             "1. Retourne uniquement une requête SQL PostgreSQL valide, exécutable.\n"
-            "2. Ne retourne jamais de texte, d'explication ou de balises Markdown (` ```sql ` ou `sql:`).\n"
-            "3. La requête doit contenir toutes les clauses nécessaires : SELECT, FROM, GROUP BY, etc.\n"
-            "4. Les noms de colonnes et de tables doivent obligatoirement être mis entre guillemets.\n"
-            "5. Utilise GROUP BY pour les agrégations si besoin.\n"
-            "6. Indique toujours la table utilisée.\n"
-            "7. La requête doit être sur une seule ligne.\n"
-            "8. Respecte les types et formats.\n"
-            "9. Syntaxe PostgreSQL uniquement.\n"
-            "10. La fonction AGE() est parfois utile pour les dates."
+            "2. Ne retourne jamais  d'explication ou de commentaire, de balises Markdown ou des caractères d'échapement. Juste la requête\n"
+            "3. La requête doit toujours êtres complètes"
+            "4. Les noms de colonnes et de tables dans la requête doivent obligatoirement être mis entre guillemets anglais.\n"
+            "5. Indique toujours la table utilisée.\n"
+            "6. La requête doit être sur une seule ligne.\n"
         )
+      #  print(f"Prompt: {prompt}")
+
     else:
         prompt += "\n\nSi tu ne trouves pas la réponse dans les contextes fournis, indique que l'information n'est pas disponible."
     return prompt
@@ -153,7 +150,7 @@ def generate_answer(query, docs, chatbot_id=None, history=None):
             role = "Utilisateur" if msg.role == "user" else "Assistant"
             history_formatted += f"{role} : {msg.content.strip()}\n"
 
-    system_prompt = build_system_prompt(description, sql_reasoning_enabled, schema_text)
+    system_prompt = build_system_prompt(query,description, sql_reasoning_enabled, schema_text,history_formatted)
     contexte = build_contexte(docs)
 
     # 🔍 Log des sources utilisées
@@ -170,6 +167,7 @@ def generate_answer(query, docs, chatbot_id=None, history=None):
 
     try:
         raw_result = call_llm("mixtral", messages, temperature=0, max_tokens=300)
+        print("🔧 Contenu brut du LLM:\n", raw_result)
     except Exception as e:
         raw_result = f"Erreur lors de la génération de la réponse : {str(e)}"
         set_cache(query, docs, raw_result)
@@ -184,6 +182,7 @@ def generate_answer(query, docs, chatbot_id=None, history=None):
 
         if extracted_sql:
             sql_result = execute_sql_via_api(connexion_params, extracted_sql)
+            print(f"Résultat SQL:{sql_result}")
             if sql_result:
                 docs.insert(0, {
                     "text": (
@@ -193,7 +192,6 @@ def generate_answer(query, docs, chatbot_id=None, history=None):
                     ),
                     "source": "résultat_sql"
                 })
-
             final_answer = reformulate_answer_via_llm(query, build_contexte(docs))
         else:
             final_answer = reformulate_answer_via_llm(query, contexte)

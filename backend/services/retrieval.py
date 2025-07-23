@@ -60,6 +60,7 @@ def retrieve_documents(client, collection_name, query, k=5, threshold=0, documen
     filter_conditions = []
 
     if document_filter:
+        # On ne récupère que les documents dont la source est dans le filtre
         filter_conditions.append(
             FieldCondition(
                 key="source",
@@ -67,18 +68,21 @@ def retrieve_documents(client, collection_name, query, k=5, threshold=0, documen
             )
         )
 
-    # Ajouter condition pour contextual = "true"
-    filter_conditions.append(
-        FieldCondition(
-            key="contextual",
-            match=MatchValue(value="true")  # ou bool True si stocké en bool
+        # On veut aussi que ces documents soient contextuels
+        filter_conditions.append(
+            FieldCondition(
+                key="contextual",
+                match=MatchValue(value="true")  # ou bool True si c'est stocké en booléen
+            )
         )
-    )
 
-    # Construire le filtre combiné avec "should" (équivaut à un OR logique)
-    filter_condition = Filter(
-        should=filter_conditions
-    )
+        # Clause AND logique
+        filter_condition = Filter(must=filter_conditions)
+
+    else:
+        # Si aucun document_filter, alors on ne récupère rien (ou bien tu peux lever une erreur)
+        print("[Info] Aucun document_filter spécifié, pas de récupération possible.")
+        return []
 
     search_result = client.search(
         collection_name=collection_name,
@@ -102,14 +106,14 @@ def retrieve_documents(client, collection_name, query, k=5, threshold=0, documen
             service_url = get_postgres_service_url(source)
             if service_url:
                 res_conn = supabase.table("postgresql_connexions") \
-                .select("data_schema, host_name, port, user, password, database, ssl_mode") \
-                .eq("connexion_name", source) \
-                .single().execute()
+                    .select("data_schema, host_name, port, user, password, database, ssl_mode") \
+                    .eq("connexion_name", source) \
+                    .single().execute()
 
                 if res_conn.data:
                     text = render_template_from_service(
                         service_url=service_url,
-                        template=text,  # on utilise ici le vrai template
+                        template=text,
                         conn_data=res_conn.data
                     )
                 else:
