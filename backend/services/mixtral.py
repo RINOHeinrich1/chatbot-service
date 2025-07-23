@@ -136,7 +136,7 @@ def ask_mixtral_for_relevant_sources(chatbot_id: str, question: str):
 def extract_sources(docs):
     return list({doc.get("source", "inconnu") for doc in docs})
 
-def generate_answer(query, docs, chatbot_id=None, history=None):
+def generate_answer(query, docs, chatbot_id=None):
     cached = get_cache(query, docs)
     if cached:
         return cached
@@ -144,13 +144,7 @@ def generate_answer(query, docs, chatbot_id=None, history=None):
     description = get_chatbot_description(chatbot_id)
     connexion_name, sql_reasoning_enabled, schema_text, connexion_params = get_connexion_info(chatbot_id)
 
-    history_formatted = ""
-    if history:
-        for msg in history:
-            role = "Utilisateur" if msg.role == "user" else "Assistant"
-            history_formatted += f"{role} : {msg.content.strip()}\n"
-
-    system_prompt = build_system_prompt(query,description, sql_reasoning_enabled, schema_text,history_formatted)
+    system_prompt = build_system_prompt(query, description, sql_reasoning_enabled, schema_text, "")
     contexte = build_contexte(docs)
 
     # 🔍 Log des sources utilisées
@@ -159,7 +153,6 @@ def generate_answer(query, docs, chatbot_id=None, history=None):
     messages = [
         {"role": "system", "content": system_prompt},
         {"role": "user", "content": (
-            f"Voici la conversation précédente entre toi et l'user :\n{history_formatted.strip()}\n\n"
             f"Voici le contexte :\n{contexte.strip()}\n\n"
             f"Voici la question :\n{query.strip()}"
         )}

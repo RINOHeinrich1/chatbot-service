@@ -91,6 +91,6 @@ def ask_question(req: QuestionRequest):
     docs_text_only = [doc["text"] for doc in combined_docs]
 
     # === Générer la réponse ===
-    answer = generate_answer(clarified_question, combined_docs, req.chatbot_id, context_messages)
+    answer = generate_answer(clarified_question, combined_docs, req.chatbot_id)
 
     return AnswerResponse(documents=docs_text_only, answer=answer)
