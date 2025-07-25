@@ -27,6 +27,7 @@ def get_memoire_contextuelle(chatbot_id: str) -> int:
                    .execute().data
     return int(data.get("memoire_contextuelle", 0)) if data else 0
 
+
 def extract_sql_from_text(text):
     # 1. Si c’est une chaîne JSON (ex: "\"SELECT ...\""), essaye de la parser
     try:
@@ -40,22 +41,28 @@ def extract_sql_from_text(text):
     if match:
         return _clean_sql(match.group(1))
 
-    # 3. Bloc commençant par SELECT jusqu’à un point-virgule ou fin
+    # 3. Extraction depuis le mot SELECT, peu importe où il se trouve dans la ligne
     lines = text.splitlines()
     collecting = False
     sql_lines = []
+
     for line in lines:
-        if not collecting and line.strip().upper().startswith("SELECT"):
-            collecting = True
-        if collecting:
+        if not collecting:
+            # Cherche la position du mot SELECT (sans tenir compte de la casse)
+            idx = line.upper().find("SELECT")
+            if idx != -1:
+                collecting = True
+                # Commence la collecte à partir de "SELECT" dans cette ligne
+                sql_lines.append(line[idx:])
+        else:
             sql_lines.append(line)
             if ";" in line:
                 break
+
     if sql_lines:
         return _clean_sql("\n".join(sql_lines))
 
     return None
-
 def _clean_sql(sql):
     return sql.replace("\\*", "*").replace("\\_", "_")
 
