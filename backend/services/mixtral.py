@@ -93,7 +93,6 @@ def reformulate_answer_via_llm(query, contexte_text):
         )}
     ]
     return call_llm("mixtral", messages)
-
 def ask_mixtral_for_relevant_sources(chatbot_id: str, question: str):
     sources = []
 
@@ -111,6 +110,11 @@ def ask_mixtral_for_relevant_sources(chatbot_id: str, question: str):
             "description": d["description"]
         })
 
+    if not sources:
+        return [{"type": "aucun", "name": "aucun"}]
+
+    print(f"Liste des sources:{sources}")
+
     prompt = (
         "Tu es un assistant intelligent chargé de sélectionner les sources les plus pertinentes pour répondre à une question.\n"
         f"Question :\n{question}\n\n"
@@ -118,7 +122,7 @@ def ask_mixtral_for_relevant_sources(chatbot_id: str, question: str):
         f"{json.dumps(sources, ensure_ascii=False)}\n\n"
         "Réponds uniquement avec une liste JSON au format :\n"
         "[{\"type\": \"document\" | \"connexion\", \"name\": \"nom_de_la_source\"}, ...]\n"
-        "Ne fais aucun commentaire, ne donne aucune explication. Tu dois obligatoirement choisir une ou plusieurs sources."
+        "Ne fais aucun commentaire, ne donne aucune explication. Tu dois obligatoirement choisir une ou plusieurs sources parmi celles citées. Si c'est vide tu ne retournes rien."
     )
 
     messages = [
@@ -132,6 +136,7 @@ def ask_mixtral_for_relevant_sources(chatbot_id: str, question: str):
         return json.loads(result)
     except Exception:
         return result
+
 
 def extract_sources(docs):
     return list({doc.get("source", "inconnu") for doc in docs})

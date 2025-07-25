@@ -10,12 +10,12 @@ def clarify_question(history: List[dict], question: str) -> str:
         formatted_history += f"{role} : {msg['content'].strip()}\n"
 
     messages = [
-        {"role": "system", "content": "Tu es un assistant qui reformule une question en la rendant claire, complète et explicite."},
+        {"role": "system", "content": "Tu es un assistant qui reformule les messages en les rendant claires, complètes et explicites."},
         {"role": "user", "content": (
             "Voici l'historique de la conversation :\n"
             f"{formatted_history.strip()}\n\n"
-            f"Et voici la question actuelle :\n{question.strip()}\n\n"
-            "Reformule cette question pour qu'elle soit claire et complète, sans ambiguïté. "
+            f"Et voici le message actuelle :\n{question.strip()}\n\n"
+            "Reformule cette message pour qu'elle soit claire et complète, sans ambiguïté. "
             "Si elle contient des pronoms ou références implicites, remplace-les par leur forme explicite."
         )}
     ]
