@@ -70,7 +70,7 @@ def ask_question(req: QuestionRequest):
         if isinstance(src, dict):
             if src.get("type") == "document":
                 documents_to_use.append(src["name"])
-            elif src.get("type") == "connexion":
+            elif src.get("type") == "connexion" or src.get("type")=="connection":
                 connexions_to_use.append(src["name"])
 
     # --- Récupération des documents ---

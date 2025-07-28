@@ -1,137 +1,26 @@
 INFO:     Will watch for changes in these directories: ['/home/rino/deploy/backend']
 INFO:     Uvicorn running on http://0.0.0.0:8010 (Press CTRL+C to quit)
-INFO:     Started reloader process [2508154] using StatReload
-INFO:     Started server process [2508174]
+INFO:     Started reloader process [2637] using StatReload
+INFO:     Started server process [2672]
 INFO:     Waiting for application startup.
 INFO:     Application startup complete.
 INFO:     154.120.142.127:0 - "OPTIONS /ask HTTP/1.0" 200 OK
-🔍 Question clarifiée : L'utilisateur est demandant une aide pour générer la série de Fibonacci en utilisant le langage de programmation Python. La série de Fibonacci est une suite de nombres dans laquelle chaque nombre après les deux premiers est la somme des deux nombres précédents. Les deux premiers nombres sont généralement 0 et 1.
-Sources utilisées pour 'L'utilisateur est demandant une aide pour générer la série de Fibonacci en utilisant le langage de programmation Python. La série de Fibonacci est une suite de nombres dans laquelle chaque nombre après les deux premiers est la somme des deux nombres précédents. Les deux premiers nombres sont généralement 0 et 1.' : [{'type': 'aucun', 'name': 'aucun'}]
-[Erreur chargement SQL reasoning ou schéma] : {'message': 'JSON object requested, multiple (or no) rows returned', 'code': 'PGRST116', 'hint': None, 'details': 'The result contains 0 rows'}
+🔍 Question clarifiée : combien l'album nous avons?
+Sources utilisées pour 'combien l'album nous avons?' : [{'type': 'aucun', 'name': 'aucun'}]
 🔧 Contenu brut du LLM:
- Bien sûr, je peux vous aider à générer la série de Fibonacci en Python ! Voici un simple exemple de fonction qui produit les dix premiers nombres de la série :
-
-```python
-def fibonacci(n):
-    if n <= 0:
-        return "La fonction fibonacci attend un entier positif."
-    elif n == 1:
-        return [0]
-    elif n == 2:
-        return [0, 1]
-    else:
-        sequence = [0, 1]
-        while len(sequence) < n:
-            sequence.append(sequence[-1] + sequence[-2])
-        return sequence
-
-print(fibonacci(10))
-```
-
-Cette fonction commence par vérifier si le paramètre `n` est valide. Ensuite, elle initialise une liste contenant les deux premiers nombres de la série (0 et 1). Puis, dans une boucle, elle calcule et ajoute les prochains termes en prenant la somme des deux derniers termes. La fonction continue d'ajouter des nombres jusqu'à atteindre la longueur spécifiée par `n`. Lorsque vous exécutez cette fonction avec l'entrée `10
+ Je suis désolé(e), je n'ai pas accès à l'information concernant le nombre d'albums que vous possédez. Pourrait-on peut-être préciser la question ou fournir plus de détails ?
 INFO:     154.120.142.127:0 - "POST /ask HTTP/1.0" 200 OK
-🔍 Question clarifiée : Voici la version réformulée de votre message :
-
-"Pourriez-vous me fournir une comparaison détaillée entre différents grands modèles de langage, y compris leurs caractéristiques, capacités et limitations respectives ?"
-Sources utilisées pour 'Voici la version réformulée de votre message :
-
-"Pourriez-vous me fournir une comparaison détaillée entre différents grands modèles de langage, y compris leurs caractéristiques, capacités et limitations respectives ?"' : [{'type': 'aucun', 'name': 'aucun'}]
-[Erreur chargement SQL reasoning ou schéma] : {'message': 'JSON object requested, multiple (or no) rows returned', 'code': 'PGRST116', 'hint': None, 'details': 'The result contains 0 rows'}
+🔍 Question clarifiée : combien d'album nous avons?
+Sources utilisées pour 'combien d'album nous avons?' : [{'type': 'aucun', 'name': 'aucun'}]
 🔧 Contenu brut du LLM:
- Malheureusement, sans un contexte plus spécifique concernant les grands modèles de langage à comparer, je ne peux fournir une réponse détaillée. Cependant, je vais vous donner un aperçu général de certains des modèles de langage les plus populaires actuellement disponibles, ainsi que leurs caractéristiques, capacités et limitations respectives.
-
-1. **BERT (Bidirectional Encoder Representations from Transformers)**
-   - Caractéristiques: Apprentissage profond non supervisé, transformeurs bidirectionnels
-   - Capacités: Compréhension du langage entier, compétences en lecture fine et cohésion textuelle
-   - Limitations: Requiert des ressources informatiques importantes, performances inférieures pour certaines tâches spécifiques
-   
-2. **RoBERTa (Robustly Optimized BERT Pretraining Approach)**
-   - Caractéristiques: Préentraînement sur une grande quantité de texte non étiqueté, méthodes d'optimisation robustes
-   - Capacités: Améliore les performances de BERT sur divers benchmarks NLP
-   - Limitations: Entraînement intensif
+ Sans plus de détails sur votre collection musicale actuelle, je ne suis pas en mesure de vous donner un nombre exact. Cependant, si vous avez accès à votre bibliothèque de musique numérique (par exemple, iTunes, Spotify ou Google Play Music), vous devriez être capable de vérifier le nombre d'albums que vous possédez en accédant aux paramètres ou aux options de tri de votre bibliothèque.
 INFO:     154.120.142.127:0 - "POST /ask HTTP/1.0" 200 OK
-🔍 Question clarifiée : Voici la version réformulée de votre message :
-
-"Pourriez-vous me raconter l'histoire du Mistral ?"
-
-Le Mistral fait référence au vent puissant et froid qui souffle dans le sud de la France, principalement dans la région Provence-Alpes-Côte d'Azur. Le mot « Mistral » vient du provençal « mistrau », lui-même issu du latin « magistro », signifiant « maître ». Ce vent peut être très fort, atteignant parfois des vitesses supérieures à 110 km/h. Il se produit lorsqu'une masse d'air froid descend des montagnes alpines vers la mer Méditerranée, créant une pression basse et provoquant un flux d'air rapide pour combler le vide. Cette brusque descente d'air froid crée également une instabilité atmosphérique susceptible de déclencher des précipitations orageuses. Historiquement, le Mistral a joué un rôle important dans la culture et la vie quotidienne en Provence, influençant notamment la littérature, la peinture et l'architecture régionales.
-Sources utilisées pour 'Voici la version réformulée de votre message :
-
-"Pourriez-vous me raconter l'histoire du Mistral ?"
-
-Le Mistral fait référence au vent puissant et froid qui souffle dans le sud de la France, principalement dans la région Provence-Alpes-Côte d'Azur. Le mot « Mistral » vient du provençal « mistrau », lui-même issu du latin « magistro », signifiant « maître ». Ce vent peut être très fort, atteignant parfois des vitesses supérieures à 110 km/h. Il se produit lorsqu'une masse d'air froid descend des montagnes alpines vers la mer Méditerranée, créant une pression basse et provoquant un flux d'air rapide pour combler le vide. Cette brusque descente d'air froid crée également une instabilité atmosphérique susceptible de déclencher des précipitations orageuses. Historiquement, le Mistral a joué un rôle important dans la culture et la vie quotidienne en Provence, influençant notamment la littérature, la peinture et l'architecture régionales.' : [{'type': 'aucun', 'name': 'aucun'}]
-[Erreur chargement SQL reasoning ou schéma] : {'message': 'JSON object requested, multiple (or no) rows returned', 'code': 'PGRST116', 'hint': None, 'details': 'The result contains 0 rows'}
+🔍 Question clarifiée : combien d'album nous avons dans notre base?
+Sources utilisées pour 'combien d'album nous avons dans notre base?' : [{'type': 'aucun', 'name': 'aucun'}]
 🔧 Contenu brut du LLM:
- L'histoire du Mistral remonte à plusieurs siècles et est liée à la géographie et au climat de la région Provence-Alpes-Côte d'Azur, dans le sud de la France. Le terme "Mistral" trouve son origine dans le mot provençal "mistrau", qui dérive du latin "magistro". Il désigne un vent puissant et froid qui souffle dans cette région, généralement depuis les montagnes alpines jusqu'à la mer Méditerranée.
-
-Le Mistral se forme lorsqu'une masse d'air froid descend des montagnes et rencontre la mer, créant ainsi une différence de pression qui entraîne un flux d'air rapide pour compenser ce déséquilibre. Ce phénomène météorologique peut entraîner des rafales allant jusqu'à 110 km/h ou plus, affectant considérablement les conditions locales. En outre, le Mistral a également un impact sur l'instabilité de l'atmosphère, ce qui peut déclencher des précipitations orageuses.
-
-Au fil des siècles, le Mistral a eu un impact significatif sur la culture et la vie quotidienne en Provence. De nombre
-INFO:     154.120.142.127:0 - "POST /ask HTTP/1.0" 200 OK
-🔍 Question clarifiée : Voici la version réformulée de votre message :
-Pouvez-vous m'informer sur l'origine, l'évolution et les développements majeurs de la technologie appelée Mixtral ? Je souhaite comprendre son histoire, ses applications et son impact dans le domaine auquel il se rapporte.
-Sources utilisées pour 'Voici la version réformulée de votre message :
-Pouvez-vous m'informer sur l'origine, l'évolution et les développements majeurs de la technologie appelée Mixtral ? Je souhaite comprendre son histoire, ses applications et son impact dans le domaine auquel il se rapporte.' : [{'type': 'aucun', 'name': 'aucun'}]
-[Erreur chargement SQL reasoning ou schéma] : {'message': 'JSON object requested, multiple (or no) rows returned', 'code': 'PGRST116', 'hint': None, 'details': 'The result contains 0 rows'}
-🔧 Contenu brut du LLM:
- Je suis désolé, mais d'après le contexte fourni, je n'ai pas d'informations sur une technologie ou un produit appelé "Mixtral". Il est possible qu'il y ait une erreur dans l'orthographe ou que cette technologie soit peu connue ou non utilisée dans les domaines couramment abordés. Pourriez-vous vérifier l'orthographe ou me donner plus de détails à ce sujet ? Je serais heureux de vous fournir des informations si je peux en trouver.
-INFO:     154.120.142.127:0 - "POST /ask HTTP/1.0" 200 OK
-🔍 Question clarifiée : La question que je pose est la suivante : "Pouvez-vous me décrire comment vous pouvez m'offrir votre assistance ?". Je souhaite comprendre quels services spécifiques vous êtes en mesure de fournir pour m'aider.
-Liste des sources:[{'type': 'connexion', 'name': 'postgres', 'description': 'les informations sur les artistes'}]
-Sources utilisées pour 'La question que je pose est la suivante : "Pouvez-vous me décrire comment vous pouvez m'offrir votre assistance ?". Je souhaite comprendre quels services spécifiques vous êtes en mesure de fournir pour m'aider.' : []
-🔧 Contenu brut du LLM:
- SELECT 'Assistance dans la recherche de musique par artiste, album ou genre',
-       'Gestion de playlists personnalisées',
-       'Informations détaillées sur les morceaux de musique tels que la durée, la taille et le prix',
-       'Affichage des factures associées à l'achat de musique',
-       'Données relatives aux clients, employés et représentants de service support'
-FROM   """MusicDB"".""SystemSchema"".""Information""" ;
-SQL à exécutée: SELECT 'Assistance dans la recherche de musique par artiste, album ou genre',
-       'Gestion de playlists personnalisées',
-       'Informations détaillées sur les morceaux de musique tels que la durée, la taille et le prix',
-       'Affichage des factures associées à l'achat de musique',
-       'Données relatives aux clients, employés et représentants de service support'
-FROM   """MusicDB"".""SystemSchema"".""Information""" ;
-[Erreur exécution SQL via API] : 500 Server Error: Internal Server Error for url: https://postgresvectorizer.onirtech.com/execute
-Résultat SQL:None
-INFO:     154.120.142.127:0 - "POST /ask HTTP/1.0" 200 OK
-🔍 Question clarifiée : Pouvez-vous me suggérer les noms de cinq artistes différents, s'il vous plaît ? Je cherche des exemples spécifiques d'individus reconnus dans les domaines des arts visuels, de la musique, du théâtre, de la littérature ou de toute autre forme d'expression créative.
-Liste des sources:[{'type': 'connexion', 'name': 'postgres', 'description': 'les informations sur les artistes'}]
-Sources utilisées pour 'Pouvez-vous me suggérer les noms de cinq artistes différents, s'il vous plaît ? Je cherche des exemples spécifiques d'individus reconnus dans les domaines des arts visuels, de la musique, du théâtre, de la littérature ou de toute autre forme d'expression créative.' : [{'type': 'connexion', 'name': 'postgres'}]
-🔧 Contenu brut du LLM:
- SELECT DISTINCT 
-    ar."Name" AS artist\_name
-FROM 
-    "Artist" ar
-LIMIT 5;
-SQL à exécutée: SELECT DISTINCT 
-    ar."Name" AS artist_name
-FROM 
-    "Artist" ar
-LIMIT 5;
-response:[{'artist_name': 'Lenny Kravitz'}, {'artist_name': 'Os Paralamas Do Sucesso'}, {'artist_name': 'Marisa Monte'}, {'artist_name': 'Itzhak Perlman'}, {'artist_name': 'Sabotage E Instituto'}]
-Résultat SQL:[{'artist_name': 'Lenny Kravitz'}, {'artist_name': 'Os Paralamas Do Sucesso'}, {'artist_name': 'Marisa Monte'}, {'artist_name': 'Itzhak Perlman'}, {'artist_name': 'Sabotage E Instituto'}]
+ Malheureusement, avec les informations fournies, je ne suis pas en mesure de vous dire combien d'albums se trouvent dans votre base de données. Il serait nécessaire d'avoir accès à la base de données ou à une interface permettant d'obtenir ce type d'information.
 INFO:     154.120.142.127:0 - "POST /ask HTTP/1.0" 200 OK
 INFO:     154.120.142.127:0 - "OPTIONS /ask HTTP/1.0" 200 OK
-🔍 Question clarifiée : Voici une version réformulée du message :
-
-"Bonjour, pouvez-vous me fournir la liste des produits que votre entreprise propose actuellement à la vente ?"
-Liste des sources:[{'type': 'connexion', 'name': 'testdb', 'description': 'pour récupérer les informations sur les produits à vendre'}, {'type': 'document', 'name': 'Presentation_ONIRTECH.docx', 'description': 'pour répondre aux questions et demandes concernant les entreprises: siège social, activités, contactes, exploit, objectif,... Ne contient pas les informations sur les  personnels'}]
-Sources utilisées pour 'Voici une version réformulée du message :
-
-"Bonjour, pouvez-vous me fournir la liste des produits que votre entreprise propose actuellement à la vente ?"' : [{'type': 'connexion', 'name': 'testdb'}]
-🔧 Contenu brut du LLM:
- "SELECT \"id\", \"nom\", \"description\", \"categorie\", \"prix\", \"stock\" FROM \"produits\" WHERE \"stock\" > 0;"
-SQL à exécutée: SELECT "id", "nom", "description", "categorie", "prix", "stock" FROM "produits" WHERE "stock" > 0;
-response:[{'categorie': 'Mobilier', 'description': 'Chaise en bois confortable', 'id': 1, 'nom': 'Chaise', 'prix': '49.99', 'stock': 10}, {'categorie': 'Mobilier', 'description': 'models.Table en palissandre', 'id': 2, 'nom': 'models.Table', 'prix': '149.50', 'stock': 5}, {'categorie': 'Éclairage', 'description': 'Lampe LED écoénergétique', 'id': 3, 'nom': 'Lampe', 'prix': '25.00', 'stock': 20}]
-Résultat SQL:[{'categorie': 'Mobilier', 'description': 'Chaise en bois confortable', 'id': 1, 'nom': 'Chaise', 'prix': '49.99', 'stock': 10}, {'categorie': 'Mobilier', 'description': 'models.Table en palissandre', 'id': 2, 'nom': 'models.Table', 'prix': '149.50', 'stock': 5}, {'categorie': 'Éclairage', 'description': 'Lampe LED écoénergétique', 'id': 3, 'nom': 'Lampe', 'prix': '25.00', 'stock': 20}]
-INFO:     154.120.142.127:0 - "POST /ask HTTP/1.0" 200 OK
-🔍 Question clarifiée : "Est-il possible de passer une commande pour cinq unités de la lampe LED écoénergétique?"
-Liste des sources:[{'type': 'connexion', 'name': 'testdb', 'description': 'pour récupérer les informations sur les produits à vendre'}, {'type': 'document', 'name': 'Presentation_ONIRTECH.docx', 'description': 'pour répondre aux questions et demandes concernant les entreprises: siège social, activités, contactes, exploit, objectif,... Ne contient pas les informations sur les  personnels'}]
-Sources utilisées pour '"Est-il possible de passer une commande pour cinq unités de la lampe LED écoénergétique?"' : []
-🔧 Contenu brut du LLM:
- SELECT COUNT("stock") FROM "produits" WHERE ("nom" = 'lampe LED écoénergétique' AND "stock" >= 5);
-SQL à exécutée: SELECT COUNT("stock") FROM "produits" WHERE ("nom" = 'lampe LED écoénergétique' AND "stock" >= 5);
-response:[{'count': 0}]
-Résultat SQL:[{'count': 0}]
+🔍 Question clarifiée : combien d'album nous avons dans notre base?
+Sources utilisées pour 'combien d'album nous avons dans notre base?' : [{'type': 'aucun', 'name': 'aucun'}]
 INFO:     154.120.142.127:0 - "POST /ask HTTP/1.0" 200 OK
