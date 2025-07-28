@@ -2,7 +2,7 @@ from fastapi import APIRouter
 from pydantic import BaseModel
 from typing import List, Optional, Union
 from services.retrieval import retrieve_documents
-from services.mixtral import ask_mixtral_for_relevant_sources, generate_answer
+from services.mixtral import ask_mixtral_for_relevant_sources, generate_answer,is_question_or_request
 from services.clarifier import clarify_question
 from utils.helpers import (
     get_connexions_for_chatbot,
@@ -11,6 +11,7 @@ from utils.helpers import (
 )
 from qdrant_client import QdrantClient
 from config import *
+import json
 
 router = APIRouter()
 
@@ -23,7 +24,8 @@ class Reasoning(BaseModel):
 class AnswerResponse(BaseModel):
     documents: List[str]
     answer: str
-    reasoning: Optional[Reasoning] = None  # maintenant un objet
+    logs: Optional[List[str]] = []  # Ajouté pour stocker les logs
+
 
 class MessageHistory(BaseModel):
     role: str
@@ -36,6 +38,7 @@ class QuestionRequest(BaseModel):
 
 @router.post("/ask", response_model=AnswerResponse)
 def ask_question(req: QuestionRequest):
+    logs = []
     original_question = req.question
     combined_docs = []
 
@@ -44,24 +47,30 @@ def ask_question(req: QuestionRequest):
     if req.chatbot_id and req.history:
         max_ctx = get_memoire_contextuelle(req.chatbot_id)
         context_messages = req.history[-max_ctx:]
-
+    logs.append(f"🔍 Question original : {original_question}")
+    clarified_question=original_question
     # --- Reformuler la question ---
-    clarified_question = clarify_question(
-        history=[{"role": m.role, "content": m.content} for m in context_messages],
-        question=original_question
-    )
-    print(f"🔍 Question clarifiée : {clarified_question}")
+    if  is_question_or_request(original_question):
+        logs.append("Requête considéré comme demande")
+        clarified_question = clarify_question(
+            history=[{"role": m.role, "content": m.content} for m in context_messages],
+            question=original_question
+        )
+        logs.append(f"🔍 Question clarifiée : {clarified_question}")
+    else:
+        logs.append("Requête non considéré comme demande, pas besoin de clarification")
 
-    # --- Sélection des sources ---
     relevant_sources = ask_mixtral_for_relevant_sources(req.chatbot_id, clarified_question)
-    print(f"Sources utilisées pour '{clarified_question}' : {relevant_sources}")
-
+    if len(relevant_sources)==0:
+        logs.append(f"Aucune source sélectionnée, peut-être que la description de la connexion n'est pas assez précis")
+    else:
+        logs.append(f"Sources utilisées : {relevant_sources}")
+        
     documents_to_use = []
     connexions_to_use = []
 
     if isinstance(relevant_sources, str):
         try:
-            import json
             relevant_sources = json.loads(relevant_sources)
         except Exception:
             relevant_sources = []
@@ -75,14 +84,19 @@ def ask_question(req: QuestionRequest):
 
     # --- Récupération des documents ---
     if documents_to_use:
-        combined_docs.extend(retrieve_documents(
+        text_docs = retrieve_documents(
             client, COLLECTION_NAME, clarified_question, k=10, threshold=0, document_filter=documents_to_use
-        ))
+        )
+        combined_docs.extend(documents_docs)
+        logs.append(f"Documents textes : {text_docs}")
+        
 
     if connexions_to_use:
-        combined_docs.extend(retrieve_documents(
+        connexion_docs = retrieve_documents(
             client, POSTGRESS_COLLECTION_NAME, clarified_question, k=10, threshold=0, document_filter=connexions_to_use
-        ))
+        )
+        combined_docs.extend(connexion_docs)
+        logs.append("Documents postgreSQL : " + json.dumps(connexion_docs, ensure_ascii=False, indent=2))
 
     # --- Fallback si aucun doc ---
     if not req.chatbot_id and not combined_docs:
@@ -93,43 +107,11 @@ def ask_question(req: QuestionRequest):
     # --- Générer la réponse ---
     resp = generate_answer(clarified_question, combined_docs, req.chatbot_id)
     answer = resp.get("answer", "")
-
-    # Construire reasoning sous forme d'objet
-    sources_list = [src['name'] for src in relevant_sources if isinstance(src, dict)]
-    sql_doc = next((doc for doc in combined_docs if doc.get("source") == "résultat_sql"), None)
-
-    sql_line = None
-    if sql_doc:
-        lines = sql_doc["text"].splitlines()
-        try:
-            # Trouver l'indice de la ligne qui contient "Code SQL :"
-            start_idx = next(i for i, l in enumerate(lines) if l.startswith("Code SQL :"))
-        except StopIteration:
-            start_idx = None
-
-        if start_idx is not None:
-            # Extraire tout ce qui suit sur les lignes suivantes
-            # On enlève la partie "Code SQL : " sur la première ligne, puis on concatène le reste
-            sql_lines = [lines[start_idx][len("Code SQL : "):].strip()]  # ligne de départ sans le préfixe
-            sql_lines += lines[start_idx + 1 :]  # les lignes suivantes
-
-            # Optionnel : supprimer les lignes vides au début et à la fin
-            while sql_lines and sql_lines[0].strip() == "":
-                sql_lines.pop(0)
-            while sql_lines and sql_lines[-1].strip() == "":
-                sql_lines.pop()
-
-            sql_query = "\n".join(sql_lines)
-            sql_line = sql_query
-
-
-    reasoning_obj = Reasoning(
-        sources=sources_list,
-        sql=sql_line
-    )
+    generated_logs = resp.get("logs", [])
+    logs.extend(generated_logs)  # Concaténation des logs
 
     return AnswerResponse(
         documents=docs_text_only,
         answer=answer,
-        reasoning=reasoning_obj
+        logs=logs
     )

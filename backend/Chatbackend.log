@@ -1,26 +1,122 @@
 INFO:     Will watch for changes in these directories: ['/home/rino/deploy/backend']
 INFO:     Uvicorn running on http://0.0.0.0:8010 (Press CTRL+C to quit)
-INFO:     Started reloader process [2637] using StatReload
-INFO:     Started server process [2672]
+INFO:     Started reloader process [29620] using StatReload
+INFO:     Started server process [29652]
 INFO:     Waiting for application startup.
 INFO:     Application startup complete.
 INFO:     154.120.142.127:0 - "OPTIONS /ask HTTP/1.0" 200 OK
-🔍 Question clarifiée : combien l'album nous avons?
-Sources utilisées pour 'combien l'album nous avons?' : [{'type': 'aucun', 'name': 'aucun'}]
-🔧 Contenu brut du LLM:
- Je suis désolé(e), je n'ai pas accès à l'information concernant le nombre d'albums que vous possédez. Pourrait-on peut-être préciser la question ou fournir plus de détails ?
+[Erreur chargement SQL reasoning ou schéma] : {'message': 'JSON object requested, multiple (or no) rows returned', 'code': 'PGRST116', 'hint': None, 'details': 'The result contains 0 rows'}
 INFO:     154.120.142.127:0 - "POST /ask HTTP/1.0" 200 OK
-🔍 Question clarifiée : combien d'album nous avons?
-Sources utilisées pour 'combien d'album nous avons?' : [{'type': 'aucun', 'name': 'aucun'}]
-🔧 Contenu brut du LLM:
- Sans plus de détails sur votre collection musicale actuelle, je ne suis pas en mesure de vous donner un nombre exact. Cependant, si vous avez accès à votre bibliothèque de musique numérique (par exemple, iTunes, Spotify ou Google Play Music), vous devriez être capable de vérifier le nombre d'albums que vous possédez en accédant aux paramètres ou aux options de tri de votre bibliothèque.
-INFO:     154.120.142.127:0 - "POST /ask HTTP/1.0" 200 OK
-🔍 Question clarifiée : combien d'album nous avons dans notre base?
-Sources utilisées pour 'combien d'album nous avons dans notre base?' : [{'type': 'aucun', 'name': 'aucun'}]
-🔧 Contenu brut du LLM:
- Malheureusement, avec les informations fournies, je ne suis pas en mesure de vous dire combien d'albums se trouvent dans votre base de données. Il serait nécessaire d'avoir accès à la base de données ou à une interface permettant d'obtenir ce type d'information.
-INFO:     154.120.142.127:0 - "POST /ask HTTP/1.0" 200 OK
-INFO:     154.120.142.127:0 - "OPTIONS /ask HTTP/1.0" 200 OK
-🔍 Question clarifiée : combien d'album nous avons dans notre base?
-Sources utilisées pour 'combien d'album nous avons dans notre base?' : [{'type': 'aucun', 'name': 'aucun'}]
-INFO:     154.120.142.127:0 - "POST /ask HTTP/1.0" 200 OK
+INFO:     154.120.142.127:0 - "POST /ask HTTP/1.0" 500 Internal Server Error
+ERROR:    Exception in ASGI application
+Traceback (most recent call last):
+  File "/home/rino/deploy/lib64/python3.9/site-packages/uvicorn/protocols/http/h11_impl.py", line 403, in run_asgi
+    result = await app(  # type: ignore[func-returns-value]
+  File "/home/rino/deploy/lib64/python3.9/site-packages/uvicorn/middleware/proxy_headers.py", line 60, in __call__
+    return await self.app(scope, receive, send)
+  File "/home/rino/deploy/lib64/python3.9/site-packages/fastapi/applications.py", line 1054, in __call__
+    await super().__call__(scope, receive, send)
+  File "/home/rino/deploy/lib64/python3.9/site-packages/starlette/applications.py", line 112, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/home/rino/deploy/lib64/python3.9/site-packages/starlette/middleware/errors.py", line 187, in __call__
+    raise exc
+  File "/home/rino/deploy/lib64/python3.9/site-packages/starlette/middleware/errors.py", line 165, in __call__
+    await self.app(scope, receive, _send)
+  File "/home/rino/deploy/lib64/python3.9/site-packages/starlette/middleware/cors.py", line 93, in __call__
+    await self.simple_response(scope, receive, send, request_headers=headers)
+  File "/home/rino/deploy/lib64/python3.9/site-packages/starlette/middleware/cors.py", line 144, in simple_response
+    await self.app(scope, receive, send)
+  File "/home/rino/deploy/lib64/python3.9/site-packages/starlette/middleware/exceptions.py", line 62, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "/home/rino/deploy/lib64/python3.9/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/home/rino/deploy/lib64/python3.9/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/home/rino/deploy/lib64/python3.9/site-packages/starlette/routing.py", line 714, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/home/rino/deploy/lib64/python3.9/site-packages/starlette/routing.py", line 734, in app
+    await route.handle(scope, receive, send)
+  File "/home/rino/deploy/lib64/python3.9/site-packages/starlette/routing.py", line 288, in handle
+    await self.app(scope, receive, send)
+  File "/home/rino/deploy/lib64/python3.9/site-packages/starlette/routing.py", line 76, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "/home/rino/deploy/lib64/python3.9/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/home/rino/deploy/lib64/python3.9/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/home/rino/deploy/lib64/python3.9/site-packages/starlette/routing.py", line 73, in app
+    response = await f(request)
+  File "/home/rino/deploy/lib64/python3.9/site-packages/fastapi/routing.py", line 301, in app
+    raw_response = await run_endpoint_function(
+  File "/home/rino/deploy/lib64/python3.9/site-packages/fastapi/routing.py", line 214, in run_endpoint_function
+    return await run_in_threadpool(dependant.call, **values)
+  File "/home/rino/deploy/lib64/python3.9/site-packages/starlette/concurrency.py", line 37, in run_in_threadpool
+    return await anyio.to_thread.run_sync(func)
+  File "/home/rino/deploy/lib64/python3.9/site-packages/anyio/to_thread.py", line 56, in run_sync
+    return await get_async_backend().run_sync_in_worker_thread(
+  File "/home/rino/deploy/lib64/python3.9/site-packages/anyio/_backends/_asyncio.py", line 2470, in run_sync_in_worker_thread
+    return await future
+  File "/home/rino/deploy/lib64/python3.9/site-packages/anyio/_backends/_asyncio.py", line 967, in run
+    result = context.run(func, *args)
+  File "/home/rino/deploy/backend/routes/ask.py", line 62, in ask_question
+    relevant_sources = ask_mixtral_for_relevant_sources(req.chatbot_id, clarified_question)
+UnboundLocalError: local variable 'clarified_question' referenced before assignment
+INFO:     154.120.142.127:0 - "POST /ask HTTP/1.0" 500 Internal Server Error
+ERROR:    Exception in ASGI application
+Traceback (most recent call last):
+  File "/home/rino/deploy/lib64/python3.9/site-packages/uvicorn/protocols/http/h11_impl.py", line 403, in run_asgi
+    result = await app(  # type: ignore[func-returns-value]
+  File "/home/rino/deploy/lib64/python3.9/site-packages/uvicorn/middleware/proxy_headers.py", line 60, in __call__
+    return await self.app(scope, receive, send)
+  File "/home/rino/deploy/lib64/python3.9/site-packages/fastapi/applications.py", line 1054, in __call__
+    await super().__call__(scope, receive, send)
+  File "/home/rino/deploy/lib64/python3.9/site-packages/starlette/applications.py", line 112, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/home/rino/deploy/lib64/python3.9/site-packages/starlette/middleware/errors.py", line 187, in __call__
+    raise exc
+  File "/home/rino/deploy/lib64/python3.9/site-packages/starlette/middleware/errors.py", line 165, in __call__
+    await self.app(scope, receive, _send)
+  File "/home/rino/deploy/lib64/python3.9/site-packages/starlette/middleware/cors.py", line 93, in __call__
+    await self.simple_response(scope, receive, send, request_headers=headers)
+  File "/home/rino/deploy/lib64/python3.9/site-packages/starlette/middleware/cors.py", line 144, in simple_response
+    await self.app(scope, receive, send)
+  File "/home/rino/deploy/lib64/python3.9/site-packages/starlette/middleware/exceptions.py", line 62, in __call__
+    await wrap_app_handling_exceptions(self.app, conn)(scope, receive, send)
+  File "/home/rino/deploy/lib64/python3.9/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/home/rino/deploy/lib64/python3.9/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/home/rino/deploy/lib64/python3.9/site-packages/starlette/routing.py", line 714, in __call__
+    await self.middleware_stack(scope, receive, send)
+  File "/home/rino/deploy/lib64/python3.9/site-packages/starlette/routing.py", line 734, in app
+    await route.handle(scope, receive, send)
+  File "/home/rino/deploy/lib64/python3.9/site-packages/starlette/routing.py", line 288, in handle
+    await self.app(scope, receive, send)
+  File "/home/rino/deploy/lib64/python3.9/site-packages/starlette/routing.py", line 76, in app
+    await wrap_app_handling_exceptions(app, request)(scope, receive, send)
+  File "/home/rino/deploy/lib64/python3.9/site-packages/starlette/_exception_handler.py", line 53, in wrapped_app
+    raise exc
+  File "/home/rino/deploy/lib64/python3.9/site-packages/starlette/_exception_handler.py", line 42, in wrapped_app
+    await app(scope, receive, sender)
+  File "/home/rino/deploy/lib64/python3.9/site-packages/starlette/routing.py", line 73, in app
+    response = await f(request)
+  File "/home/rino/deploy/lib64/python3.9/site-packages/fastapi/routing.py", line 301, in app
+    raw_response = await run_endpoint_function(
+  File "/home/rino/deploy/lib64/python3.9/site-packages/fastapi/routing.py", line 214, in run_endpoint_function
+    return await run_in_threadpool(dependant.call, **values)
+  File "/home/rino/deploy/lib64/python3.9/site-packages/starlette/concurrency.py", line 37, in run_in_threadpool
+    return await anyio.to_thread.run_sync(func)
+  File "/home/rino/deploy/lib64/python3.9/site-packages/anyio/to_thread.py", line 56, in run_sync
+    return await get_async_backend().run_sync_in_worker_thread(
+  File "/home/rino/deploy/lib64/python3.9/site-packages/anyio/_backends/_asyncio.py", line 2470, in run_sync_in_worker_thread
+    return await future
+  File "/home/rino/deploy/lib64/python3.9/site-packages/anyio/_backends/_asyncio.py", line 967, in run
+    result = context.run(func, *args)
+  File "/home/rino/deploy/backend/routes/ask.py", line 62, in ask_question
+    relevant_sources = ask_mixtral_for_relevant_sources(req.chatbot_id, clarified_question)
+UnboundLocalError: local variable 'clarified_question' referenced before assignment
+INFO:     Shutting down
+INFO:     Waiting for application shutdown.
+INFO:     Application shutdown complete.
+INFO:     Finished server process [29652]
+INFO:     Stopping reloader process [29620]

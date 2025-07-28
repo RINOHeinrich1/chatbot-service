@@ -6,6 +6,7 @@ from config import *
 from utils.helpers import *
 from .cache import *
 from .postgres import *
+import re
 # === Fonctions utilitaires ===
 import joblib
 
@@ -75,7 +76,7 @@ def build_system_prompt(query,description, sql_reasoning_enabled, schema_text,di
     if sql_reasoning_enabled and schema_text:
         prompt += (
             f"\n\nVoici les tables de la base de donnée postgres avec leurs colonnes respectif :\n{schema_text}\n\n"
-            f"\nEn te basant sur ces informations sur la base de donnée, donne  un requête SQL pour répondre au question :\"{query}\", en respectant les règles:\n"
+            f"\nEn te basant sur ces informations sur la base de donnée, donne  un requête SQL pour répondre au demande :\"{query}\", en respectant les règles:\n"
             "1. Retourne uniquement une requête SQL PostgreSQL valide, exécutable.\n"
             "2. Ne retourne jamais  d'explication ou de commentaire, de balises Markdown ou des échappements via \. Juste la requête\n"
             "3. La requête doit toujours êtres complètes"
@@ -96,9 +97,9 @@ def reformulate_answer_via_llm(query, contexte_text):
         {"role": "system", "content": "Tu es un assistant intelligent, clair et naturel."},
         {"role": "user", "content": (
             "Tu es un assistant qui reformule une réponse claire, naturelle et concise pour un utilisateur.\n"
-            f"Voici la question posée :\n{query}\n\n"
+            f"Voici la demande reçu :\n{query}\n\n"
             f"Voici le contexte complet :\n{contexte_text}\n\n"
-            "Répond uniquement au question posée en français, ne donne pas de détails technique ni de la façon dont tu as obtenue la réponse\n"
+            "Répond uniquement en francais au demande reçu, ne donne pas de détails technique ni de la façon dont tu as obtenue la réponse\n"
         )}
     ]
     return call_llm("mixtral", messages)
@@ -126,19 +127,15 @@ def ask_mixtral_for_relevant_sources(chatbot_id: str, question: str):
     if not sources:
         return [{"type": "aucun", "name": "aucun"}]
 
-    print(f"Liste des sources:{sources}")
-
+    print(json.dumps(sources, ensure_ascii=False))
     prompt = (
-        "Tu es un assistant intelligent chargé de sélectionner les sources les plus pertinentes pour répondre à une question.\n"
-        f"Question :\n{question}\n\n"
+        "Tu es un assistant intelligent chargé de sélectionner les sources les plus pertinentes pour répondre à une demande.\n"
+        f"Demande :\n{question}\n\n"
         "Sources disponibles :\n"
         f"{json.dumps(sources, ensure_ascii=False)}\n\n"
         "Réponds uniquement par la liste JSON EXACTE au format :\n"
         "[{\"type\": \"document\" ou \"connexion\", \"name\": \"nom_de_la_source\"}, ...]\n"
-        "Si la question n'est pas une demande (exemple: salutation, remerciement ou autres), tu ne renvoies :\n"
-        "[{\"type\": \"aucun\", \"name\": \"aucun\"}]\n"
         "La liste doit contenir uniquement les sources sélectionnées, sans aucune explication, commentaire, texte supplémentaire ou guillemets inversés.\n"
-        "Si aucune source n'est pertinente, retourne une liste vide : []\n"
         "Ne réponds jamais autre chose que cette liste JSON."
     )
 
@@ -153,14 +150,13 @@ def ask_mixtral_for_relevant_sources(chatbot_id: str, question: str):
         return json.loads(result)
     except Exception:
         return result
-import re
 
 def corriger_sql_heuristique(sql):
     # Mots-clés SQL à ne jamais mettre entre guillemets
     mots_cles = {
         "SELECT", "FROM", "JOIN", "INNER", "LEFT", "RIGHT", "FULL", "OUTER", "ON",
         "WHERE", "AS", "AND", "OR", "GROUP", "BY", "ORDER", "HAVING", "DESC", "ASC",
-        "LIMIT", "OFFSET", "IN", "IS", "NULL", "NOT", "UNION"
+        "LIMIT", "OFFSET", "IN", "IS", "NULL", "NOT", "UNION","*"
     }
 
     # Fonction pour mettre des guillemets sur identifiants si pas déjà faits
@@ -213,12 +209,13 @@ def extract_sources(docs):
     return list({doc.get("source", "inconnu") for doc in docs})
 
 def generate_answer(query, docs, chatbot_id=None, max_retries=3):
+    logs=[]
     cached = get_cache(query, docs)
     if cached:
+        logs.append("Utilisation du cache")
         return {
             "answer": cached,
-            "sql": None,
-            "sources": extract_sources(docs),
+            "logs": logs,
         }
 
     description = get_chatbot_description(chatbot_id)
@@ -234,20 +231,21 @@ def generate_answer(query, docs, chatbot_id=None, max_retries=3):
         {"role": "system", "content": system_prompt},
         {"role": "user", "content": (
             f"Voici le contexte :\n{contexte.strip()}\n\n"
-            f"Voici la question :\n{query.strip()}"
+            f"Voici la demande :\n{query.strip()}"
         )}
     ]
-
+    
     try:
+        logs.append(f"Requête envoyés:{messages}")
         raw_result = call_llm("mixtral", messages, temperature=0, max_tokens=300)
-        print("🔧 Contenu brut du LLM:\n", raw_result)
+        logs.append(f"🔧 Résulat brut du LLM:{raw_result}")
     except Exception as e:
         raw_result = f"Erreur lors de la génération de la réponse : {str(e)}"
+        
         set_cache(query, docs, raw_result)
         return {
             "answer": raw_result,
-            "sql": None,
-            "sources": sources_used,
+            "logs": logs,
         }
 
     final_answer = raw_result
@@ -258,17 +256,17 @@ def generate_answer(query, docs, chatbot_id=None, max_retries=3):
         while retry_count <= max_retries:
             extracted_sql = extract_sql_from_text(raw_result)
             if extracted_sql is None:
-                print("Aucune requête SQL extraite.")
+                logs.append("Aucune requête SQL extraite.")
                 break
 
             if os.environ.get("DEBUG_SQL"):
-                print(f"SQL à exécuter (essai #{retry_count + 1}): {extracted_sql}")
+                logs.append(f"SQL à exécuter (essai #{retry_count + 1}): {extracted_sql}")
 
             try:
                 # 1ère tentative ou tentative après LLM/heuristique
                 sql_result = execute_sql_via_api(connexion_params, extracted_sql)
                 if sql_result is not None:
-                    print(f"Résultat SQL: {sql_result}")
+                    logs.append(f"Résultat SQL: {sql_result}")
                     docs.insert(0, {
                         "text": (
                             f"Résultat SQL pour la requête suivante : {query}\n"
@@ -277,23 +275,27 @@ def generate_answer(query, docs, chatbot_id=None, max_retries=3):
                         ),
                         "source": "résultat_sql"
                     })
+                    logs.append(f"insertion de résulat de l'sql:{json.dumps(sql_result, indent=2, ensure_ascii=False)}")
                     final_answer = reformulate_answer_via_llm(query, build_contexte(docs))
                     break  # Succès
                 else:
+                    logs.append("Résultat SQL vide ou invalide")
                     raise Exception("Résultat SQL vide ou invalide")
 
             except Exception as e:
-                print(f"Erreur exécution SQL: {e}")
+                logs.append(f"Erreur exécution SQL: {e}")
 
                 # Tentative avec correcteur heuristique
                 if not tried_heuristic:
-                    print("⛑️ Tentative de correction heuristique...")
+                    logs.append(f"⛑️ Tentative de correction heuristique de: {extracted_sql} ")
                     extracted_sql = corriger_sql_heuristique(extracted_sql)
+                    logs.append(f"⛑️ Résultat de la correction: {extracted_sql}")
                     tried_heuristic = True
                     continue  # Réessayer avec la requête corrigée
                  
                 if retry_count == max_retries:
                     final_answer = f"Erreur lors de l'exécution de la requête SQL : {e}\nRequête SQL : {extracted_sql}"
+                    logs.append(f"Tentative de correction max atteint, résultat final:{final_answer} ")
                     break
 
                 # Appel LLM comme dernier recours
@@ -306,16 +308,16 @@ def generate_answer(query, docs, chatbot_id=None, max_retries=3):
                         "Retourne uniquement la requête SQL corrigée, sans explications."
                     )}
                 ]
+                logs.append(f"Prompt de correction:{correction_prompt} ")
                 raw_result = call_llm("mixtral", correction_prompt, temperature=0, max_tokens=200)
                 retry_count += 1
         else:
             # Si on sort de la boucle sans break (pas de requête SQL correcte)
             final_answer = reformulate_answer_via_llm(query, contexte)
-
+            logs.append(f"Résulat finale:{final_answer}")
     set_cache(query, docs, final_answer)
 
     return {
         "answer": final_answer,
-        "sql": extracted_sql,
-        "sources": sources_used,
+        "logs": logs,
     }

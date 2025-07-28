@@ -2,9 +2,6 @@ from typing import List
 from services.mixtral import call_llm,is_question_or_request
 
 def clarify_question(history: List[dict], question: str) -> str:
-    if not is_question_or_request(question):
-        return question.strip()
-
     formatted_history = ""
     for msg in history:
         role = "Utilisateur" if msg["role"] == "user" else "Assistant"
@@ -14,9 +11,8 @@ def clarify_question(history: List[dict], question: str) -> str:
         {
             "role": "system",
             "content": (
-                "Tu es un assistant dont le seul rôle est de reformuler les demandes de l'utilisateur.\n"
-                "Tu dois uniquement reformuler les messages qui sont des **questions** ou des **demandes** mais pas les remerciements ou salutations.\n"
-                "Dans la reformulation, remplace tous les pronoms (comme « il », « elle », « cela », « le dernier » etc.) par les noms ou entités correspondants présents dans l'historique de la conversation.\n"
+                "Tu es un assistant dont le seul rôle est de resoudre les coréférences dans les phrases de demandes  en français.\n"
+                "Dans la reformulation, remplace tous les pronoms et référence (comme « il », « elle », « cela », « le dernier » etc.) par les noms ou entités correspondants présents dans l'historique de la conversation, Sauf pour le pronom **tu**\n"
                 "Ne réponds jamais à la question. Ne donne pas d’explication. N’ajoute aucun commentaire ou information supplémentaire."
             )
         },
