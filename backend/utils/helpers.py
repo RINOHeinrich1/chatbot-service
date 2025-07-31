@@ -5,7 +5,28 @@ import requests
 import time
 import json
 import jwt
+def get_slots_for_chatbot(chatbot_id: str):
+    response = supabase.from_("chatbot_slot_associations")\
+        .select("*, slots(*)")\
+        .eq("chatbot_id", chatbot_id)\
+        .execute()
 
+    # Vérifie simplement si des données sont retournées
+    if not response or not getattr(response, "data", None):
+        return []
+
+    slots = []
+    for assoc in response.data:
+        if "slots" in assoc and assoc["slots"] is not None:
+            slot_data = {
+                "slot_name": assoc["slots"]["slot_name"],
+                "columns": assoc["slots"]["columns"],
+                "description": assoc["description"],
+                "slot_id": assoc["slot_id"]
+            }
+            slots.append(slot_data)
+
+    return slots
 
 def get_connexions_for_chatbot(chatbot_id: str):
     return supabase.table("chatbot_pgsql_connexions") \

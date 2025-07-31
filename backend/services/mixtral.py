@@ -7,6 +7,7 @@ from utils.helpers import *
 from .cache import *
 from .postgres import *
 import re
+from typing import List, Dict,Any
 # === Fonctions utilitaires ===
 import joblib
 
@@ -99,57 +100,124 @@ def reformulate_answer_via_llm(query, contexte_text):
             "Tu es un assistant qui reformule une réponse claire, naturelle et concise pour un utilisateur.\n"
             f"Voici la demande reçu :\n{query}\n\n"
             f"Voici le contexte complet :\n{contexte_text}\n\n"
+            f"Si le contexte est un liste de slot et certains valeur sont nulle, il faut repondre par des questions pour les demandées"
             "Répond uniquement en francais au demande reçu, ne donne pas de détails technique ni de la façon dont tu as obtenue la réponse\n"
         )}
     ]
     return call_llm("mixtral", messages)
 
 def ask_mixtral_for_relevant_sources(chatbot_id: str, question: str):
-    if not is_question_or_request(question):
-        return [{"type": "aucun", "name": "aucun"}]
-
     sources = []
+    if  is_question_or_request(question):
+        for c in get_connexions_for_chatbot(chatbot_id):
+            sources.append({
+                "type": "connexion",
+                "name": c["connexion_name"],
+                "description": c["description"]
+            })
 
-    for c in get_connexions_for_chatbot(chatbot_id):
-        sources.append({
-            "type": "connexion",
-            "name": c["connexion_name"],
-            "description": c["description"]
-        })
+        for d in get_documents_for_chatbot(chatbot_id):
+            sources.append({
+                "type": "document",
+                "name": d["document_name"],
+                "description": d["description"]
+            })
 
-    for d in get_documents_for_chatbot(chatbot_id):
+    for s in get_slots_for_chatbot(chatbot_id):
         sources.append({
-            "type": "document",
-            "name": d["document_name"],
-            "description": d["description"]
+            "type": "slot",
+            "name": s["slot_name"],
+            "description": s["description"]
         })
 
     if not sources:
-        return [{"type": "aucun", "name": "aucun"}]
+        return []
 
-    print(json.dumps(sources, ensure_ascii=False))
     prompt = (
         "Tu es un assistant intelligent chargé de sélectionner les sources les plus pertinentes pour répondre à une demande.\n"
         f"Demande :\n{question}\n\n"
-        "Sources disponibles :\n"
-        f"{json.dumps(sources, ensure_ascii=False)}\n\n"
-        "Réponds uniquement par la liste JSON EXACTE au format :\n"
-        "[{\"type\": \"document\" ou \"connexion\", \"name\": \"nom_de_la_source\"}, ...]\n"
-        "La liste doit contenir uniquement les sources sélectionnées, sans aucune explication, commentaire, texte supplémentaire ou guillemets inversés.\n"
+        "Voici la liste des sources disponibles :\n"
+        f"{json.dumps(sources, ensure_ascii=False, indent=2)}\n\n"
+        "Réponds uniquement par la liste JSON EXACTE des noms des sources sélectionnées (exemple : [\"Rendez-vous-vole\", \"Doc A\"]).\n"
         "Ne réponds jamais autre chose que cette liste JSON."
     )
 
-    messages = [
+    result = call_llm("mixtral", [
         {"role": "system", "content": "Tu es un assistant intelligent qui sélectionne les sources pertinentes."},
         {"role": "user", "content": prompt}
-    ]
+    ])
 
-    result = call_llm("mixtral", messages)
+    print(f"Réponse brute du LLM : {result}")
 
     try:
-        return json.loads(result)
-    except Exception:
-        return result
+        cleaned_result = re.sub(r'\\([^\\"/bfnrtu])', r'\1', result)
+        selected_names = json.loads(cleaned_result)
+        if isinstance(selected_names, list) and all(isinstance(n, str) for n in selected_names):
+            # Filtrer les sources en fonction des noms renvoyés par le LLM
+            selected_sources = [s for s in sources if s["name"] in selected_names]
+            return selected_sources
+        else:
+            print("⚠️ Format inattendu : attendu liste de noms (strings).")
+            return []
+    except Exception as e:
+        print(f"Erreur parsing JSON LLM: {e}")
+        return []
+
+
+def extract_slots_with_llm(user_input: str, expected_slots: List[Dict[str, str]], slot_state: Dict[str, Any]):
+    slot_state = slot_state or {}
+
+    if not expected_slots or not isinstance(expected_slots[0], dict):
+        print("⚠️ Structure inattendue pour expected_slots :", expected_slots)
+        return {}
+
+    full_slot_schema = expected_slots[0]  # ex: {'Nom': 'text', 'Date': 'date', ...}
+
+    # Slots manquants uniquement
+    missing_slots = {slot: full_slot_schema[slot] for slot in full_slot_schema if not slot_state.get(slot)}
+
+    if not missing_slots:
+        print("✅ Tous les slots sont déjà renseignés.")
+        return slot_state  # Retourner tous les slots connus
+
+    # Template JSON pour les slots manquants
+    slots_template = {k: None for k in missing_slots}
+    json_example = json.dumps(slots_template, ensure_ascii=False, indent=2)
+
+    system_prompt = {
+        "role": "system",
+        "content": (
+            f"Tu es un assistant intelligent. Extrait les informations suivantes si elles sont présentes dans la phrase : {', '.join(missing_slots.keys())}.\n"
+            f"Retourne uniquement un JSON valide au format suivant :\n{json_example}\n"
+            "Si une valeur n’est pas présente, utilise null."
+        )
+    }
+    user_prompt = {"role": "user", "content": user_input}
+
+    response = call_llm("mixtral", [system_prompt, user_prompt])
+
+    try:
+        extracted = json.loads(response)
+    except json.JSONDecodeError:
+        cleaned = response.replace("\\_", "_").replace("\\n", "").strip("`")
+        try:
+            extracted = json.loads(cleaned)
+        except Exception:
+            print("⚠️ Erreur : le LLM n'a pas retourné un JSON valide. Réponse brute :")
+            print(response)
+            return slot_state  # On retourne quand même les slots déjà connus
+
+    # Fusionner les slots extraits avec ceux déjà présents
+    final_slots = {}
+    for slot in full_slot_schema:
+        if slot_state.get(slot) is not None:
+            final_slots[slot] = slot_state[slot]
+        elif extracted.get(slot) is not None:
+            final_slots[slot] = extracted[slot]
+        else:
+            final_slots[slot] = None
+
+    return final_slots
 
 def corriger_sql_heuristique(sql):
     # Mots-clés SQL à ne jamais mettre entre guillemets

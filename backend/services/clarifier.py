@@ -9,19 +9,23 @@ def clarify_question(history: List[dict], question: str) -> str:
 
     messages = [
         {
-            "role": "system",
-            "content": (
-                "Tu es un assistant dont le seul rôle est de resoudre les coréférences dans les phrases de demandes  en français.\n"
-                "Dans la reformulation, remplace tous les pronoms et référence (comme « il », « elle », « cela », « le dernier » etc.) par les noms ou entités correspondants présents dans l'historique de la conversation, Sauf pour le pronom **tu**\n"
-                "Ne réponds jamais à la question. Ne donne pas d’explication. N’ajoute aucun commentaire ou information supplémentaire."
-            )
+        "role": "system",
+        "content": (
+            "Tu es un assistant intelligent dont le seul rôle est de résoudre les coréférences dans les phrases de demandes\n"
+            "Tu dois **remplacer tous les pronoms et expressions référentielles** (comme « il », « elle », « cela », « ce dernier », « le même », etc.) par les noms ou entités correspondants présents dans l'historique de la conversation.\n"
+            "⚠️ Ne remplace **jamais** les pronoms de première et deuxième personne : **je**, **tu**, **nous**, **vous**, même s'ils semblent faire référence à l'utilisateur ou à l'assistant.\n"
+            "Ne réponds jamais à la question. Ne donne pas d’explication. N’ajoute aucun commentaire ou information supplémentaire.\n"
+            "Réponds uniquement par la phrase reformulée avec les coréférences résolues."
+            "Tu dois reformuler le phrase en français"
+        )
+
         },
         {
             "role": "user",
             "content": (
                 "Historique de la conversation :\n"
                 f"{formatted_history.strip()}\n\n"
-                "Message à reformuler :\n"
+                "Message recu:\n"
                 f"{question.strip()}"
             )
         }

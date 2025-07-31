@@ -2,11 +2,12 @@ from fastapi import APIRouter
 from pydantic import BaseModel
 from typing import List, Optional, Union
 from services.retrieval import retrieve_documents
-from services.mixtral import ask_mixtral_for_relevant_sources, generate_answer,is_question_or_request
+from services.mixtral import ask_mixtral_for_relevant_sources, generate_answer,is_question_or_request,extract_slots_with_llm
 from services.clarifier import clarify_question
 from utils.helpers import (
     get_connexions_for_chatbot,
     get_documents_for_chatbot,
+    get_slots_for_chatbot,
     get_memoire_contextuelle,
 )
 from qdrant_client import QdrantClient
@@ -25,6 +26,7 @@ class AnswerResponse(BaseModel):
     documents: List[str]
     answer: str
     logs: Optional[List[str]] = []  # Ajouté pour stocker les logs
+    slot_state: Optional[dict] = {}  # <- AJOUT ICI
 
 
 class MessageHistory(BaseModel):
@@ -35,15 +37,15 @@ class QuestionRequest(BaseModel):
     question: str
     chatbot_id: Optional[str] = None
     history: Optional[List[MessageHistory]] = []
+    slot_state: Optional[dict] = {} 
 
 @router.post("/ask", response_model=AnswerResponse)
 def ask_question(req: QuestionRequest):
     logs = []
     original_question = req.question
     combined_docs = []
-
-    # --- Préparer l'historique contextuel ---
     context_messages = []
+    slot_state=req.slot_state
     if req.chatbot_id and req.history:
         max_ctx = get_memoire_contextuelle(req.chatbot_id)
         context_messages = req.history[-max_ctx:]
@@ -81,23 +83,37 @@ def ask_question(req: QuestionRequest):
                 documents_to_use.append(src["name"])
             elif src.get("type") == "connexion" or src.get("type")=="connection":
                 connexions_to_use.append(src["name"])
+    slot_values = {}
+    slots_to_use = []
 
+    for src in relevant_sources:
+        if isinstance(src, dict) and src.get("type") == "slot":
+            slots_to_use.append(src["name"])
     # --- Récupération des documents ---
     if documents_to_use:
         text_docs = retrieve_documents(
-            client, COLLECTION_NAME, clarified_question, k=10, threshold=0, document_filter=documents_to_use
-        )
-        combined_docs.extend(documents_docs)
+            client, COLLECTION_NAME, clarified_question, k=10, threshold=0, document_filter=documents_to_use,apply_contextual_filter=False)
+        combined_docs.extend(text_docs)
         logs.append(f"Documents textes : {text_docs}")
         
 
     if connexions_to_use:
         connexion_docs = retrieve_documents(
-            client, POSTGRESS_COLLECTION_NAME, clarified_question, k=10, threshold=0, document_filter=connexions_to_use
-        )
+            client, POSTGRESS_COLLECTION_NAME, clarified_question, k=10, threshold=0, document_filter=connexions_to_use,apply_contextual_filter=True)
         combined_docs.extend(connexion_docs)
         logs.append("Documents postgreSQL : " + json.dumps(connexion_docs, ensure_ascii=False, indent=2))
-
+    if slots_to_use:
+        all_slots = get_slots_for_chatbot(req.chatbot_id)
+        # Crée une liste des colonnes à extraire (en fonction des slots sélectionnés)
+        columns_to_extract = []
+        for slot in all_slots:
+            if slot["slot_name"] in slots_to_use:
+                columns_to_extract.append(slot["columns"])
+        if columns_to_extract:
+            print(f"Colonnes à extraire : {columns_to_extract}")
+            logs.append(f"Colonnes à extraire : {columns_to_extract}")
+            slot_values = extract_slots_with_llm(clarified_question, columns_to_extract,slot_state)
+            logs.append("Valeurs extraites des slots : " + json.dumps(slot_values, ensure_ascii=False))
     # --- Fallback si aucun doc ---
     if not req.chatbot_id and not combined_docs:
         combined_docs = retrieve_documents(client, COLLECTION_NAME, clarified_question, k=5)
@@ -105,13 +121,18 @@ def ask_question(req: QuestionRequest):
     docs_text_only = [doc["text"] for doc in combined_docs]
 
     # --- Générer la réponse ---
+    if slot_values:  # Vérifie si non vide
+        combined_docs.append({"text": json.dumps(slot_values, ensure_ascii=False)})
     resp = generate_answer(clarified_question, combined_docs, req.chatbot_id)
     answer = resp.get("answer", "")
     generated_logs = resp.get("logs", [])
     logs.extend(generated_logs)  # Concaténation des logs
-
+    if slot_values=={}:
+        slot_values=slot_state
     return AnswerResponse(
         documents=docs_text_only,
         answer=answer,
-        logs=logs
+        logs=logs,
+        slot_state=slot_values  
     )
+

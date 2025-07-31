@@ -52,15 +52,12 @@ def render_template_from_service(service_url: str, template: str, conn_data: dic
         print(f"Exception lors du rendu template : {e}")
     return "[Erreur de rendu]"
 
-
-
-def retrieve_documents(client, collection_name, query, k=5, threshold=0, document_filter=None):
+def retrieve_documents(client, collection_name, query, k=5, threshold=0, document_filter=None, apply_contextual_filter=False):
     query_vector = get_embedding([query])[0]
-
     filter_conditions = []
 
     if document_filter:
-        # On ne récupère que les documents dont la source est dans le filtre
+        # Filtrer par source
         filter_conditions.append(
             FieldCondition(
                 key="source",
@@ -68,19 +65,17 @@ def retrieve_documents(client, collection_name, query, k=5, threshold=0, documen
             )
         )
 
-        # On veut aussi que ces documents soient contextuels
-        filter_conditions.append(
-            FieldCondition(
-                key="contextual",
-                match=MatchValue(value="true")  # ou bool True si c'est stocké en booléen
+        # Si c'est une connexion, on applique le filtre "contextual = true"
+        if apply_contextual_filter:
+            filter_conditions.append(
+                FieldCondition(
+                    key="contextual",
+                    match=MatchValue(value="true")
+                )
             )
-        )
 
-        # Clause AND logique
         filter_condition = Filter(must=filter_conditions)
-
     else:
-        # Si aucun document_filter, alors on ne récupère rien (ou bien tu peux lever une erreur)
         print("[Info] Aucun document_filter spécifié, pas de récupération possible.")
         return []
 
@@ -89,7 +84,8 @@ def retrieve_documents(client, collection_name, query, k=5, threshold=0, documen
         query_vector=query_vector,
         limit=k,
         with_payload=True,
-        query_filter=filter_condition
+        query_filter=filter_condition,
+        with_vectors=False
     )
 
     documents = []
