@@ -2,6 +2,11 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from routes.ask import router as ask_router
+from routes.articles import router as articles_router  # ✅ importer le nouveau router
+
+from config import *
+import psycopg2
+from services.mixtral import generate_answer_with_slots
 
 app = FastAPI(title="RAG API")
 
@@ -16,6 +21,7 @@ app.add_middleware(
 
 # Inclusions de routes
 app.include_router(ask_router)
+app.include_router(articles_router)   # ✅  les routes d'articles
 
 # Pour lancement direct
 if __name__ == "__main__":

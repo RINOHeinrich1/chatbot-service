@@ -2,7 +2,12 @@ from fastapi import APIRouter
 from pydantic import BaseModel
 from typing import List, Optional, Union
 from services.retrieval import retrieve_documents
-from services.mixtral import ask_mixtral_for_relevant_sources, generate_answer,is_question_or_request,extract_slots_with_llm
+from services.mixtral import (
+    ask_mixtral_for_relevant_sources,
+    generate_answer,
+    is_question_or_request,
+    extract_slots_with_llm,
+)
 from services.clarifier import clarify_question
 from utils.helpers import (
     get_connexions_for_chatbot,
@@ -14,13 +19,33 @@ from qdrant_client import QdrantClient
 from config import *
 import json
 
-router = APIRouter()
+# NEW CODE
+from services.mixtral import ask_mixtral_categorize
+from difflib import SequenceMatcher
+import requests
 
+# --- Config DB globale ---
+DB_NAME = os.getenv("DB_NAME", "madachat")
+DB_USER = os.getenv("DB_USER", "postgres")
+DB_PASSWORD = os.getenv("DB_PASSWORD", "postgres")
+DB_HOST = os.getenv("DB_HOST", "localhost")
+DB_PORT = os.getenv("DB_PORT", "5432")
+
+
+# ---- Fonction de similarité ----
+def score_similarity(a, b):
+    return SequenceMatcher(None, a.lower(), b.lower()).ratio()
+
+
+# END NEW CODE
+router = APIRouter()
 client = QdrantClient(url=QDRANT_URL, api_key=QDRANT_API_KEY)
+
 
 class Reasoning(BaseModel):
     sources: List[str]
     sql: Optional[str] = None
+
 
 class AnswerResponse(BaseModel):
     documents: List[str]
@@ -33,11 +58,43 @@ class MessageHistory(BaseModel):
     role: str
     content: str
 
+
 class QuestionRequest(BaseModel):
     question: str
     chatbot_id: Optional[str] = None
     history: Optional[List[MessageHistory]] = []
-    slot_state: Optional[dict] = {} 
+    slot_state: Optional[dict] = {}
+
+
+import re
+import psycopg2
+
+
+# --- Wrapper pour appeler le LLM Mixtral ---
+def call_llm(
+    model: str, messages: list, temperature: float = 0.1, max_tokens: int = 300
+) -> str:
+    """
+    Appelle le modèle Mixtral via Infomaniak AI API.
+    """
+    headers = {
+        "Authorization": f"Bearer {AI_TOKEN}",
+        "Content-Type": "application/json",
+    }
+
+    payload = {
+        "model": model,
+        "messages": messages,
+        "temperature": temperature,
+        "max_tokens": max_tokens,
+    }
+
+    response = requests.post(AI_URL, headers=headers, json=payload)
+    response.raise_for_status()
+    data = response.json()
+
+    # Infomaniak AI renvoie la réponse souvent dans data['choices'][0]['message']['content']
+    return data["choices"][0]["message"]["content"]
 
 @router.post("/ask", response_model=AnswerResponse)
 def ask_question(req: QuestionRequest):
@@ -96,7 +153,6 @@ def ask_question(req: QuestionRequest):
         combined_docs.extend(text_docs)
         logs.append(f"Documents textes : {text_docs}")
         
-
     if connexions_to_use:
         connexion_docs = retrieve_documents(
             client, POSTGRESS_COLLECTION_NAME, clarified_question, k=10, threshold=0, document_filter=connexions_to_use,apply_contextual_filter=True)
@@ -135,4 +191,3 @@ def ask_question(req: QuestionRequest):
         logs=logs,
         slot_state=slot_values  
     )
-

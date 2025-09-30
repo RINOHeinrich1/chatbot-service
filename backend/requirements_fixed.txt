@@ -1,0 +1,16 @@
+
+fastapi
+uvicorn
+transformers
+datasets
+pandas
+faiss-cpu
+torch
+torchvision
+torchaudio
+qdrant-client
+python-docx
+joblib
+supabase
+scikit-learn
+dotenv
