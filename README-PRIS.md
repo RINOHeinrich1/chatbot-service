@@ -10,7 +10,7 @@ Backend en **FastAPI + PostgreSQL** permettant de gérer et rechercher des **art
 
 ---
 ### 1 Cloner le projet
-git clone <url-du-dépôt>
+git clone https://github.com/PrisquinMG/chatbot-service.git
 
 ### 2 Executer le fichier pour importer le donneee dans le postgres
 python import_articles.py
