@@ -6,7 +6,6 @@ from routes.articles import router as articles_router  # ✅ importer le nouveau
 
 from config import *
 import psycopg2
-from services.mixtral import generate_answer_with_slots
 
 app = FastAPI(title="RAG API")
 

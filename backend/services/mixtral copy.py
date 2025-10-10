@@ -23,7 +23,7 @@ def is_question_or_request(text: str) -> bool:
     return bool(prediction)
 
 
-def call_llm(model, messages, temperature=0.5, max_tokens=600):
+def call_llm(model, messages, temperature=0.5, max_tokens=300):
     payload = {
         "model": model,
         "messages": messages,
@@ -136,46 +136,35 @@ def reformulate_answer_via_llm(query, contexte_text):
     return call_llm("mixtral", messages)
 
 
-def ask_mixtral_for_relevant_sources(chatbot_id: str, question: str) -> List[Dict]:
-    """
-    Sélectionne les sources les plus pertinentes (documents, connexions, slots) pour un chatbot.
-    Utilise le LLM pour filtrer, avec fallback automatique pour les slots si le LLM renvoie vide.
-    """
+def ask_mixtral_for_relevant_sources(chatbot_id: str, question: str):
     sources = []
-
-    # --- Connexions et documents ---
     if is_question_or_request(question):
         for c in get_connexions_for_chatbot(chatbot_id):
             sources.append(
                 {
                     "type": "connexion",
-                    "name": c.get("connexion_name"),
-                    "description": c.get("description"),
+                    "name": c["connexion_name"],
+                    "description": c["description"],
                 }
             )
+
         for d in get_documents_for_chatbot(chatbot_id):
             sources.append(
                 {
                     "type": "document",
-                    "name": d.get("document_name"),
-                    "description": d.get("description"),
+                    "name": d["document_name"],
+                    "description": d["description"],
                 }
             )
 
-    # --- Slots ---
     for s in get_slots_for_chatbot(chatbot_id):
         sources.append(
-            {
-                "type": "slot",
-                "name": s.get("slot_name"),
-                "description": s.get("description"),
-            }
+            {"type": "slot", "name": s["slot_name"], "description": s["description"]}
         )
 
     if not sources:
         return []
 
-    # --- Prompt pour le LLM ---
     prompt = (
         "Tu es un assistant intelligent chargé de sélectionner les sources les plus pertinentes pour répondre à une demande.\n"
         f"Demande :\n{question}\n\n"
@@ -185,146 +174,78 @@ def ask_mixtral_for_relevant_sources(chatbot_id: str, question: str) -> List[Dic
         "Ne réponds jamais autre chose que cette liste JSON."
     )
 
+    result = call_llm(
+        "mixtral",
+        [
+            {
+                "role": "system",
+                "content": "Tu es un assistant intelligent qui sélectionne les sources pertinentes.",
+            },
+            {"role": "user", "content": prompt},
+        ],
+    )
+
+    print(f"Réponse brute du LLM : {result}")
+
+    # CUSTOM REQUEST GENERIC
+    slots = get_slots_for_chatbot(chatbot_id)
+
+    for slot in slots:
+        if slot.get("slot_id") == 5:
+            print("======== Slot ID 5 ========")
+            print(json.dumps(slot, ensure_ascii=False, indent=2))
+    # END CUSTOM REQUEST GENERIC
+
     try:
-        result = call_llm(
-            "mixtral",
-            [
-                {
-                    "role": "system",
-                    "content": "Tu es un assistant intelligent qui sélectionne les sources pertinentes.",
-                },
-                {"role": "user", "content": prompt},
-            ],
-        )
-
-        # Nettoyage du résultat LLM
-        cleaned_result = re.sub(r'\\([^\\"/bfnrtu])', r"\1", result).strip()
+        cleaned_result = re.sub(r'\\([^\\"/bfnrtu])', r"\1", result)
         selected_names = json.loads(cleaned_result)
-
-        # Auto-fix si le LLM renvoie une liste d'objets au lieu de noms
+        print(f"====== SOURCES CHATBOT: {selected_names}")
         if isinstance(selected_names, list) and all(
-            isinstance(n, dict) for n in selected_names
+            isinstance(n, str) for n in selected_names
         ):
-            selected_names = [n.get("name") for n in selected_names if "name" in n]
-
+            # Filtrer les sources en fonction des noms renvoyés par le LLM
+            selected_sources = [s for s in sources if s["name"] in selected_names]
+            return selected_sources
+        else:
+            print("⚠️ Format inattendu : attendu liste de noms (strings).")
+            return []
     except Exception as e:
-        print(f"⚠️ Erreur parsing JSON LLM ou appel LLM : {e}")
-        selected_names = []
-
-    # --- Fallback automatique pour inclure les slots si LLM vide ---
-    if not selected_names:
-        slot_names = [s["name"] for s in sources if s["type"] == "slot"]
-        selected_names = slot_names
-
-    # --- Sélection finale des sources ---
-    if isinstance(selected_names, list) and all(
-        isinstance(n, str) for n in selected_names
-    ):
-        selected_sources = [s for s in sources if s["name"] in selected_names]
-        print(f"====== SOURCES CHATBOT: {selected_sources}")
-        return selected_sources
-    else:
-        print("⚠️ Format inattendu : attendu liste de noms (strings).")
+        print(f"Erreur parsing JSON LLM: {e}")
         return []
 
 
 def extract_slots_with_llm(
-    user_input: str,
-    expected_slots: list[dict],
-    slot_state: dict,
-    chatbot_id: str,
-    keyword: str = "",
+    user_input: str, expected_slots: List[Dict[str, str]], slot_state: Dict[str, Any], chatbot_id: str,
 ):
-    import json, string
-
     slot_state = slot_state or {}
 
-    # Vérification de la structure des slots
     if not expected_slots or not isinstance(expected_slots[0], dict):
         print("⚠️ Structure inattendue pour expected_slots :", expected_slots)
-        return slot_state
+        return {}
 
-    full_slot_schema = expected_slots[0]
+    full_slot_schema = expected_slots[0]  # ex: {'Nom': 'text', 'Date': 'date', ...}
 
-    # Déterminer les slots manquants
-    missing_slots = {k: v for k, v in full_slot_schema.items() if not slot_state.get(k)}
+    # Slots manquants uniquement
+    missing_slots = {
+        slot: full_slot_schema[slot]
+        for slot in full_slot_schema
+        if not slot_state.get(slot)
+    }
 
-    # Récupérer toutes les valeurs possibles pour ce chatbot
-    possible_values = get_possible_values_for_chatbot(chatbot_id)  # List[str]
-    print(f"VALEURS SLOTS: {keyword}")
-    print(f"VALEURS POSSIBLES: {possible_values}")
-    print(f"INPUT UTILISATEUR: {user_input}")
+    if not missing_slots:
+        print("✅ Tous les slots sont déjà renseignés.")
+        # ⚙️ Appel de la fonction avant le retour
+        process_chatbot_web_actions(chatbot_id)
+        return slot_state  # Retourner tous les slots connus
 
-    # --- Gestion du keyword strict ou déduit ---
-    if not missing_slots and possible_values:
-        llm_prompt = [
-            {
-                "role": "system",
-                "content": (
-                    "Tu es un assistant expert en compréhension du langage naturel. "
-                    "Ton rôle est de choisir **un seul mot-clé** parmi une liste donnée, "
-                    "en fonction du **thème principal** de la demande utilisateur, quel que soit le domaine.\n\n"
-                    "Règles à suivre :\n"
-                    "1. Analyse le sens global de la demande, pas seulement les mots exacts.\n"
-                    "2. Si un mot de la liste correspond clairement au thème principal, choisis-le.\n"
-                    "3. Si aucun mot ne correspond parfaitement, déduis **le mot le plus pertinent** selon le sujet (par exemple : 'enfant', 'santé', 'contrat', 'technologie', etc.).\n"
-                    "4. Retourne **un seul mot** — sans phrase, sans ponctuation, sans explication.\n"
-                    "5. Si la phrase exprime une rupture, une fin, une opposition ou une séparation, privilégie le mot lié à cette idée (ex. 'divorce', 'résiliation', 'rupture').\n"
-                    "6. Ne te limite pas à un domaine spécifique (pas seulement juridique)."
-                    "\n\nValeurs possibles : " + str(possible_values)
-                ),
-            },
-            {"role": "user", "content": user_input},
-        ]
-
-        try:
-            keyword_candidate = call_llm("mixtral", llm_prompt, max_tokens=5).strip()
-
-            import string
-
-            # Nettoyage : suppression espaces, guillemets, ponctuation
-            keyword_candidate = keyword_candidate.strip(
-                string.whitespace + string.punctuation + "\"“”'"
-            ).capitalize()
-
-            # Vérification correspondance exacte
-            matches = [
-                v for v in possible_values if v.lower() == keyword_candidate.lower()
-            ]
-
-            if matches:
-                keyword = matches[0]  # correspondance exacte
-            else:
-                # Sinon, on garde le mot proposé s’il est raisonnable (1 mot)
-                if len(keyword_candidate.split()) == 1:
-                    keyword = keyword_candidate
-                else:
-                    keyword = None  # trop long, pas un mot-clé clair
-
-            print(f"🔍 Mot-clé sélectionné ou déduit : {keyword}")
-
-        except Exception as e:
-            print(f"⚠️ Erreur LLM pour keyword : {e}")
-            keyword = None
-
-        # Appel API si nécessaire
-        web_action_api_url = process_chatbot_web_actions(chatbot_id)
-        if web_action_api_url:
-            api_url_with_slots = f"{web_action_api_url}{keyword or ''}"
-            print(f"🌐 Appel API : {api_url_with_slots}")
-            # ... suite du traitement API ...
-
-        return slot_state
-
-    # --- Extraction des slots manquants via LLM ---
+    # Template JSON pour les slots manquants
     slots_template = {k: None for k in missing_slots}
     json_example = json.dumps(slots_template, ensure_ascii=False, indent=2)
 
     system_prompt = {
         "role": "system",
         "content": (
-            f"Tu es un assistant intelligent. Extrait les informations suivantes si elles sont présentes dans la phrase : "
-            f"{', '.join(missing_slots.keys())}.\n"
+            f"Tu es un assistant intelligent. Extrait les informations suivantes si elles sont présentes dans la phrase : {', '.join(missing_slots.keys())}.\n"
             f"Retourne uniquement un JSON valide au format suivant :\n{json_example}\n"
             "Si une valeur n’est pas présente, utilise null."
         ),
@@ -336,19 +257,23 @@ def extract_slots_with_llm(
     try:
         extracted = json.loads(response)
     except json.JSONDecodeError:
-        # Nettoyage minimal avant parsing
         cleaned = response.replace("\\_", "_").replace("\\n", "").strip("`")
         try:
             extracted = json.loads(cleaned)
         except Exception:
-            print("⚠️ Le LLM n'a pas retourné un JSON valide. Réponse brute :")
+            print("⚠️ Erreur : le LLM n'a pas retourné un JSON valide. Réponse brute :")
             print(response)
-            return slot_state
+            return slot_state  # On retourne quand même les slots déjà connus
 
-    # Fusion propre des valeurs
-    final_slots = {
-        k: slot_state.get(k) or extracted.get(k) or None for k in full_slot_schema
-    }
+    # Fusionner les slots extraits avec ceux déjà présents
+    final_slots = {}
+    for slot in full_slot_schema:
+        if slot_state.get(slot) is not None:
+            final_slots[slot] = slot_state[slot]
+        elif extracted.get(slot) is not None:
+            final_slots[slot] = extracted[slot]
+        else:
+            final_slots[slot] = None
 
     return final_slots
 
