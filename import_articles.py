@@ -34,7 +34,7 @@ def nettoyer_contenu(contenu: str) -> str:
 # ---------------------------------------------------------
 def create_database():
     """Crée la base de données si elle n'existe pas"""
-    conn = get_connection("postgres")
+    conn = get_connection("madachat")
     conn.autocommit = True
     with conn.cursor() as cur:
         cur.execute("SELECT 1 FROM pg_database WHERE datname = %s", (DB_NAME,))
