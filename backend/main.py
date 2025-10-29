@@ -1,8 +1,13 @@
-# app/main.py
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+
+# Import des routes existantes
 from routes.ask import router as ask_router
-from routes.articles import router as articles_router  # ✅ importer le nouveau router
+from routes.articles import router as articles_router 
+
+# --- NOUVEAUTÉ : Import de la route Judilibre ---
+from routes.judilibre_route import router as judilibre_router 
+# ------------------------------------------------
 
 from config import *
 import psycopg2
@@ -18,9 +23,9 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Inclusions de routes
 app.include_router(ask_router)
-app.include_router(articles_router)   # ✅  les routes d'articles
+app.include_router(articles_router)
+app.include_router(judilibre_router)
 
 # Pour lancement direct
 if __name__ == "__main__":

@@ -262,7 +262,7 @@ def extract_slots_with_llm(
                 "role": "system",
                 "content": (
                     "Tu es un assistant expert en compréhension du langage naturel. "
-                    "Ton rôle est de choisir **un seul mot-clé** parmi une liste donnée, "
+                    "Ton rôle est de choisir **des mots-clés** parmi une liste donnée, "
                     "en fonction du **thème principal** de la demande utilisateur, quel que soit le domaine.\n\n"
                     "Règles à suivre :\n"
                     "1. Analyse le sens global de la demande, pas seulement les mots exacts.\n"
